@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Filament\Resources\ConsultancyRequests\Schemas;
+
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+
+class ConsultancyRequestForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('Requester')
+                    ->description('Submitted through the public consultancy request form.')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('name')->required()->maxLength(150),
+                        TextInput::make('organization')->maxLength(150),
+                        TextInput::make('designation')->maxLength(150),
+                        TextInput::make('email')->email()->required()->maxLength(180),
+                        TextInput::make('phone')->tel()->maxLength(40),
+                        Select::make('service_category_id')
+                            ->label('Area of consultancy')
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->preload(),
+                    ]),
+
+                Section::make('Requirement')
+                    ->schema([
+                        TextInput::make('area_of_interest')
+                            ->label('Area of interest (free text)')
+                            ->maxLength(180),
+
+                        Textarea::make('requirement')
+                            ->required()
+                            ->rows(8)
+                            ->columnSpanFull(),
+
+                        FileUpload::make('document')
+                            ->label('Attached document')
+                            ->disk('public')
+                            ->directory('consultancy-requests')
+                            ->downloadable()
+                            ->openable()
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('Handling')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('status')
+                            ->required()
+                            ->default('new')
+                            ->options([
+                                'new' => 'New',
+                                'in_review' => 'In review',
+                                'proposal_sent' => 'Proposal sent',
+                                'accepted' => 'Accepted',
+                                'declined' => 'Declined',
+                                'closed' => 'Closed',
+                            ])
+                            ->native(false),
+
+                        DateTimePicker::make('handled_at')
+                            ->label('Handled at')
+                            ->seconds(false),
+
+                        Textarea::make('admin_notes')
+                            ->label('Internal notes')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                    ]),
+            ]);
+    }
+}

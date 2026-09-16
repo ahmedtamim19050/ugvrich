@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Filament\Resources\Stats\Schemas;
+
+use App\Filament\Resources\ServiceCategories\Schemas\ServiceCategoryForm;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+
+class StatForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('Statistic')
+                    ->description('Numbers shown in the hero, About page and stat bands. The numeric part animates on scroll.')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('label')->required()->maxLength(150)->columnSpanFull(),
+
+                        TextInput::make('value')
+                            ->required()
+                            ->maxLength(20)
+                            ->helperText('Digits only, e.g. 120'),
+
+                        TextInput::make('suffix')
+                            ->maxLength(10)
+                            ->helperText('Shown after the number, e.g. + or %'),
+
+                        Select::make('icon')
+                            ->options(ServiceCategoryForm::ICONS)
+                            ->native(false)
+                            ->searchable(),
+
+                        TextInput::make('sort_order')->numeric()->default(0)->required(),
+
+                        Toggle::make('is_active')->label('Visible on the site')->default(true),
+                    ]),
+            ]);
+    }
+}

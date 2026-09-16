@@ -1,0 +1,67 @@
+@props(['name' => 'sparkles', 'stroke' => 1.6])
+
+@php
+    // Stroke-drawn line icons (24x24 viewBox), keyed by name.
+    $line = [
+        'beaker' => '<path d="M9 3h6M10 3v5.5L4.8 17.2A2 2 0 0 0 6.5 20h11a2 2 0 0 0 1.7-2.8L14 8.5V3"/><path d="M7.5 14h9"/>',
+        'sparkles' => '<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9L12 3Z"/><path d="M18 15l.9 2.1 2.1.9-2.1.9L18 21l-.9-2.1-2.1-.9 2.1-.9L18 15Z"/>',
+        'briefcase' => '<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><path d="M3 12.5h18"/>',
+        'globe' => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/>',
+        'wrench' => '<path d="M15.5 3.5a5.5 5.5 0 0 0-6.9 6.9L3.8 15.2a2.3 2.3 0 0 0 3.2 3.2l4.8-4.8a5.5 5.5 0 0 0 6.9-6.9l-3 3-2.4-2.4 3-3Z"/>',
+        'cpu' => '<rect x="7" y="7" width="10" height="10" rx="2"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9 1.5v2M15 1.5v2M9 20.5v2M15 20.5v2M1.5 9h2M1.5 15h2M20.5 9h2M20.5 15h2"/>',
+        'chart' => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+        'academic' => '<path d="M12 4 2.5 8.6 12 13.2l9.5-4.6L12 4Z"/><path d="M6.5 10.8v4.4c0 1.7 2.5 3.1 5.5 3.1s5.5-1.4 5.5-3.1v-4.4"/><path d="M21.5 8.6v5.6"/>',
+        'users' => '<circle cx="9" cy="8" r="3.4"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16.2 5a3.4 3.4 0 0 1 0 6.6"/><path d="M17.5 14.2A6.5 6.5 0 0 1 21.5 20"/>',
+        'shield' => '<path d="M12 3 4.5 6v5.5c0 4.4 3 8.2 7.5 9.5 4.5-1.3 7.5-5.1 7.5-9.5V6L12 3Z"/><path d="m9.2 12 2 2 3.6-3.7"/>',
+        'link' => '<path d="M10.5 13.5a4 4 0 0 0 5.7 0l3-3a4 4 0 1 0-5.7-5.7L12 6.3"/><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-3 3a4 4 0 1 0 5.7 5.7l1.5-1.5"/>',
+        'star' => '<path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.7l5.9-.8L12 3.5Z"/>',
+        'arrow-right' => '<path d="M4 12h16"/><path d="m14 6 6 6-6 6"/>',
+        'arrow-up-right' => '<path d="M7 17 17 7"/><path d="M8 7h9v9"/>',
+        'arrow-left' => '<path d="M20 12H4"/><path d="m10 6-6 6 6 6"/>',
+        'check' => '<path d="m4.5 12.5 5 5 10-11"/>',
+        'mail' => '<rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/>',
+        'phone' => '<path d="M6.2 3.5h3l1.5 4-2 1.4a12 12 0 0 0 6.4 6.4l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A17.5 17.5 0 0 1 4.2 5.7a2 2 0 0 1 2-2.2Z"/>',
+        'map-pin' => '<path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>',
+        'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/>',
+        'search' => '<circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/>',
+        'menu' => '<path d="M4 7h16M4 12h16M4 17h16"/>',
+        'x' => '<path d="M6 6l12 12M18 6 6 18"/>',
+        'sun' => '<circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/>',
+        'moon' => '<path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a7 7 0 0 0 10.8 10.8Z"/>',
+        'chevron-down' => '<path d="m6 9.5 6 6 6-6"/>',
+        'chevron-right' => '<path d="m9.5 6 6 6-6 6"/>',
+        'calendar' => '<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+        'document' => '<path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>',
+        'plus' => '<path d="M12 5v14M5 12h14"/>',
+        'minus' => '<path d="M5 12h14"/>',
+        'upload' => '<path d="M12 16V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 15v3.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V15"/>',
+        'target' => '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+        'compass' => '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5.2-5.2 2 2-5.2 5.2-2Z"/>',
+        'lightbulb' => '<path d="M9.5 18h5"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2h5c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3Z"/>',
+        'building' => '<path d="M3 21h18"/><path d="M5 21V5.5A1.5 1.5 0 0 1 6.5 4h7A1.5 1.5 0 0 1 15 5.5V21"/><path d="M15 10h3.5A1.5 1.5 0 0 1 20 11.5V21"/><path d="M8.5 8h3M8.5 12h3M8.5 16h3"/>',
+        'quote' => '<path d="M9.5 6C6.5 7.4 5 9.9 5 13.5V18h5.5v-5.5H8c0-2 .8-3.3 2.5-4L9.5 6Z"/><path d="M18.5 6C15.5 7.4 14 9.9 14 13.5V18h5.5v-5.5H17c0-2 .8-3.3 2.5-4L18.5 6Z"/>',
+        'external' => '<path d="M14 4h6v6"/><path d="m20 4-9 9"/><path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/>',
+        'grid' => '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/>',
+        'handshake' => '<path d="m11 7 2.5-2.2a2 2 0 0 1 2.6 0L21 8.7v6.1l-3 2.7-3.5-3.2"/><path d="M13 6.6 10.4 4.4a2 2 0 0 0-2.6 0L3 8.7v6.1l3 2.7 4-3.6"/><path d="m10 13.5 2 1.8 2 1.8 1.8 1.6"/>',
+    ];
+
+    // Solid brand marks
+    $solid = [
+        'facebook' => '<path d="M14 8.5V7c0-.8.2-1.2 1.3-1.2H17V3h-2.5C11.7 3 10.7 4.5 10.7 6.8v1.7H9V11h1.7v10H14V11h2.3l.4-2.5H14Z"/>',
+        'linkedin' => '<path d="M6.9 8.9H3.6V21h3.3V8.9ZM5.2 3a1.9 1.9 0 1 0 0 3.9 1.9 1.9 0 0 0 0-3.9ZM20.4 13.9c0-3.2-1.7-4.7-4-4.7a3.5 3.5 0 0 0-3.1 1.7V8.9H10V21h3.3v-6.4c0-1.7.3-3.3 2.4-3.3 2 0 2 1.9 2 3.4V21h3.3v-7.1Z"/>',
+        'x-social' => '<path d="M17.5 3h3l-6.6 7.5L21.7 21h-6l-4.7-6.1L5.5 21h-3l7-8L2.6 3h6.1l4.3 5.6L17.5 3Zm-1 16h1.7L8.6 4.7H6.8L16.5 19Z"/>',
+        'youtube' => '<path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5.2 3-5.2 3Z"/>',
+        'star-solid' => '<path d="m12 2.8 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.1l-5.6 2.9 1.1-6.2L3 9.4l6.2-.9L12 2.8Z"/>',
+    ];
+@endphp
+
+@if (isset($solid[$name]))
+    <svg {{ $attributes->merge(['class' => 'h-5 w-5', 'aria-hidden' => 'true']) }} viewBox="0 0 24 24" fill="currentColor">
+        {!! $solid[$name] !!}
+    </svg>
+@else
+    <svg {{ $attributes->merge(['class' => 'h-5 w-5', 'aria-hidden' => 'true']) }} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="{{ $stroke }}" stroke-linecap="round" stroke-linejoin="round">
+        {!! $line[$name] ?? $line['sparkles'] !!}
+    </svg>
+@endif
