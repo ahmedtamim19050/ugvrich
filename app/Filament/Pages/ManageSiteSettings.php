@@ -58,6 +58,13 @@ class ManageSiteSettings extends Page implements HasSchemas
         $state = [];
 
         foreach ($stored as $key => $value) {
+            if ($key === 'pipeline_counts') {
+                $decoded = json_decode((string) $value, true);
+                $state[$key] = is_array($decoded) ? $decoded : [];
+
+                continue;
+            }
+
             if (! in_array($key, self::JSON_KEYS, true)) {
                 $state[$key] = $value;
 
@@ -125,7 +132,11 @@ class ManageSiteSettings extends Page implements HasSchemas
                             ->directory('about')
                             ->imageEditor()
                             ->helperText('Portrait photo behind the vision statement on the home page. Leave empty to use the bundled campus photo.'),
-                        TextInput::make('mission_intro')->label('Mission lead-in'),
+                        Textarea::make('mission_statement')
+                            ->label('Mission statement')
+                            ->rows(3)
+                            ->helperText('One-sentence mission shown on the home page.'),
+                        TextInput::make('mission_intro')->label('Mission lead-in (About page)'),
 
                         Repeater::make('mission_points')
                             ->label('Mission points')
@@ -192,6 +203,22 @@ class ManageSiteSettings extends Page implements HasSchemas
                             ->addActionLabel('Add step'),
                     ]),
 
+                    Tabs\Tab::make('Pipeline')->icon('heroicon-o-funnel')->schema([
+                        Section::make('Innovation pipeline')
+                            ->description('How many projects are currently at each stage. Shown on the home page dashboard.')
+                            ->columns(4)
+                            ->schema(
+                                collect(config('rich.pipeline_stages'))
+                                    ->map(fn ($label, $stage) => TextInput::make('pipeline_counts.'.$stage)
+                                        ->label($label)
+                                        ->numeric()
+                                        ->minValue(0)
+                                        ->default(0))
+                                    ->values()
+                                    ->all()
+                            ),
+                    ]),
+
                     Tabs\Tab::make('Contact')->icon('heroicon-o-phone')->schema([
                         Section::make('Office')->columns(2)->schema([
                             Textarea::make('contact_address')->rows(2)->columnSpanFull(),
@@ -215,6 +242,16 @@ class ManageSiteSettings extends Page implements HasSchemas
     public function save(): void
     {
         foreach ($this->form->getState() as $key => $value) {
+            if ($key === 'pipeline_counts') {
+                $counts = collect(array_keys(config('rich.pipeline_stages')))
+                    ->mapWithKeys(fn ($stage) => [$stage => (int) (($value ?? [])[$stage] ?? 0)])
+                    ->all();
+
+                Setting::updateOrCreate(['key' => $key], ['value' => json_encode($counts), 'type' => 'json', 'group' => 'general']);
+
+                continue;
+            }
+
             $isJson = in_array($key, self::JSON_KEYS, true);
 
             if ($isJson) {

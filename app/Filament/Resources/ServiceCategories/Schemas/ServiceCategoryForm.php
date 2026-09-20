@@ -34,6 +34,13 @@ class ServiceCategoryForm
         'compass' => 'Compass',
         'document' => 'Document',
         'grid' => 'Grid',
+        'rocket' => 'Rocket (startup)',
+        'bolt' => 'Bolt (energy)',
+        'heart' => 'Heart (health)',
+        'cog' => 'Cog (mechanical)',
+        'chat' => 'Chat (language)',
+        'leaf' => 'Leaf (environment)',
+        'key' => 'Key (IP)',
     ];
 
     public static function configure(Schema $schema): Schema

@@ -85,7 +85,7 @@
                 @foreach ($faqs as $i => $faq)
                     <div class="group/faq relative overflow-hidden rounded-2xl border transition-all duration-300"
                          :class="open === {{ $i }}
-                             ? 'border-brand-200 bg-brand-50/50 shadow-[0_18px_40px_-28px_rgba(27,77,255,0.5)]'
+                             ? 'border-brand-200 bg-brand-50/50 shadow-[0_18px_40px_-28px_rgba(2,34,81,0.5)]'
                              : 'border-ink-100 bg-white hover:border-brand-100 hover:bg-ink-50/70'">
 
                         {{-- Accent bar on the open item --}}

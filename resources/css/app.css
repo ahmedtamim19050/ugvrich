@@ -5,11 +5,11 @@
 @source '../views';
 
 /* ------------------------------------------------------------------
- | One light theme, one accent.
+ | One light theme, the two colours of the UGV RICH logo.
  |
- | Surfaces are white and near-white; every piece of colour on the site
- | is the single brand blue below, used solid. No gradients, no second
- | accent — the contrast against all that white is what carries it.
+ | Surfaces are white and near-white. The logo green (#316d31 is brand-600)
+ | is the primary: buttons, links, icons, accents. The logo navy (#022251 is
+ | navy-700) carries structure — dark surfaces, headings, the footer.
  ------------------------------------------------------------------ */
 
 @theme {
@@ -26,20 +26,32 @@
     --color-ink-600: #4d5668;
     --color-ink-700: #363e4e;
     --color-ink-800: #232a38;
-    --color-ink-900: #151b26;
-    --color-ink-950: #0b0f18;
+    --color-ink-900: #111b2b;
+    --color-ink-950: #071426;
 
-    /* The one accent */
-    --color-brand-50: #eef2ff;
-    --color-brand-100: #dee5ff;
-    --color-brand-200: #c2cfff;
-    --color-brand-300: #97acff;
-    --color-brand-400: #6383ff;
-    --color-brand-500: #3a60ff;
-    --color-brand-600: #1b4dff;
-    --color-brand-700: #123ad6;
-    --color-brand-800: #1332a8;
-    --color-brand-900: #152d83;
+    /* Logo green — the primary */
+    --color-brand-50: #f1f8f0;
+    --color-brand-100: #ddeeda;
+    --color-brand-200: #bddcb9;
+    --color-brand-300: #8fbf8b;
+    --color-brand-400: #5d9e59;
+    --color-brand-500: #41843f;
+    --color-brand-600: #316d31;
+    --color-brand-700: #275727;
+    --color-brand-800: #204520;
+    --color-brand-900: #1a371a;
+
+    /* Logo navy — structure and dark surfaces */
+    --color-navy-50: #eff4fb;
+    --color-navy-100: #dbe7f5;
+    --color-navy-200: #bad0e9;
+    --color-navy-300: #89aed8;
+    --color-navy-400: #5183bd;
+    --color-navy-500: #2a5f9c;
+    --color-navy-600: #0f4280;
+    --color-navy-700: #022251;
+    --color-navy-800: #021c42;
+    --color-navy-900: #021634;
 
     --radius-4xl: 2rem;
     --radius-5xl: 2.75rem;
@@ -156,7 +168,7 @@
 
     .card-hover {
         @apply hover:-translate-y-1 hover:border-brand-300
-               hover:shadow-[0_24px_50px_-28px_rgba(27,77,255,0.4)];
+               hover:shadow-[0_24px_50px_-28px_rgba(2,34,81,0.4)];
     }
 
     .muted {
@@ -175,29 +187,41 @@
         @apply mb-0;
     }
 
+    /* Marked words inside a statement: a soft green band behind the text. */
+    .mark {
+        @apply relative whitespace-nowrap font-bold text-ink-950;
+    }
+
+    .mark::before {
+        content: '';
+        @apply absolute inset-x-[-0.15em] bottom-[0.05em] -z-10 h-[0.55em] rounded-[0.15em] bg-brand-200/70;
+    }
+
     /* Accent word inside a headline. */
     .text-accent {
         @apply text-brand-600;
     }
 
-    .nav-link {
-        @apply relative whitespace-nowrap rounded-full px-3.5 py-2 text-[14.5px] font-medium
-               text-ink-600 transition-colors duration-200 hover:text-ink-950;
+    .nav-item {
+        @apply relative z-10 flex items-center gap-1.5 whitespace-nowrap px-4 text-[14.5px] font-medium
+               text-ink-600 transition-colors duration-200 hover:text-brand-700;
     }
 
-    .nav-link::after {
+    .nav-item[data-active='true'] {
+        @apply font-semibold text-brand-700;
+    }
+
+    /* Active page: a small brand dot under the label. */
+    .nav-item[data-active='true']::after {
         content: '';
-        @apply pointer-events-none absolute inset-x-3.5 -bottom-0.5 h-0.5 origin-center scale-x-0
-               rounded-full bg-brand-600 transition-transform duration-300;
+        @apply absolute bottom-3 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-brand-600;
     }
 
-    .nav-link:hover::after,
-    .nav-link[data-active='true']::after {
-        @apply scale-x-100;
-    }
-
-    .nav-link[data-active='true'] {
-        @apply text-ink-950;
+    /* One highlight pill that slides behind whichever link is hovered or current. */
+    .nav-indicator {
+        top: calc(50% - 19px);
+        @apply pointer-events-none absolute left-0 h-[38px] rounded-full bg-brand-50 ring-1 ring-brand-100
+               transition-[transform,width,opacity] duration-300 ease-out;
     }
 }
 
@@ -219,7 +243,7 @@
     @apply -translate-y-1.5 ring-brand-300;
     box-shadow:
         0 2px 4px rgba(11, 15, 24, 0.05),
-        0 28px 52px -26px rgba(27, 77, 255, 0.42);
+        0 28px 52px -26px rgba(2,34,81, 0.42);
 }
 
 .pillar-media {
@@ -347,7 +371,7 @@
     @apply pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500;
     z-index: 0;
     background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%),
-        rgba(27, 77, 255, 0.10), transparent 62%);
+        rgba(2,34,81, 0.10), transparent 62%);
 }
 
 .spotlight:hover::before {
@@ -483,7 +507,7 @@
     @apply -translate-y-1 ring-brand-300;
     box-shadow:
         0 2px 4px rgba(11, 15, 24, 0.05),
-        0 22px 40px -24px rgba(27, 77, 255, 0.4);
+        0 22px 40px -24px rgba(2,34,81, 0.4);
 }
 
 .mission-card {
@@ -509,7 +533,7 @@
     @apply -translate-y-1.5 ring-brand-300;
     box-shadow:
         0 2px 4px rgba(11, 15, 24, 0.05),
-        0 28px 52px -26px rgba(27, 77, 255, 0.42);
+        0 28px 52px -26px rgba(2,34,81, 0.42);
 }
 
 /* Background photo on the light cards.
@@ -636,7 +660,7 @@
     @apply -translate-y-1 ring-brand-300;
     box-shadow:
         0 2px 4px rgba(11, 15, 24, 0.05),
-        0 22px 40px -22px rgba(27, 77, 255, 0.45);
+        0 22px 40px -22px rgba(2,34,81, 0.45);
 }
 
 .partner-chip:hover .partner-mark {
@@ -662,26 +686,49 @@
 }
 
 /* ------------------------------------------------------------------
- | Header over the hero video.
+ | Innovation area tabs.
  |
- | `.is-clear` is only ever set in overlay mode (elsewhere the header
- | starts solid), so it reliably means "sitting on the footage" — and
- | everything in it has to flip to light until the bar gains a surface.
+ | One tab bar, wrapping onto as many rows as it needs — nothing is
+ | parked off-screen. The department code (CSE, EEE …) leads each tab,
+ | since that is how people look for their own area.
  ------------------------------------------------------------------ */
-.is-clear .nav-link { color: rgb(255 255 255 / 0.82); }
-.is-clear .nav-link:hover,
-.is-clear .nav-link[data-active='true'] { color: #fff; }
-.is-clear .nav-link::after { background-color: #fff; }
-
-.is-clear .brand-word { color: #fff; }
-.is-clear .brand-word-accent { color: rgb(255 255 255 / 0.7); }
-.is-clear .brand-sub { color: rgb(255 255 255 / 0.6); }
-
-.is-clear .menu-button {
-    border-color: rgb(255 255 255 / 0.35);
-    background-color: rgb(255 255 255 / 0.1);
-    color: #fff;
+.area-tab {
+    @apply flex items-center gap-2 rounded-2xl px-3.5 py-2.5 text-[13.5px] font-semibold text-ink-700
+           transition duration-300 hover:bg-white hover:text-brand-700
+           hover:shadow-[0_10px_24px_-18px_rgba(2,34,81,0.6)];
 }
+
+/* The department code — the label people scan for. */
+.area-tab-dept {
+    @apply rounded-md bg-navy-700 px-1.5 py-0.5 font-display text-[10.5px] font-bold tracking-[0.08em]
+           text-white transition duration-300;
+}
+
+.area-tab-count {
+    @apply rounded-full bg-ink-200/70 px-1.5 py-0.5 text-[11px] font-bold text-ink-600 transition duration-300;
+}
+
+/* Selected */
+.area-tab.is-on {
+    @apply bg-brand-600 text-white shadow-[0_14px_28px_-18px_var(--color-brand-600)];
+}
+
+.area-tab.is-on .area-tab-dept { @apply bg-white text-brand-700; }
+.area-tab.is-on .area-tab-count { @apply bg-white/20 text-white; }
+
+/* Everything that resizes as the header shrinks moves on one curve, so the
+   bar, the info strip and the logo settle together instead of racing. */
+.header-ease {
+    transition-property: height, max-height, opacity, box-shadow, transform;
+    transition-duration: 320ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Info strip above the bar: a quiet navy band. */
+.header-strip { background-color: var(--color-navy-700); color: rgb(255 255 255 / 0.75); }
+
+/* Brand accent line across the very top of the header. */
+.header-accent { background: linear-gradient(90deg, var(--color-navy-700), var(--color-brand-500) 50%, var(--color-navy-700)); }
 
 @utility mask-fade-x {
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);

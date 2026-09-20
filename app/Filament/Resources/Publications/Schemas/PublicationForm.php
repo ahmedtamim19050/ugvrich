@@ -30,12 +30,9 @@ class PublicationForm
 
                         Select::make('kind')
                             ->required()
-                            ->default('publication')
+                            ->default('journal')
                             ->native(false)
-                            ->options([
-                                'publication' => 'Publication',
-                                'funded-project' => 'Funded project / grant',
-                            ]),
+                            ->options(config('rich.publication_kinds')),
 
                         TextInput::make('year')
                             ->numeric()

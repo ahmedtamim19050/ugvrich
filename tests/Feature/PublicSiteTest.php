@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\ServiceCategory;
 use App\Models\Subscriber;
 use Database\Seeders\RichContentSeeder;
+use Database\Seeders\RichInnovationSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +23,7 @@ class PublicSiteTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(RichContentSeeder::class);
+        $this->seed([RichContentSeeder::class, RichInnovationSeeder::class]);
     }
 
     public function test_every_static_page_renders(): void
@@ -95,8 +96,8 @@ class PublicSiteTest extends TestCase
             'document' => UploadedFile::fake()->create('brief.pdf', 120, 'application/pdf'),
         ]);
 
-        $response->assertRedirect();
-        $response->assertSessionHas('consultancy_submitted');
+        $response->assertRedirect(route('consultancy.thanks'));
+        $response->assertSessionHas('consultancy_request');
 
         $request = ConsultancyRequest::sole();
         $this->assertSame('Ayesha Rahman', $request->name);

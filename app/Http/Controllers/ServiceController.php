@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Expert;
 use App\Models\Project;
+use App\Models\Service;
 use App\Models\ServiceCategory;
 
 class ServiceController extends Controller
 {
     public function index()
     {
+        $services = Service::active()->with('category')->orderBy('sort_order')->get();
+
         return view('pages.services.index', [
             'categories' => ServiceCategory::active()->with('services')->orderBy('sort_order')->get(),
+            'services' => $services,
+            'serviceCount' => $services->count(),
         ]);
     }
 

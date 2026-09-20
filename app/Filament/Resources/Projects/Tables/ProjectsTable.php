@@ -22,21 +22,54 @@ class ProjectsTable
             ->columns([
                 ImageColumn::make('image')->label('')->height(40)->width(64),
 
+                TextColumn::make('code')
+                    ->label('Project ID')
+                    ->searchable()
+                    ->copyable()
+                    ->fontFamily('mono')
+                    ->size('sm'),
+
                 TextColumn::make('title')
                     ->searchable()
                     ->weight('semibold')
                     ->wrap()
-                    ->description(fn ($record) => $record->client),
+                    ->description(fn ($record) => $record->lead_name ?: $record->client),
 
-                TextColumn::make('category.name')
-                    ->label('Area')
+                TextColumn::make('type')
                     ->badge()
-                    ->color('primary')
+                    ->formatStateUsing(fn ($state) => config('rich.project_types.'.$state, $state))
+                    ->color(fn (string $state) => match ($state) {
+                        'innovation' => 'primary',
+                        'research' => 'info',
+                        default => 'gray',
+                    }),
+
+                TextColumn::make('department')->badge()->color('gray')->placeholder('--'),
+
+                TextColumn::make('stage')
+                    ->label('Stage')
+                    ->badge()
+                    ->color('warning')
+                    ->formatStateUsing(fn ($state) => config('rich.pipeline_stages.'.$state, $state))
                     ->placeholder('--'),
 
-                TextColumn::make('year')->sortable(),
+                TextColumn::make('progress')
+                    ->suffix('%')
+                    ->sortable()
+                    ->alignEnd(),
 
-                TextColumn::make('duration')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('patent_status')
+                    ->label('Patent / IP')
+                    ->formatStateUsing(fn ($state) => config('rich.patent_statuses.'.$state, $state))
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('commercialization_status')
+                    ->label('Commercialization')
+                    ->formatStateUsing(fn ($state) => config('rich.commercialization_statuses.'.$state, $state))
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('budget')->money('BDT')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deadline')->date()->sortable()->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('status')
                     ->badge()
@@ -49,9 +82,13 @@ class ProjectsTable
                 IconColumn::make('is_featured')->label('Featured')->boolean(),
             ])
             ->filters([
-                SelectFilter::make('service_category_id')
-                    ->label('Area of consultancy')
-                    ->relationship('category', 'name')
+                SelectFilter::make('type')->options(config('rich.project_types')),
+                SelectFilter::make('department')->options(config('rich.departments')),
+                SelectFilter::make('stage')->label('Pipeline stage')->options(config('rich.pipeline_stages')),
+
+                SelectFilter::make('innovation_area_id')
+                    ->label('Innovation area')
+                    ->relationship('innovationArea', 'name')
                     ->preload(),
 
                 SelectFilter::make('status')->options([

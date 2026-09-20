@@ -27,7 +27,7 @@
     };
 @endphp
 
-<section class="relative isolate overflow-hidden bg-ink-950 pb-20 pt-12 sm:pb-24 sm:pt-14 lg:pb-28">
+<section class="relative isolate overflow-hidden bg-ink-950 pb-12 pt-8 sm:pb-14 sm:pt-10 lg:pb-16">
     {{-- Background photo --}}
     <img src="{{ $src }}" alt="" aria-hidden="true" fetchpriority="high"
          class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover">
@@ -75,16 +75,16 @@
                 </span>
             @endif
 
-            <h1 class="mt-6 font-display text-4xl font-bold leading-[1.08] tracking-tight !text-white sm:text-5xl lg:text-[56px] [&_.text-accent]:!text-brand-300">
+            <h1 class="mt-4 font-display text-[28px] font-bold leading-[1.12] tracking-tight !text-white sm:text-[34px] lg:text-[40px] [&_.text-accent]:!text-brand-300">
                 {!! $title !!}
             </h1>
 
             @if ($lead)
-                <p class="mt-6 max-w-2xl text-[17px] leading-[1.75] text-white/75">{{ $lead }}</p>
+                <p class="mt-4 max-w-2xl text-[15.5px] leading-[1.7] text-white/75">{{ $lead }}</p>
             @endif
 
             @if (trim($slot) !== '')
-                <div class="mt-9 flex flex-wrap items-center gap-3 [&_.btn-ghost]:border-white/30 [&_.btn-ghost]:bg-white/10 [&_.btn-ghost]:text-white [&_.btn-ghost]:backdrop-blur-md [&_.btn-ghost:hover]:border-white [&_.btn-ghost:hover]:bg-white [&_.btn-ghost:hover]:text-ink-950">{{ $slot }}</div>
+                <div class="mt-7 flex flex-wrap items-center gap-3 [&_.btn-ghost]:border-white/30 [&_.btn-ghost]:bg-white/10 [&_.btn-ghost]:text-white [&_.btn-ghost]:backdrop-blur-md [&_.btn-ghost:hover]:border-white [&_.btn-ghost:hover]:bg-white [&_.btn-ghost:hover]:text-ink-950">{{ $slot }}</div>
             @endif
         </div>
     </div>

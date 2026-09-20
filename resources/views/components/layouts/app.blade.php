@@ -1,7 +1,6 @@
 @props([
     'title' => null,
     'description' => null,
-    'overlayHeader' => false,
 ])
 
 <!DOCTYPE html>
@@ -12,8 +11,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="mask-icon" href="{{ asset('favicon.svg') }}" color="#1b4dff">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" sizes="64x64">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
 
     <title>{{ $title ? $title.' — '.$site->name() : $site->name().' · '.$site->tagline() }}</title>
     <meta name="description" content="{{ $description ?? $site->get('site_motto') }}">
@@ -33,7 +32,7 @@
         Skip to content
     </a>
 
-    <x-site-header :overlay="$overlayHeader" />
+    <x-site-header />
 
     <main id="main">
         {{ $slot }}

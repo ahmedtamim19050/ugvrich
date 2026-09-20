@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\ConsultancyRequestController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\ExpertController;
+use App\Http\Controllers\IdeaSubmissionController;
+use App\Http\Controllers\InnovationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProjectController;
@@ -13,9 +16,19 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/research', [PageController::class, 'research'])->name('research');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/request-consultancy', [PageController::class, 'requestConsultancy'])->name('consultancy.create');
 
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{serviceCategory}', [ServiceController::class, 'show'])->name('services.show');
+
+Route::get('/innovation', [InnovationController::class, 'index'])->name('innovation.index');
+
+Route::get('/startup', [PageController::class, 'startup'])->name('startup');
+Route::get('/submit-idea', [IdeaSubmissionController::class, 'create'])->name('ideas.create');
+Route::get('/submit-idea/thank-you', [IdeaSubmissionController::class, 'thanks'])->name('ideas.thanks');
+Route::post('/submit-idea', [IdeaSubmissionController::class, 'store'])
+    ->middleware('throttle:8,1')
+    ->name('ideas.store');
 
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
@@ -31,6 +44,10 @@ Route::get('/contact/thank-you', [ConsultancyRequestController::class, 'thanks']
 Route::post('/consultancy-request', ConsultancyRequestController::class)
     ->middleware('throttle:8,1')
     ->name('consultancy.store');
+
+Route::post('/contact-message', ContactMessageController::class)
+    ->middleware('throttle:8,1')
+    ->name('contact.store');
 
 Route::post('/subscribe', SubscriberController::class)
     ->middleware('throttle:8,1')

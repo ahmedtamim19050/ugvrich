@@ -15,8 +15,8 @@ class StatForm
     {
         return $schema
             ->components([
-                Section::make('Statistic')
-                    ->description('Numbers shown in the hero, About page and stat bands. The numeric part animates on scroll.')
+                Section::make('KPI')
+                    ->description('The KPI cards on the home page dashboard, also used in the hero, About and Research pages. The number animates on scroll.')
                     ->columns(2)
                     ->schema([
                         TextInput::make('label')->required()->maxLength(150)->columnSpanFull(),

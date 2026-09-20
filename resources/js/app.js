@@ -6,28 +6,23 @@ Alpine.plugin(collapse);
 Alpine.plugin(intersect);
 
 /* ---------------------------------------------------------------------
- | Header — transparency, scroll progress and the mobile drawer.
- |
- | `overlay` is true on the home page, where the header sits on top of the
- | hero and only takes on a surface once you scroll past it.
+ | Header — the sliding highlight, scroll progress and the mobile menu.
  --------------------------------------------------------------------- */
-Alpine.data('siteHeader', (overlay = false) => ({
-    overlay,
+Alpine.data('siteHeader', () => ({
     open: false,
-    mega: false,
-    solid: !overlay,
+    panel: null,
+    solid: false,
     progress: 0,
-
-    // Transparent, light-text styling is only for the home hero. Inner pages
-    // always keep a white bar, even while `solid` tracks scroll for sizing.
-    get clear() {
-        return this.overlay && !this.solid;
-    },
+    ind: { left: 0, width: 0 },
+    closeTimer: null,
 
     init() {
         this.onScroll();
+        this.$nextTick(() => this.settle());
+        window.addEventListener('resize', () => this.settle());
+        document.fonts?.ready.then(() => this.settle());
 
-        // Lock the page behind the mobile drawer.
+        // Lock the page behind the mobile menu.
         this.$watch('open', (isOpen) => {
             document.body.style.overflow = isOpen ? 'hidden' : '';
         });
@@ -35,10 +30,38 @@ Alpine.data('siteHeader', (overlay = false) => ({
 
     onScroll() {
         const y = window.scrollY;
-        this.solid = this.overlay ? y > 90 : y > 12;
+        if (y > 48) this.solid = true;
+        else if (y < 16) this.solid = false;
 
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         this.progress = scrollable > 0 ? Math.min(y / scrollable, 1) : 0;
+    },
+
+    // Slide the underline to a link and open (or close) its panel.
+    hover(el, key) {
+        this.keep();
+        this.moveTo(el);
+        this.panel = key;
+    },
+
+    moveTo(el) {
+        this.ind = el ? { left: el.offsetLeft + 2, width: el.offsetWidth - 4 } : { left: 0, width: 0 };
+    },
+
+    // Rest the underline on the current page's link while nothing is hovered.
+    settle() {
+        if (!this.panel) this.moveTo(this.$refs.current ?? null);
+    },
+
+    keep() {
+        clearTimeout(this.closeTimer);
+    },
+
+    leave() {
+        this.closeTimer = setTimeout(() => {
+            this.panel = null;
+            this.settle();
+        }, 160);
     },
 }));
 

@@ -34,11 +34,11 @@
     $W = 400;
     $H = 250;
 
-    $ink = '#1b4dff';       // brand-600
-    $inkSoft = '#97acff';   // brand-300
-    $grid = '#cfdaf8';
-    $gridMajor = '#a7bcef';
-    $warm = '#ff6a00';
+    $ink = '#0f4280';       // brand-600
+    $inkSoft = '#89aed8';   // brand-300
+    $grid = '#d5e1f1';
+    $gridMajor = '#a8c1de';
+    $warm = '#316d31';      // brand-600
 
     $gid = 'cv'.substr(md5((string) $seed), 0, 8);
 @endphp

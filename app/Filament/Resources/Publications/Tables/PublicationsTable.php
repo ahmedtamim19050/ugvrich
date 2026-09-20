@@ -35,10 +35,7 @@ class PublicationsTable
                 IconColumn::make('is_active')->label('Visible')->boolean(),
             ])
             ->filters([
-                SelectFilter::make('kind')->options([
-                    'publication' => 'Publication',
-                    'funded-project' => 'Funded project',
-                ]),
+                SelectFilter::make('kind')->options(config('rich.publication_kinds')),
             ])
             ->recordActions([
                 EditAction::make(),

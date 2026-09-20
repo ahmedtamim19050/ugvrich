@@ -47,6 +47,12 @@ class ConsultancyRequestsTable
                     ->color('gray')
                     ->placeholder('--'),
 
+                TextColumn::make('area_of_interest')
+                    ->label('Service')
+                    ->toggleable()
+                    ->placeholder('--')
+                    ->limit(30),
+
                 TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (string $state) => str($state)->replace('_', ' ')->title())

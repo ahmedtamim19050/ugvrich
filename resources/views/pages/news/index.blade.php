@@ -79,5 +79,4 @@
         </div>
     </section>
 
-    @include('partials.home.cta')
 </x-layouts.app>

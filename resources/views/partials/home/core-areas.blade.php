@@ -4,7 +4,7 @@
             <x-section-heading
                 eyebrow="What we do"
                 title='Four pillars, one <span class="text-accent">platform</span>'
-                lead="UGV RICH is organised around four connected functions. Together they take a question from research design, through innovation and professional delivery, into the sectors that need the answer." />
+                lead="Research, Innovation, Industry Services and Startup & Commercialization: four connected pillars that take knowledge from the lab to the market." />
 
             <a href="{{ route('about') }}" class="btn-ghost reveal shrink-0">
                 About UGV RICH <x-ui-icon name="arrow-right" class="h-4 w-4" />

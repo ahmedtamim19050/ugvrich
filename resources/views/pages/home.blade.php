@@ -1,16 +1,6 @@
-<x-layouts.app :description="$site->get('hero_subheading')" :overlay-header="true">
+<x-layouts.app :description="$site->get('hero_subheading')">
     @include('partials.home.hero')
-    @include('partials.home.marquee')
-    @include('partials.home.core-areas')
-    @include('partials.home.services')
-    @include('partials.home.band')
+    @include('partials.home.dashboard')
     @include('partials.home.about')
-    @include('partials.home.why-choose')
-    @include('partials.home.process')
     @include('partials.home.projects')
-    @include('partials.home.experts')
-    @include('partials.home.testimonials')
-    @include('partials.home.faq')
-    @include('partials.home.news')
-    @include('partials.home.cta')
 </x-layouts.app>

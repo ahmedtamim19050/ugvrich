@@ -135,7 +135,7 @@
 
                     <ol class="mt-6 grid gap-3 sm:grid-cols-2">
                         @foreach ($site->list('mission_points') as $i => $point)
-                            <li class="group flex items-start gap-3.5 rounded-2xl border border-ink-100 bg-ink-50/60 p-4 transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:bg-white hover:shadow-[0_16px_36px_-26px_rgba(27,77,255,0.5)]">
+                            <li class="group flex items-start gap-3.5 rounded-2xl border border-ink-100 bg-ink-50/60 p-4 transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:bg-white hover:shadow-[0_16px_36px_-26px_rgba(2,34,81,0.5)]">
                                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-ink-100 transition group-hover:bg-brand-600 group-hover:text-white group-hover:ring-brand-600">
                                     <x-ui-icon :name="$missionIcons[$i] ?? 'check'" class="h-[18px] w-[18px]" />
                                 </span>
@@ -232,5 +232,4 @@
     {{-- Experts (shared with the home page) --}}
     @include('partials.home.experts')
 
-    @include('partials.home.cta')
 </x-layouts.app>

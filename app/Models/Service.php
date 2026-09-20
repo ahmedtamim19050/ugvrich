@@ -19,6 +19,11 @@ class Service extends Model
         return $this->belongsTo(ServiceCategory::class, 'service_category_id');
     }
 
+    public function getDepartmentNameAttribute(): ?string
+    {
+        return config('rich.departments.'.$this->department);
+    }
+
     public function scopeActive(Builder $q): Builder
     {
         return $q->where('is_active', true);

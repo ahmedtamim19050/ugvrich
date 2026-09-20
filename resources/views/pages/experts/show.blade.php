@@ -121,5 +121,4 @@
         </section>
     @endif
 
-    @include('partials.home.cta')
 </x-layouts.app>

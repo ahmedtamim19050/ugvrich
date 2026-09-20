@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\InnovationArea;
 use App\Models\ServiceCategory;
 use App\Models\Setting;
 use Illuminate\Support\Collection;
@@ -16,6 +17,8 @@ class Site
     protected array $values;
 
     protected ?Collection $navCategories = null;
+
+    protected ?Collection $innovationAreas = null;
 
     public function __construct()
     {
@@ -59,6 +62,14 @@ class Site
         return $this->navCategories ??= ServiceCategory::active()
             ->orderBy('sort_order')
             ->get(['id', 'name', 'slug', 'icon', 'tagline']);
+    }
+
+    /** The Innovation Wing's department areas, for the menu. Memoised per request. */
+    public function innovationAreas(): Collection
+    {
+        return $this->innovationAreas ??= InnovationArea::active()
+            ->orderBy('sort_order')
+            ->get(['id', 'name', 'slug', 'icon', 'department']);
     }
 
     public function socials(): array

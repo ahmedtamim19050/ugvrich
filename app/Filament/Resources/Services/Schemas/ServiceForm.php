@@ -35,6 +35,13 @@ class ServiceForm
 
                         TextInput::make('slug')->required()->maxLength(150),
 
+                        Select::make('department')
+                            ->label('Delivered by')
+                            ->native(false)
+                            ->searchable()
+                            ->options(config('rich.departments'))
+                            ->helperText('Groups the service under a department on the consultancy page.'),
+
                         Textarea::make('description')->rows(3)->columnSpanFull(),
 
                         TextInput::make('sort_order')->numeric()->default(0)->required(),

@@ -9,7 +9,7 @@
 
 {{-- The scroll-reveal lives on the wrapper so its transform and delay never fight the card's hover. --}}
 <div {{ $attributes->merge(['class' => 'reveal']) }} style="transition-delay: {{ min($index * 90, 360) }}ms">
-    <article class="group relative flex h-full flex-col rounded-[1.75rem] border border-ink-100 bg-white p-2 shadow-[0_8px_24px_-18px_rgba(11,15,24,0.3)] transition-[transform,box-shadow,border-color] duration-500 {{ $ease }} hover:-translate-y-1.5 hover:border-brand-100 hover:shadow-[0_32px_60px_-30px_rgba(27,77,255,0.4)]">
+    <article class="group relative flex h-full flex-col rounded-[1.75rem] border border-ink-100 bg-white p-2 shadow-[0_8px_24px_-18px_rgba(11,15,24,0.3)] transition-[transform,box-shadow,border-color] duration-500 {{ $ease }} hover:-translate-y-1.5 hover:border-brand-100 hover:shadow-[0_32px_60px_-30px_rgba(2,34,81,0.4)]">
 
         {{-- Image --}}
         <div class="relative isolate aspect-[16/11] overflow-hidden rounded-[1.4rem] bg-ink-100">

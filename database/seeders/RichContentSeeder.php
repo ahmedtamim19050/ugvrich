@@ -25,7 +25,6 @@ class RichContentSeeder extends Seeder
         $this->serviceCatalogue();
         $this->stats();
         $this->experts();
-        $this->projects();
         $this->publications();
         $this->partners();
         $this->testimonials();
@@ -352,98 +351,15 @@ class RichContentSeeder extends Seeder
 
     /* ------------------------------------------------------------------ */
 
-    protected function projects(): void
-    {
-        $catIds = ServiceCategory::pluck('id', 'slug');
-
-        $projects = [
-            [
-                'title' => 'Structural Safety Assessment of Public School Buildings',
-                'client' => 'Local Government Engineering Department',
-                'duration' => '8 months',
-                'year' => 2025,
-                'category' => 'engineering-technical-consultancy',
-                'summary' => 'Condition survey and seismic vulnerability assessment of 64 school buildings across the district.',
-                'description' => 'UGV RICH engineering faculty carried out a full condition survey, non-destructive material testing and seismic vulnerability assessment of sixty-four public school buildings. Each structure was modelled, rated against national code provisions, and assigned a prioritised retrofit category.',
-                'outcome' => 'A prioritised retrofit programme covering 64 buildings, with costed intervention packages for the 19 structures classified as high risk.',
-            ],
-            [
-                'title' => 'Digital Service Delivery Platform for a District Administration',
-                'client' => 'District Administration',
-                'duration' => '12 months',
-                'year' => 2025,
-                'category' => 'ict-digital-consultancy',
-                'summary' => 'Requirements study, architecture and rollout of a citizen-facing digital service portal.',
-                'description' => 'The team ran a service-mapping study across eleven public offices, designed the target architecture, and delivered a citizen portal with case tracking, digital payments and an administrative dashboard, alongside staff capability training.',
-                'outcome' => 'Average service turnaround reduced from nine days to three, with over 40,000 applications processed through the portal in the first year.',
-            ],
-            [
-                'title' => 'Market Systems Study for Coastal Livelihoods',
-                'client' => 'International Development Partner',
-                'duration' => '6 months',
-                'year' => 2024,
-                'category' => 'business-management-consultancy',
-                'summary' => 'Value chain and market systems analysis across three coastal livelihood sectors.',
-                'description' => 'A mixed-method market systems study covering aquaculture, dry fish processing and handicrafts, combining 1,200 household surveys with trader interviews and full value-chain mapping.',
-                'outcome' => 'Investment recommendations across three value chains, adopted into the partner five-year coastal programme design.',
-            ],
-            [
-                'title' => 'Outcome-Based Education Rollout for a Private University',
-                'client' => 'Partner University',
-                'duration' => '10 months',
-                'year' => 2024,
-                'category' => 'education-research-consultancy',
-                'summary' => 'Full OBE curriculum mapping and accreditation readiness support across 14 programmes.',
-                'description' => 'UGV RICH facilitated programme-outcome mapping, assessment redesign and faculty training for fourteen undergraduate programmes, culminating in an accreditation readiness review.',
-                'outcome' => 'All fourteen programmes mapped to OBE standards, and the institution cleared its accreditation self-assessment on first submission.',
-            ],
-            [
-                'title' => 'Baseline and Impact Evaluation of a Community Resilience Programme',
-                'client' => 'National NGO Consortium',
-                'duration' => '14 months',
-                'year' => 2025,
-                'category' => 'social-science-humanities-consultancy',
-                'summary' => 'Baseline, midline and endline evaluation of a multi-district resilience programme.',
-                'description' => 'A three-round panel study across 42 communities, combining household survey data with focus group discussions and key informant interviews to measure resilience outcomes over time.',
-                'outcome' => 'Evidence of a 27% improvement in household preparedness indicators, feeding directly into the consortium next funding cycle.',
-            ],
-            [
-                'title' => 'Renewable Energy Audit for an Industrial Cluster',
-                'client' => 'Industrial Association',
-                'duration' => '5 months',
-                'year' => 2024,
-                'category' => 'engineering-technical-consultancy',
-                'summary' => 'Energy audit and solar feasibility study across 18 manufacturing units.',
-                'description' => 'Detailed load profiling, energy audit and rooftop solar feasibility assessment across eighteen manufacturing facilities, with individual financial models for each site.',
-                'outcome' => 'Identified 22% average energy-cost savings potential, with six units proceeding to rooftop solar installation.',
-            ],
-        ];
-
-        foreach ($projects as $i => $project) {
-            $category = $project['category'];
-            unset($project['category']);
-
-            Project::updateOrCreate(
-                ['slug' => Str::slug($project['title'])],
-                $project + [
-                    'service_category_id' => $catIds[$category] ?? null,
-                    'status' => 'completed',
-                    'is_featured' => $i < 3,
-                    'sort_order' => $i,
-                ],
-            );
-        }
-    }
-
     /* ------------------------------------------------------------------ */
 
     protected function publications(): void
     {
         $items = [
-            ['title' => 'Seismic Vulnerability of Low-Rise RC School Buildings in Coastal Regions', 'authors' => 'M. Hasan, S. Rahman', 'venue' => 'Journal of Structural Engineering Research', 'year' => 2025, 'kind' => 'publication'],
-            ['title' => 'Applied Machine Learning for Public Service Prioritisation', 'authors' => 'F. Akter, T. Ahmed', 'venue' => 'International Conference on Digital Government', 'year' => 2025, 'kind' => 'publication'],
-            ['title' => 'Entrepreneurial Ecosystems and SME Growth in Secondary Cities', 'authors' => 'R. Karim, S. Sultana', 'venue' => 'South Asian Journal of Business Studies', 'year' => 2024, 'kind' => 'publication'],
-            ['title' => 'Assessment Validity under Outcome-Based Education: A Multi-Programme Study', 'authors' => 'N. Jahan', 'venue' => 'Higher Education Quality Review', 'year' => 2024, 'kind' => 'publication'],
+            ['title' => 'Seismic Vulnerability of Low-Rise RC School Buildings in Coastal Regions', 'authors' => 'M. Hasan, S. Rahman', 'venue' => 'Journal of Structural Engineering Research', 'year' => 2025, 'kind' => 'journal'],
+            ['title' => 'Applied Machine Learning for Public Service Prioritisation', 'authors' => 'F. Akter, T. Ahmed', 'venue' => 'International Conference on Digital Government', 'year' => 2025, 'kind' => 'conference'],
+            ['title' => 'Entrepreneurial Ecosystems and SME Growth in Secondary Cities', 'authors' => 'R. Karim, S. Sultana', 'venue' => 'South Asian Journal of Business Studies', 'year' => 2024, 'kind' => 'journal'],
+            ['title' => 'Assessment Validity under Outcome-Based Education: A Multi-Programme Study', 'authors' => 'N. Jahan', 'venue' => 'Higher Education Quality Review', 'year' => 2024, 'kind' => 'journal'],
             ['title' => 'Community Resilience Fund — Multi-District Research Grant', 'authors' => 'A. Hossain (Principal Investigator)', 'venue' => 'National Research Council', 'year' => 2025, 'kind' => 'funded-project'],
             ['title' => 'Coastal Water Quality Monitoring Network', 'authors' => 'S. Rahman (Principal Investigator)', 'venue' => 'Ministry of Environment', 'year' => 2024, 'kind' => 'funded-project'],
         ];

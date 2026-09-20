@@ -5,7 +5,7 @@
         ? $partners->split(2)
         : collect([$partners]);
 
-    $partnerStat = $stats->firstWhere('icon', 'globe');
+    $partnerStat = $stats->first(fn ($s) => str_contains(strtolower($s->label), 'partner'));
 @endphp
 
 @if ($partners->isNotEmpty())

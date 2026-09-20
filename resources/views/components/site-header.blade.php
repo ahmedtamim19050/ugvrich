@@ -1,240 +1,275 @@
-@props(['overlay' => false])
+@props([])
 
 @php
     $categories = $site->navCategories();
+    $areas = $site->innovationAreas();
 
+    // Grouped navigation. `match` lists the route patterns that light a group up;
+    // groups with a `panel` open the full-width panel under the bar.
     $links = [
-        ['label' => 'Home', 'route' => 'home'],
-        ['label' => 'About', 'route' => 'about'],
-        ['label' => 'Services', 'route' => 'services.index', 'mega' => true],
-        ['label' => 'Research', 'route' => 'research'],
-        ['label' => 'Projects', 'route' => 'projects.index'],
-        ['label' => 'Experts', 'route' => 'experts.index'],
-        ['label' => 'News & Events', 'route' => 'news.index'],
+        ['key' => 'home', 'label' => 'Home', 'route' => 'home', 'match' => ['home']],
+        ['key' => 'about', 'label' => 'About', 'route' => 'about', 'match' => ['about', 'experts.*'], 'panel' => [
+            'title' => 'About RICH',
+            'text' => 'The Research, Innovation & Consultation Hub of UGV — the people and purpose behind the work.',
+            'children' => [
+                ['About RICH', route('about'), 'globe', 'Who we are, vision and mission'],
+                ['Team', route('experts.index'), 'users', 'Researchers and experts'],
+            ],
+        ]],
+        ['key' => 'research', 'label' => 'Research', 'route' => 'research', 'match' => ['research'], 'panel' => [
+            'title' => 'Research',
+            'text' => 'Funded grants, published papers and the core capability our faculty bring to them.',
+            'children' => [
+                ['Research', route('research'), 'beaker', 'Routes into research and core capability'],
+                ['Publications', route('research').'#publications', 'document', 'Recent papers and funded grants'],
+            ],
+        ]],
+        ['key' => 'innovation', 'label' => 'Innovation', 'route' => 'innovation.index', 'match' => ['innovation.*', 'startup', 'ideas.*'], 'panel' => [
+            'title' => 'Innovation areas',
+            'text' => 'Every department brings its own discipline to the Innovation Wing.',
+            'children' => array_merge(
+                $areas->map(fn ($area) => [
+                    $area->name, route('innovation.index', ['area' => $area->slug]), $area->icon ?? 'lightbulb',
+                    $area->department ? config('rich.departments.'.$area->department) : null,
+                ])->all(),
+                [['Startup & Incubation', route('startup'), 'rocket', 'From idea to enterprise']],
+            ),
+        ]],
+        ['key' => 'projects', 'label' => 'Projects', 'route' => 'projects.index', 'match' => ['projects.*']],
+        ['key' => 'consultancy', 'label' => 'Consultancy', 'route' => 'services.index', 'match' => ['services.*'], 'panel' => [
+            'title' => 'Consultancy',
+            'text' => 'Expert services for industry, government and development partners.',
+            'children' => $categories->map(fn ($category) => [
+                $category->name, route('services.show', $category), $category->icon ?? 'grid', $category->tagline,
+            ])->all(),
+        ]],
+        ['key' => 'news', 'label' => 'News & Events', 'route' => 'news.index', 'match' => ['news.*']],
+        ['key' => 'contact', 'label' => 'Contact', 'route' => 'contact', 'match' => ['contact', 'consultancy.*']],
     ];
+
+    $email = $site->get('contact_email');
+    $phone = $site->get('contact_phone');
 @endphp
 
-{{--
-    On the home page the header is attached to the hero: it sits on top of the
-    animated background and only takes on a surface once you scroll past it.
-    Everywhere else it is a normal sticky bar.
---}}
+{{-- A white sticky bar on every page; it only tightens up once you scroll. --}}
 <header
-    x-data="siteHeader({{ $overlay ? 'true' : 'false' }})"
+    x-data="siteHeader()"
     x-init="init()"
     @scroll.window="onScroll()"
-    {{-- `is-clear` only ever appears in overlay mode, so CSS uses it to mean
-         "sitting on the hero video" and flips the bar to light text. --}}
-    :class="clear ? 'is-clear' : 'is-solid'"
-    @class([
-        'z-50 animate-header-in',
-        'fixed inset-x-0 top-0' => $overlay,
-        'sticky top-0' => ! $overlay,
-    ])>
+    @keydown.escape.window="panel = null"
+    class="sticky top-0 z-50 animate-header-in">
 
-    {{-- Utility bar: slides away once you start scrolling --}}
-    <div class="overflow-hidden bg-ink-950 text-ink-300 transition-all duration-500 ease-out"
-         :class="solid ? 'max-h-0 opacity-0' : 'max-h-12 opacity-100'">
-        <div class="container-rich hidden h-11 items-center justify-between text-[13px] lg:flex">
-            <p class="flex items-center gap-2">
-                <x-ui-icon name="sparkles" class="h-4 w-4 text-brand-400" />
-                <span>{{ $site->get('site_motto') }}</span>
-            </p>
+    <div class="relative" @mouseleave="leave()">
 
-            <div class="flex items-center gap-6">
-                @if ($phone = $site->get('contact_phone'))
-                    <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}"
-                       class="group flex items-center gap-2 transition hover:text-white">
-                        <x-ui-icon name="phone" class="h-4 w-4 text-brand-400 transition-transform duration-300 group-hover:-rotate-12" />{{ $phone }}
-                    </a>
-                @endif
-                @if ($email = $site->get('contact_email'))
-                    <a href="mailto:{{ $email }}" class="group flex items-center gap-2 transition hover:text-white">
-                        <x-ui-icon name="mail" class="h-4 w-4 text-brand-400 transition-transform duration-300 group-hover:-translate-y-0.5" />{{ $email }}
-                    </a>
-                @endif
+        <div class="header-accent h-[3px]" aria-hidden="true"></div>
 
-                <div class="flex items-center gap-3 border-l border-white/15 pl-6">
-                    @foreach ($site->socials() as $icon => $url)
-                        <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
-                           aria-label="{{ str_replace('-social', '', $icon) }}"
-                           class="transition duration-300 hover:-translate-y-0.5 hover:text-white">
-                            <x-ui-icon :name="$icon" class="h-4 w-4" />
+        {{-- Info strip: folds away once the page scrolls --}}
+        <div class="header-strip header-ease hidden overflow-hidden lg:block"
+             :class="solid ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'">
+            <div class="container-rich flex h-9 items-center justify-between text-[12.5px]">
+                <div class="flex items-center gap-5">
+                    @if ($email)
+                        <a href="mailto:{{ $email }}" class="flex items-center gap-1.5 transition hover:opacity-100">
+                            <x-ui-icon name="mail" class="h-3.5 w-3.5" /> {{ $email }}
+                        </a>
+                    @endif
+                    @if ($phone)
+                        <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}" class="flex items-center gap-1.5 transition hover:opacity-100">
+                            <x-ui-icon name="phone" class="h-3.5 w-3.5" /> {{ $phone }}
+                        </a>
+                    @endif
+                </div>
+                <a href="{{ route('ideas.create') }}" class="group flex items-center gap-1.5 font-medium transition hover:opacity-100">
+                    Have an idea? Submit it to RICH
+                    <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </a>
+            </div>
+        </div>
+
+        {{-- Main bar --}}
+        <div class="header-bar header-ease border-b border-ink-100 bg-white"
+             :class="solid ? 'shadow-[0_10px_30px_-26px_rgba(7,20,38,0.6)]' : 'shadow-none'">
+
+            <div class="container-rich header-ease flex items-center justify-between gap-6"
+                 :class="solid ? 'h-[76px]' : 'h-[100px]'">
+
+                <x-brand-mark class="header-ease h-[82px]" ::style="`height: ${solid ? 60 : 82}px`" />
+
+                {{-- Desktop nav: plain text links over one sliding highlight pill --}}
+                <nav x-ref="nav" class="relative hidden h-full items-stretch xl:flex" aria-label="Primary"
+                     @mouseleave="settle()">
+                    @foreach ($links as $i => $link)
+                        @php $active = request()->routeIs(...$link['match']); @endphp
+
+                        <a href="{{ route($link['route']) }}"
+                           class="nav-item animate-nav-in"
+                           style="animation-delay: {{ 120 + $i * 60 }}ms"
+                           data-active="{{ $active ? 'true' : 'false' }}"
+                           @if ($active) x-ref="current" @endif
+                           @mouseenter="hover($el, {{ isset($link['panel']) ? "'{$link['key']}'" : 'null' }})"
+                           @focus="hover($el, {{ isset($link['panel']) ? "'{$link['key']}'" : 'null' }})"
+                           @if (isset($link['panel'])) :aria-expanded="panel === '{{ $link['key'] }}'" @endif>
+                            {{ $link['label'] }}
+                            @isset($link['panel'])
+                                <x-ui-icon name="chevron-down" class="h-3.5 w-3.5 opacity-60 transition-transform duration-300"
+                                           ::class="panel === '{{ $link['key'] }}' && 'rotate-180'" />
+                            @endisset
                         </a>
                     @endforeach
+
+                    <span class="nav-indicator" aria-hidden="true"
+                          :style="`transform: translateX(${ind.left}px); width: ${ind.width}px; opacity: ${ind.width ? 1 : 0}`"></span>
+                </nav>
+
+                <div class="flex items-center gap-2.5">
+                    <a href="{{ route('contact') }}"
+                       class="btn-primary group hidden animate-nav-in !px-5 !py-2.5 text-[13.5px] ring-4 ring-brand-600/15 sm:inline-flex"
+                       style="animation-delay: 560ms">
+                        Collaborate
+                        <x-ui-icon name="arrow-up-right" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+                    </a>
+
+                    <button type="button" @click="open = true"
+                            class="menu-button flex h-10 items-center gap-2 rounded-full border border-ink-200 bg-white pl-4 pr-3
+                                   text-[13.5px] font-semibold text-ink-800 transition duration-300 hover:border-brand-300 hover:text-brand-700 xl:hidden"
+                            aria-label="Open menu">
+                        Menu
+                        <x-ui-icon name="menu" class="h-4.5 w-4.5" />
+                    </button>
                 </div>
             </div>
+
+            {{-- Scroll progress --}}
+            <div class="relative h-0.5 w-full" aria-hidden="true">
+                <div class="h-0.5 origin-left bg-brand-600 transition-transform duration-150 ease-out"
+                     :style="`transform: scaleX(${progress})`"></div>
+            </div>
+        </div>
+
+        {{-- One full-width panel; its content swaps with the hovered section --}}
+        <div x-show="panel" x-cloak
+             x-transition:enter="transition duration-300 ease-out"
+             x-transition:enter-start="opacity-0 -translate-y-3"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition duration-150 ease-in"
+             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             @mouseenter="keep()"
+             class="absolute inset-x-0 top-full hidden border-b border-ink-100 bg-white shadow-[0_40px_80px_-50px_rgba(11,15,24,0.45)] xl:block">
+            @foreach ($links as $link)
+                @isset($link['panel'])
+                    @php $many = count($link['panel']['children']) > 3; @endphp
+                    <div x-show="panel === '{{ $link['key'] }}'"
+                         x-transition:enter="transition duration-300 ease-out"
+                         x-transition:enter-start="opacity-0 translate-x-3"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         class="container-rich grid grid-cols-[280px_1fr] gap-12 py-9">
+
+                        <div class="border-r border-ink-100 pr-10">
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">{{ $link['label'] }}</p>
+                            <h3 class="mt-3 font-display text-[24px] font-bold leading-tight tracking-tight text-ink-950">{{ $link['panel']['title'] }}</h3>
+                            <p class="mt-3 text-[14px] leading-relaxed muted">{{ $link['panel']['text'] }}</p>
+                            <a href="{{ route($link['route']) }}"
+                               class="group mt-6 inline-flex items-center gap-2 text-[14px] font-semibold text-brand-700">
+                                View all
+                                <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                            </a>
+                        </div>
+
+                        <div @class(['grid content-start gap-2', 'grid-cols-3' => $many, 'grid-cols-2 max-w-3xl' => ! $many])>
+                            @foreach ($link['panel']['children'] as $j => [$childLabel, $childUrl, $childIcon, $childText])
+                                <a href="{{ $childUrl }}"
+                                   class="group flex items-start gap-3.5 rounded-2xl border border-transparent p-4 transition duration-300 hover:border-ink-100 hover:bg-ink-50">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition duration-300 group-hover:bg-brand-600 group-hover:text-white">
+                                        <x-ui-icon :name="$childIcon" class="h-4.5 w-4.5" />
+                                    </span>
+                                    <span class="min-w-0">
+                                        <span class="flex items-center gap-1 text-[14.5px] font-semibold leading-snug text-ink-950">
+                                            {{ $childLabel }}
+                                            <x-ui-icon name="arrow-up-right" class="h-3.5 w-3.5 -translate-x-1 opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                                        </span>
+                                        @if ($childText)
+                                            <span class="mt-1 block text-[13px] leading-snug muted">{{ $childText }}</span>
+                                        @endif
+                                    </span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endisset
+            @endforeach
         </div>
     </div>
 
-    {{-- Main bar --}}
-    <div class="border-b transition-all duration-500 ease-out"
-         :class="! clear
-            ? 'border-ink-200 bg-white shadow-[0_10px_30px_-24px_rgba(11,15,24,0.5)] backdrop-blur-xl'
-            : 'border-transparent bg-transparent'">
+    {{-- Mobile / tablet: full-screen menu --}}
+    <div x-show="open" x-cloak
+         x-transition:enter="transition duration-400 ease-out"
+         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition duration-200 ease-in"
+         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-ink-950 text-white xl:hidden"
+         role="dialog" aria-modal="true" aria-label="Site menu">
 
-        <div class="container-rich flex items-center justify-between gap-6 transition-all duration-500"
-             :class="solid ? 'h-[66px]' : 'h-[78px]'">
+        <div class="container-rich flex h-[100px] shrink-0 items-center justify-between">
+            <x-brand-mark invert class="h-[72px]" />
+            <button type="button" @click="open = false"
+                    class="flex h-10 items-center gap-2 rounded-full border border-white/20 pl-4 pr-3 text-[13.5px] font-semibold transition hover:bg-white/10"
+                    aria-label="Close menu">
+                Close
+                <x-ui-icon name="x" class="h-4.5 w-4.5" />
+            </button>
+        </div>
 
-            <x-brand-mark />
-
-            {{-- Desktop nav --}}
-            <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
-                @foreach ($links as $i => $link)
-                    @php
-                        $active = request()->routeIs($link['route'])
-                            || ($link['route'] === 'services.index' && request()->routeIs('services.*'));
-                    @endphp
-
-                    @if ($link['mega'] ?? false)
-                        <div class="relative animate-nav-in" style="animation-delay: {{ 120 + $i * 60 }}ms"
-                             @mouseenter="mega = true" @mouseleave="mega = false">
-                            <a href="{{ route($link['route']) }}" class="nav-link flex items-center gap-1.5"
-                               data-active="{{ $active ? 'true' : 'false' }}">
-                                {{ $link['label'] }}
-                                <x-ui-icon name="chevron-down" class="h-3.5 w-3.5 transition-transform duration-300"
-                                           ::class="mega && 'rotate-180'" />
-                            </a>
-
-                            <div x-show="mega" x-cloak
-                                 x-transition:enter="transition duration-250 ease-out"
-                                 x-transition:enter-start="opacity-0 -translate-y-2"
-                                 x-transition:enter-end="opacity-100 translate-y-0"
-                                 x-transition:leave="transition duration-150 ease-in"
-                                 x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                                 class="absolute left-1/2 top-full z-40 w-[660px] -translate-x-1/2 pt-4">
-
-                                <div class="overflow-hidden rounded-3xl border border-ink-200 bg-white p-3
-                                            shadow-[0_40px_80px_-40px_rgba(11,15,24,0.35)]">
-                                    <div class="grid gap-1 sm:grid-cols-2">
-                                        @foreach ($categories as $j => $category)
-                                            <a href="{{ route('services.show', $category) }}"
-                                               x-show="mega"
-                                               x-transition:enter="transition duration-300 ease-out"
-                                               x-transition:enter-start="opacity-0 translate-y-2"
-                                               x-transition:enter-end="opacity-100 translate-y-0"
-                                               style="transition-delay: {{ $j * 45 }}ms"
-                                               class="group flex items-start gap-3 rounded-2xl p-3 transition hover:bg-ink-50">
-                                                <span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl
-                                                             bg-brand-50 text-brand-600 transition duration-300
-                                                             group-hover:scale-110 group-hover:bg-brand-600 group-hover:text-white">
-                                                    <x-ui-icon :name="$category->icon ?? 'grid'" class="h-4.5 w-4.5" />
-                                                </span>
-                                                <span class="min-w-0">
-                                                    <span class="block text-[13.5px] font-semibold leading-snug text-ink-950">
-                                                        {{ $category->name }}
-                                                    </span>
-                                                    <span class="mt-0.5 block truncate text-xs muted">{{ $category->tagline }}</span>
-                                                </span>
-                                            </a>
-                                        @endforeach
-                                    </div>
-
-                                    <a href="{{ route('services.index') }}"
-                                       class="group mt-2 flex items-center justify-between rounded-2xl bg-brand-50 px-4 py-3
-                                              text-sm font-semibold text-brand-700 transition hover:bg-brand-600 hover:text-white">
-                                        Browse the full consultancy catalogue
-                                        <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        <nav class="container-rich mt-4 flex flex-col" aria-label="Mobile">
+            @foreach ($links as $i => $link)
+                <div x-show="open"
+                     x-transition:enter="transition duration-500 ease-out"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     style="transition-delay: {{ 80 + $i * 50 }}ms"
+                     class="border-b border-white/10"
+                     @isset($link['panel']) x-data="{ sub: false }" @endisset>
+                    @isset($link['panel'])
+                        <button type="button" @click="sub = ! sub" :aria-expanded="sub"
+                                class="flex w-full items-center gap-4 py-4 text-left">
+                            <span class="w-6 font-mono text-[12px] text-white/40">{{ sprintf('%02d', $i + 1) }}</span>
+                            <span class="flex-1 font-display text-[26px] font-semibold tracking-tight">{{ $link['label'] }}</span>
+                            <span class="flex h-8 w-8 items-center justify-center rounded-full border border-white/20">
+                                <x-ui-icon name="plus" class="h-4 w-4 transition-transform duration-300" ::class="sub && 'rotate-45'" />
+                            </span>
+                        </button>
+                        <div x-show="sub" x-collapse>
+                            <div class="grid gap-1 pb-5 pl-10 sm:grid-cols-2">
+                                @foreach ($link['panel']['children'] as [$childLabel, $childUrl, $childIcon])
+                                    <a href="{{ $childUrl }}" class="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[15px] text-white/75 transition hover:bg-white/5 hover:text-white">
+                                        <x-ui-icon :name="$childIcon" class="h-4 w-4 shrink-0 text-brand-300" /> {{ $childLabel }}
                                     </a>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     @else
-                        <a href="{{ route($link['route']) }}"
-                           class="nav-link animate-nav-in"
-                           style="animation-delay: {{ 120 + $i * 60 }}ms"
-                           data-active="{{ $active ? 'true' : 'false' }}">
-                            {{ $link['label'] }}
+                        <a href="{{ route($link['route']) }}" class="flex items-center gap-4 py-4">
+                            <span class="w-6 font-mono text-[12px] text-white/40">{{ sprintf('%02d', $i + 1) }}</span>
+                            <span class="flex-1 font-display text-[26px] font-semibold tracking-tight">{{ $link['label'] }}</span>
+                            <x-ui-icon name="arrow-up-right" class="h-5 w-5 text-white/40" />
                         </a>
-                    @endif
-                @endforeach
-            </nav>
-
-            <div class="flex items-center gap-2.5">
-                <a href="{{ route('contact') }}"
-                   class="btn-primary group hidden animate-nav-in px-4.5 py-2.5 text-[13px] sm:inline-flex"
-                   style="animation-delay: 560ms">
-                    Request consultancy
-                    <x-ui-icon name="arrow-up-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-
-                <button type="button" @click="open = true"
-                        class="menu-button flex h-10 w-10 items-center justify-center rounded-full border border-ink-200 bg-white
-                               text-ink-800 transition duration-300 hover:border-brand-300 hover:text-brand-700 xl:hidden"
-                        aria-label="Open menu">
-                    <x-ui-icon name="menu" class="h-5 w-5" />
-                </button>
-            </div>
-        </div>
-
-        {{-- Scroll progress --}}
-        <div class="relative h-0.5 w-full" aria-hidden="true">
-            <div class="h-0.5 origin-left bg-brand-600 transition-transform duration-150 ease-out"
-                 :style="`transform: scaleX(${progress})`"></div>
-        </div>
-    </div>
-
-    {{-- Mobile drawer --}}
-    <div x-show="open" x-cloak class="fixed inset-0 z-[60] xl:hidden">
-        <div x-show="open" x-transition.opacity @click="open = false"
-             class="absolute inset-0 bg-ink-950/40 backdrop-blur-sm"></div>
-
-        <div x-show="open" x-cloak
-             x-transition:enter="transition duration-300 ease-out"
-             x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-             x-transition:leave="transition duration-200 ease-in"
-             x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
-             class="absolute right-0 top-0 flex h-full w-[88%] max-w-sm flex-col overflow-y-auto border-l border-ink-200 bg-white p-6">
-
-            <div class="flex items-center justify-between">
-                <x-brand-mark />
-                <button type="button" @click="open = false"
-                        class="flex h-10 w-10 items-center justify-center rounded-full border border-ink-200 text-ink-800"
-                        aria-label="Close menu">
-                    <x-ui-icon name="x" class="h-5 w-5" />
-                </button>
-            </div>
-
-            <nav class="mt-8 flex flex-col gap-1" aria-label="Mobile">
-                @foreach ($links as $i => $link)
-                    <a href="{{ route($link['route']) }}"
-                       x-show="open"
-                       x-transition:enter="transition duration-300 ease-out"
-                       x-transition:enter-start="opacity-0 translate-x-6"
-                       x-transition:enter-end="opacity-100 translate-x-0"
-                       style="transition-delay: {{ 60 + $i * 45 }}ms"
-                       class="rounded-2xl px-4 py-3 font-display text-lg font-semibold text-ink-950 transition hover:bg-ink-50 hover:text-brand-700">
-                        {{ $link['label'] }}
-                    </a>
-                @endforeach
-            </nav>
-
-            <div class="mt-6 rounded-3xl border border-ink-200 bg-ink-50 p-5">
-                <p class="text-xs font-semibold uppercase tracking-[0.16em] muted">Consultancy Areas</p>
-                <div class="mt-3 flex flex-col gap-2">
-                    @foreach ($categories as $category)
-                        <a href="{{ route('services.show', $category) }}"
-                           class="flex items-center gap-2.5 text-sm text-ink-600 transition hover:text-brand-700">
-                            <x-ui-icon :name="$category->icon ?? 'grid'" class="h-4 w-4 shrink-0 text-brand-600" />
-                            {{ $category->name }}
-                        </a>
-                    @endforeach
+                    @endisset
                 </div>
-            </div>
+            @endforeach
+        </nav>
 
-            <a href="{{ route('contact') }}" class="btn-primary mt-6 w-full">
-                Request consultancy
+        <div class="container-rich mt-auto grid gap-6 pb-10 pt-12 sm:grid-cols-2 sm:items-end">
+            <div class="text-sm text-white/60">
+                @if ($email)
+                    <a href="mailto:{{ $email }}" class="block transition hover:text-white">{{ $email }}</a>
+                @endif
+                @if ($phone)
+                    <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}" class="mt-1 block transition hover:text-white">{{ $phone }}</a>
+                @endif
+            </div>
+            <a href="{{ route('contact') }}" class="btn-primary w-full sm:w-auto sm:justify-self-end">
+                Collaborate with us
                 <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
             </a>
-
-            <div class="mt-auto pt-8 text-sm muted">
-                @if ($email = $site->get('contact_email'))
-                    <a href="mailto:{{ $email }}" class="block transition hover:text-brand-700">{{ $email }}</a>
-                @endif
-                @if ($phone = $site->get('contact_phone'))
-                    <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}" class="mt-1 block transition hover:text-brand-700">{{ $phone }}</a>
-                @endif
-            </div>
         </div>
     </div>
 </header>

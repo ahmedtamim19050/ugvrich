@@ -1,59 +1,105 @@
-<x-layouts.app title="Consultancy Services"
-               description="Five practice areas drawing on the multidisciplinary expertise of UGV faculty and professional associates.">
+<x-layouts.app title="Consultancy & Industry Services"
+               description="Research, technical testing, engineering solutions, software development, professional training and consultancy from UGV RICH for industry, government, NGOs and business.">
 
     <x-page-hero
-        eyebrow="Consultancy services"
-        title='Expertise you can <span class="text-accent">commission</span>'
-        lead="UGV RICH provides expert consultancy services drawing on the multidisciplinary expertise of UGV faculty and professionals. Browse the full catalogue below, or tell us the problem and we will match it."
-        :breadcrumbs="['Services' => null]">
-        <a href="{{ route('contact') }}" class="btn-primary">
-            Request a consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+        eyebrow="Consultancy & industry services"
+        title='From University Expertise to <span class="text-accent">Industry Solutions</span>'
+        :breadcrumbs="['Consultancy' => null]">
+        <a href="{{ route('consultancy.create') }}" class="btn-primary">
+            Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
+        <a href="#services" class="btn-ghost">Browse the catalogue</a>
     </x-page-hero>
 
-    <section class="py-20 bg-white sm:py-24">
-        <div class="container-rich space-y-20">
-            @foreach ($categories as $i => $category)
-                <div id="{{ $category->slug }}" class="scroll-mt-32">
-                    <div class="flex flex-col gap-6 border-b hairline pb-8 lg:flex-row lg:items-end lg:justify-between">
-                        <div class="reveal max-w-2xl">
-                            <div class="flex items-center gap-4">
-                                <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
-                                    <x-ui-icon :name="$category->icon ?? 'grid'" class="h-6 w-6" />
-                                </span>
-                                <div>
-                                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">
-                                        Area {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
-                                    </p>
-                                    <h2 class="mt-1 font-display text-2xl font-bold sm:text-[30px]">{{ $category->name }}</h2>
-                                </div>
-                            </div>
-                            <p class="mt-5 text-[15.5px] leading-relaxed muted">{{ $category->description }}</p>
-                        </div>
+    {{-- The positioning statement. This is the page's revenue pitch, so it is
+         set large, with the services marked and the clients called out. --}}
+    <section class="relative isolate overflow-hidden border-b border-ink-100 bg-white py-16 sm:py-20">
+        <div class="pointer-events-none absolute -left-24 top-0 -z-10 h-72 w-72 rounded-full bg-brand-100/50 blur-3xl" aria-hidden="true"></div>
 
-                        <a href="{{ route('services.show', $category) }}" class="btn-ghost reveal shrink-0">
-                            Area detail <x-ui-icon name="arrow-right" class="h-4 w-4" />
-                        </a>
-                    </div>
+        <div class="container-rich">
+            <div class="reveal relative max-w-4xl border-l-4 border-brand-600 py-2 pl-7 sm:pl-10">
+                <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">What UGV RICH offers</p>
 
-                    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        @foreach ($category->services as $j => $service)
-                            <div class="group reveal rounded-2xl border hairline p-6 transition duration-300 hover:-translate-y-1 hover:border-brand-300"
-                                 style="transition-delay: {{ min($j * 50, 300) }}ms">
-                                <div class="flex items-start justify-between gap-3">
-                                    <h3 class="font-display text-[16px] font-semibold leading-snug">{{ $service->name }}</h3>
-                                    <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
-                                        <x-ui-icon name="check" class="h-3.5 w-3.5" stroke="2.4" />
-                                    </span>
-                                </div>
-                                <p class="mt-3 text-[13.5px] leading-relaxed muted">{{ $service->description }}</p>
-                            </div>
-                        @endforeach
-                    </div>
+                <p class="mt-4 font-display text-[21px] font-semibold leading-[1.5] text-ink-950 sm:text-[26px] sm:leading-[1.5]">
+                    UGV RICH provides
+                    <span class="mark">research</span>, <span class="mark">technical testing</span>,
+                    <span class="mark">engineering solutions</span>, <span class="mark">software development</span>,
+                    <span class="mark">professional training</span> and <span class="mark">consultancy services</span>
+                    to <span class="text-brand-700">industries</span>, <span class="text-brand-700">government organizations</span>,
+                    <span class="text-brand-700">NGOs</span> and <span class="text-brand-700">businesses</span>.
+                </p>
+
+                <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3">
+                    @foreach ([['building', 'Industries'], ['shield', 'Government organizations'], ['heart', 'NGOs'], ['briefcase', 'Businesses']] as [$icon, $label])
+                        <span class="inline-flex items-center gap-2 text-[13.5px] font-medium text-ink-600">
+                            <x-ui-icon :name="$icon" class="h-4 w-4 text-brand-600" /> {{ $label }}
+                        </span>
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
         </div>
     </section>
 
-    @include('partials.home.cta')
+    {{-- ---------------- Services by consultancy area ---------------- --}}
+    <section id="services" class="scroll-mt-28 bg-white py-20 sm:py-28">
+        <div class="container-rich">
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <x-section-heading
+                    eyebrow="Service catalogue"
+                    :title="'<span class=\'text-accent\'>'.$serviceCount.'</span> services across '.$categories->count().' consultancy areas'"
+                    lead="Each area draws on its own faculty and professional associates. Assignments often combine several." />
+
+                <a href="{{ route('consultancy.create') }}" class="btn-primary reveal shrink-0">
+                    Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                </a>
+            </div>
+
+            <div class="mt-16 space-y-20 sm:space-y-24">
+                @foreach ($categories as $i => $category)
+                    <div id="{{ $category->slug }}" class="scroll-mt-28">
+                        <div class="flex flex-col gap-6 border-b border-ink-100 pb-7 lg:flex-row lg:items-end lg:justify-between">
+                            <div class="reveal max-w-2xl">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
+                                        <x-ui-icon :name="$category->icon ?? 'grid'" class="h-5 w-5" />
+                                    </span>
+                                    <h2 class="font-display text-[22px] font-bold leading-tight text-ink-950 sm:text-[26px]">{{ $category->name }}</h2>
+                                    <span class="rounded-full bg-ink-100 px-2.5 py-1 text-[12px] font-bold text-ink-600">
+                                        {{ $category->services->count() }} {{ \Illuminate\Support\Str::plural('service', $category->services->count()) }}
+                                    </span>
+                                </div>
+
+                                @if ($category->description)
+                                    <p class="mt-4 text-[14.5px] leading-relaxed muted">{{ $category->description }}</p>
+                                @endif
+                            </div>
+
+                            <a href="{{ route('services.show', $category) }}" class="btn-ghost reveal shrink-0">
+                                Area detail <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                            </a>
+                        </div>
+
+                        <div class="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            @foreach ($category->services as $j => $service)
+                                <div class="group reveal flex flex-col rounded-2xl border border-ink-100 bg-white p-6 transition duration-500 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_-32px_rgba(2,34,81,0.45)]"
+                                     style="transition-delay: {{ min($j * 45, 300) }}ms">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <h3 class="font-display text-[15.5px] font-semibold leading-snug text-ink-950">{{ $service->name }}</h3>
+                                        <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 transition group-hover:bg-brand-600 group-hover:text-white">
+                                            <x-ui-icon name="check" class="h-3.5 w-3.5" stroke="2.4" />
+                                        </span>
+                                    </div>
+
+                                    @if ($service->description)
+                                        <p class="mt-3 text-[13.5px] leading-relaxed muted">{{ $service->description }}</p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
 </x-layouts.app>

@@ -5,8 +5,6 @@
         $firstName = \Illuminate\Support\Str::of($submission['name'] ?? '')
             ->replaceMatches('/^(Dr\.?|Prof\.?|Mr\.?|Ms\.?|Mrs\.?|Md\.?|Engr\.?)\s+/i', '')
             ->explode(' ')->first();
-        $steps = $site->list('process_steps');
-        $stepIcons = ['document', 'users', 'target', 'check', 'star'];
         $email = $site->get('contact_email');
     @endphp
 
@@ -39,51 +37,6 @@
                     </p>
                 </div>
 
-                {{-- Summary --}}
-                <div class="mt-12 overflow-hidden rounded-[2rem] border border-ink-100 bg-white shadow-[0_30px_70px_-50px_rgba(11,15,24,0.45)]">
-                    <div class="grid divide-y divide-ink-100 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-                        <div class="p-6">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">Reference</p>
-                            <p class="mt-1.5 font-display text-lg font-bold tabular-nums text-brand-700">{{ $submission['reference'] }}</p>
-                        </div>
-                        <div class="min-w-0 p-6">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">We will reply to</p>
-                            <p class="mt-1.5 truncate font-display text-[15.5px] font-semibold text-ink-950" title="{{ $submission['email'] }}">{{ $submission['email'] }}</p>
-                        </div>
-                        <div class="min-w-0 p-6">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">Area of interest</p>
-                            <p class="mt-1.5 font-display text-[15.5px] font-semibold leading-snug text-ink-950">{{ $submission['area'] ?? 'To be matched by our team' }}</p>
-                        </div>
-                    </div>
-                    <p class="flex items-center gap-2 border-t border-ink-100 bg-ink-50/70 px-6 py-3.5 text-[13px] muted">
-                        <x-ui-icon name="lightbulb" class="h-4 w-4 shrink-0 text-brand-600" />
-                        Keep your reference number handy if you contact us about this request.
-                    </p>
-                </div>
-
-                {{-- Next steps --}}
-                @if ($steps)
-                    <div class="mt-6 rounded-[2rem] bg-brand-700 p-6 text-white sm:p-8">
-                        <h2 class="font-display text-xl font-bold !text-white">What happens next</h2>
-                        <ol class="mt-6 grid gap-4 sm:grid-cols-3">
-                            @foreach ($steps as $i => $step)
-                                <li class="rounded-2xl border border-white/10 bg-white/[0.07] p-5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand-700">
-                                            <x-ui-icon :name="$stepIcons[$i] ?? 'check'" class="h-5 w-5" />
-                                        </span>
-                                        <span class="font-display text-[12px] font-bold tabular-nums text-brand-200">0{{ $i + 1 }}</span>
-                                    </div>
-                                    <p class="mt-4 font-display text-[15.5px] font-semibold !text-white">{{ $step['title'] }}</p>
-                                    @if (! empty($step['description']))
-                                        <p class="mt-1.5 text-[13px] leading-relaxed text-white/70">{{ $step['description'] }}</p>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ol>
-                    </div>
-                @endif
-
                 {{-- Actions --}}
                 <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
                     <a href="{{ route('home') }}" class="btn-primary group">
@@ -96,8 +49,7 @@
                 @if ($email)
                     <p class="mt-8 text-center text-[14px] muted">
                         Need to add something? Email
-                        <a href="mailto:{{ $email }}?subject={{ rawurlencode('Consultancy request '.$submission['reference']) }}" class="font-semibold text-brand-700 hover:underline">{{ $email }}</a>
-                        quoting your reference.
+                        <a href="mailto:{{ $email }}?subject={{ rawurlencode('Consultancy request') }}" class="font-semibold text-brand-700 hover:underline">{{ $email }}</a>.
                     </p>
                 @endif
             </div>

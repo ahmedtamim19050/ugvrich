@@ -60,7 +60,7 @@
             <ol class="grid content-start gap-4 sm:grid-cols-2">
                 @foreach ($category->services as $i => $service)
                     <li class="reveal" style="transition-delay: {{ min($i * 60, 350) }}ms">
-                        <div class="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-ink-100 bg-white p-6 transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-brand-200 hover:shadow-[0_24px_50px_-30px_rgba(27,77,255,0.45)]">
+                        <div class="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-ink-100 bg-white p-6 transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-brand-200 hover:shadow-[0_24px_50px_-30px_rgba(2,34,81,0.45)]">
                             <span class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-brand-600 transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true"></span>
                             <span class="pointer-events-none absolute -right-2 -top-4 select-none font-display text-[5.5rem] font-bold leading-none text-ink-50 transition-colors duration-500 group-hover:text-brand-50" aria-hidden="true">
                                 {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
@@ -148,5 +148,4 @@
         </section>
     @endif
 
-    @include('partials.home.cta')
 </x-layouts.app>

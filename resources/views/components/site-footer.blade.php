@@ -76,7 +76,7 @@
 
         <div class="container-rich grid gap-12 py-16 sm:py-20 md:grid-cols-2 lg:grid-cols-12">
             <div class="lg:col-span-4">
-                <x-brand-mark :invert="true" />
+                <x-brand-mark :invert="true" class="h-24" />
 
                 <p class="mt-6 max-w-sm text-[15px] leading-relaxed text-white/60">
                     {{ $site->get('about_intro') }}
