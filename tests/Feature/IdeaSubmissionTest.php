@@ -34,7 +34,7 @@ class IdeaSubmissionTest extends TestCase
 
     public function test_idea_form_renders(): void
     {
-        $this->get(route('ideas.create'))->assertOk()->assertSee('Submit your innovation', false);
+        $this->get(route('ideas.create'))->assertOk()->assertSee('Submit your idea', false);
     }
 
     public function test_an_idea_is_stored_with_its_attachment(): void

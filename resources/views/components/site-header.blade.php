@@ -6,45 +6,53 @@
 
     // Grouped navigation. `match` lists the route patterns that light a group up;
     // groups with a `panel` open the full-width panel under the bar.
+    // The main bar. Anything that does not fit lives in $utility below, in the
+    // strip above the bar, so every section is reachable without a dropdown.
     $links = [
         ['key' => 'home', 'label' => 'Home', 'route' => 'home', 'match' => ['home']],
-        ['key' => 'about', 'label' => 'About', 'route' => 'about', 'match' => ['about', 'experts.*'], 'panel' => [
-            'title' => 'About RICH',
-            'text' => 'The Research, Innovation & Consultation Hub of UGV — the people and purpose behind the work.',
-            'children' => [
-                ['About RICH', route('about'), 'globe', 'Who we are, vision and mission'],
-                ['Team', route('experts.index'), 'users', 'Researchers and experts'],
-            ],
-        ]],
+        ['key' => 'about', 'label' => 'About RICH', 'route' => 'about', 'match' => ['about']],
         ['key' => 'research', 'label' => 'Research', 'route' => 'research', 'match' => ['research'], 'panel' => [
             'title' => 'Research',
-            'text' => 'Funded grants, published papers and the core capability our faculty bring to them.',
+            'text' => 'Research areas, ongoing studies and published work.',
             'children' => [
-                ['Research', route('research'), 'beaker', 'Routes into research and core capability'],
-                ['Publications', route('research').'#publications', 'document', 'Recent papers and funded grants'],
+                ['Research', route('research'), 'beaker', 'Research areas and ongoing studies'],
+                ['Publications', route('publications'), 'document', 'Journal articles, conference papers and grants'],
             ],
         ]],
-        ['key' => 'innovation', 'label' => 'Innovation', 'route' => 'innovation.index', 'match' => ['innovation.*', 'startup', 'ideas.*'], 'panel' => [
+        ['key' => 'innovation', 'label' => 'Innovation Wing', 'route' => 'innovation.index', 'match' => ['innovation.*'], 'panel' => [
             'title' => 'Innovation areas',
             'text' => 'Every department brings its own discipline to the Innovation Wing.',
-            'children' => array_merge(
-                $areas->map(fn ($area) => [
-                    $area->name, route('innovation.index', ['area' => $area->slug]), $area->icon ?? 'lightbulb',
-                    $area->department ? config('rich.departments.'.$area->department) : null,
-                ])->all(),
-                [['Startup & Incubation', route('startup'), 'rocket', 'From idea to enterprise']],
-            ),
-        ]],
-        ['key' => 'projects', 'label' => 'Projects', 'route' => 'projects.index', 'match' => ['projects.*']],
-        ['key' => 'consultancy', 'label' => 'Consultancy', 'route' => 'services.index', 'match' => ['services.*'], 'panel' => [
-            'title' => 'Consultancy',
-            'text' => 'Expert services for industry, government and development partners.',
-            'children' => $categories->map(fn ($category) => [
-                $category->name, route('services.show', $category), $category->icon ?? 'grid', $category->tagline,
+            'children' => $areas->map(fn ($area) => [
+                $area->name, route('innovation.index', ['area' => $area->slug]), $area->icon ?? 'lightbulb',
+                $area->department ? config('rich.departments.'.$area->department) : null,
             ])->all(),
         ]],
-        ['key' => 'news', 'label' => 'News & Events', 'route' => 'news.index', 'match' => ['news.*']],
-        ['key' => 'contact', 'label' => 'Contact', 'route' => 'contact', 'match' => ['contact', 'consultancy.*']],
+        ['key' => 'consultancy', 'label' => 'Consultancy', 'route' => 'services.index', 'match' => ['services.*', 'consultancy.*'], 'panel' => [
+            'title' => 'Consultancy',
+            'text' => 'Expert services for industry, government and development partners.',
+            'children' => array_merge(
+                $categories->map(fn ($category) => [
+                    $category->name, route('services.show', $category), $category->icon ?? 'grid', $category->tagline,
+                ])->all(),
+                [['Industry Collaboration', route('industry'), 'handshake', 'Ways to work with us']],
+            ),
+        ]],
+        ['key' => 'labs', 'label' => 'Labs & Facilities', 'route' => 'labs', 'match' => ['labs']],
+        ['key' => 'projects', 'label' => 'Projects', 'route' => 'projects.index', 'match' => ['projects.*']],
+        ['key' => 'startup', 'label' => 'Startup & Incubation', 'route' => 'startup', 'match' => ['startup', 'ideas.*']],
+        ['key' => 'news', 'label' => 'News & Events', 'route' => 'news.index', 'match' => ['news.*', 'events']],
+    ];
+
+    // Either side of the logo.
+    $leftLinks = array_slice($links, 0, (int) ceil(count($links) / 2));
+    $rightLinks = array_slice($links, (int) ceil(count($links) / 2));
+
+    // The rest of the sections, in the strip above the bar.
+    $utility = [
+        ['Publications', route('publications'), 'document', ['publications']],
+        ['Patents & IP', route('patents'), 'key', ['patents']],
+        ['Industry Collaboration', route('industry'), 'handshake', ['industry']],
+        ['Team', route('experts.index'), 'users', ['experts.*']],
     ];
 
     $email = $site->get('contact_email');
@@ -66,23 +74,33 @@
         {{-- Info strip: folds away once the page scrolls --}}
         <div class="header-strip header-ease hidden overflow-hidden lg:block"
              :class="solid ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'">
-            <div class="container-rich flex h-9 items-center justify-between text-[12.5px]">
+            <div class="header-row flex h-9 items-center justify-between gap-6 text-[12.5px]">
+                <nav class="flex items-center gap-5" aria-label="Secondary">
+                    @foreach ($utility as [$label, $url, $icon, $patterns])
+                        <a href="{{ $url }}"
+                           @class(['flex items-center gap-1.5 transition hover:opacity-100', 'font-semibold' => request()->routeIs(...$patterns)])>
+                            <x-ui-icon :name="$icon" class="h-3.5 w-3.5" /> {{ $label }}
+                        </a>
+                    @endforeach
+                </nav>
+
                 <div class="flex items-center gap-5">
                     @if ($email)
-                        <a href="mailto:{{ $email }}" class="flex items-center gap-1.5 transition hover:opacity-100">
+                        <a href="mailto:{{ $email }}" class="hidden items-center gap-1.5 transition hover:opacity-100 2xl:flex">
                             <x-ui-icon name="mail" class="h-3.5 w-3.5" /> {{ $email }}
                         </a>
                     @endif
-                    @if ($phone)
-                        <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}" class="flex items-center gap-1.5 transition hover:opacity-100">
-                            <x-ui-icon name="phone" class="h-3.5 w-3.5" /> {{ $phone }}
-                        </a>
-                    @endif
+                    <a href="{{ route('ideas.create') }}" class="group hidden items-center gap-1.5 font-medium transition hover:opacity-100 lg:flex">
+                        Have an idea? Submit it to RICH
+                        <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </a>
+
+                    <a href="{{ route('contact') }}"
+                       class="group flex items-center gap-1.5 rounded-full bg-brand-600 px-3.5 py-1 font-semibold text-white transition hover:bg-brand-500">
+                        Collaborate
+                        <x-ui-icon name="arrow-up-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-45" />
+                    </a>
                 </div>
-                <a href="{{ route('ideas.create') }}" class="group flex items-center gap-1.5 font-medium transition hover:opacity-100">
-                    Have an idea? Submit it to RICH
-                    <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </a>
             </div>
         </div>
 
@@ -90,48 +108,54 @@
         <div class="header-bar header-ease border-b border-ink-100 bg-white"
              :class="solid ? 'shadow-[0_10px_30px_-26px_rgba(7,20,38,0.6)]' : 'shadow-none'">
 
-            <div class="container-rich header-ease flex items-center justify-between gap-6"
-                 :class="solid ? 'h-[76px]' : 'h-[100px]'">
+            <div class="header-row header-ease flex items-center justify-between gap-5"
+                 :class="solid ? 'h-[72px]' : 'h-[108px]'">
 
-                <x-brand-mark class="header-ease h-[82px]" ::style="`height: ${solid ? 60 : 82}px`" />
+                {{-- Split navigation: half the menu, the logo, then the rest.
+                     Each side carries its own sliding highlight, so `side` says
+                     which one is allowed to show it. --}}
+                @foreach ([['left', $leftLinks, 'justify-end'], ['right', $rightLinks, 'justify-start']] as [$sideKey, $sideLinks, $justify])
+                    @if ($sideKey === 'right')
+                        {{-- The logo spans both rows: it rises into the strip above the
+                             bar, which is light enough to read it against. --}}
+                        <x-brand-mark class="header-ease z-10 h-[118px] shrink-0"
+                                      ::style="`height: ${solid ? 60 : 118}px; margin-top: ${solid ? 0 : -37}px`" />
+                    @endif
 
-                {{-- Desktop nav: plain text links over one sliding highlight pill --}}
-                <nav x-ref="nav" class="relative hidden h-full items-stretch xl:flex" aria-label="Primary"
-                     @mouseleave="settle()">
-                    @foreach ($links as $i => $link)
-                        @php $active = request()->routeIs(...$link['match']); @endphp
+                    <nav x-ref="nav-{{ $sideKey }}"
+                         class="relative hidden h-full flex-1 items-stretch {{ $justify }} xl:flex"
+                         aria-label="{{ $sideKey === 'left' ? 'Primary' : 'Primary, continued' }}"
+                         @mouseleave="settle()">
+                        @foreach ($sideLinks as $i => $link)
+                            @php $active = request()->routeIs(...$link['match']); @endphp
 
-                        <a href="{{ route($link['route']) }}"
-                           class="nav-item animate-nav-in"
-                           style="animation-delay: {{ 120 + $i * 60 }}ms"
-                           data-active="{{ $active ? 'true' : 'false' }}"
-                           @if ($active) x-ref="current" @endif
-                           @mouseenter="hover($el, {{ isset($link['panel']) ? "'{$link['key']}'" : 'null' }})"
-                           @focus="hover($el, {{ isset($link['panel']) ? "'{$link['key']}'" : 'null' }})"
-                           @if (isset($link['panel'])) :aria-expanded="panel === '{{ $link['key'] }}'" @endif>
-                            {{ $link['label'] }}
-                            @isset($link['panel'])
-                                <x-ui-icon name="chevron-down" class="h-3.5 w-3.5 opacity-60 transition-transform duration-300"
-                                           ::class="panel === '{{ $link['key'] }}' && 'rotate-180'" />
-                            @endisset
-                        </a>
-                    @endforeach
+                            <a href="{{ route($link['route']) }}"
+                               class="nav-item animate-nav-in"
+                               style="animation-delay: {{ 120 + $i * 40 }}ms"
+                               data-active="{{ $active ? 'true' : 'false' }}"
+                               data-side="{{ $sideKey }}"
+                               @if ($active) x-ref="current" @endif
+                               @mouseenter="hover($el, {{ isset($link['panel']) ? "'{$link['key']}'" : 'null' }}, '{{ $sideKey }}')"
+                               @focus="hover($el, {{ isset($link['panel']) ? "'{$link['key']}'" : 'null' }}, '{{ $sideKey }}')"
+                               @if (isset($link['panel'])) :aria-expanded="panel === '{{ $link['key'] }}'" @endif>
+                                {{ $link['label'] }}
+                                @isset($link['panel'])
+                                    <x-ui-icon name="chevron-down" class="h-3.5 w-3.5 opacity-60 transition-transform duration-300"
+                                               ::class="panel === '{{ $link['key'] }}' && 'rotate-180'" />
+                                @endisset
+                            </a>
+                        @endforeach
 
-                    <span class="nav-indicator" aria-hidden="true"
-                          :style="`transform: translateX(${ind.left}px); width: ${ind.width}px; opacity: ${ind.width ? 1 : 0}`"></span>
-                </nav>
+                        <span class="nav-indicator" aria-hidden="true"
+                              :style="`transform: translateX(${ind.left}px); width: ${ind.width}px; opacity: ${ind.width && side === '{{ $sideKey }}' ? 1 : 0}`"></span>
+                    </nav>
+                @endforeach
 
-                <div class="flex items-center gap-2.5">
-                    <a href="{{ route('contact') }}"
-                       class="btn-primary group hidden animate-nav-in !px-5 !py-2.5 text-[13.5px] ring-4 ring-brand-600/15 sm:inline-flex"
-                       style="animation-delay: 560ms">
-                        Collaborate
-                        <x-ui-icon name="arrow-up-right" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
-                    </a>
-
+                {{-- On narrow screens the navs are hidden, so this sits opposite the logo. --}}
+                <div class="flex shrink-0 items-center gap-2.5 xl:hidden">
                     <button type="button" @click="open = true"
                             class="menu-button flex h-10 items-center gap-2 rounded-full border border-ink-200 bg-white pl-4 pr-3
-                                   text-[13.5px] font-semibold text-ink-800 transition duration-300 hover:border-brand-300 hover:text-brand-700 xl:hidden"
+                                   text-[13.5px] font-semibold text-ink-800 transition duration-300 hover:border-brand-300 hover:text-brand-700"
                             aria-label="Open menu">
                         Menu
                         <x-ui-icon name="menu" class="h-4.5 w-4.5" />
@@ -256,6 +280,17 @@
                 </div>
             @endforeach
         </nav>
+
+        <div class="container-rich mt-8">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">More</p>
+            <div class="mt-3 grid gap-1 sm:grid-cols-2">
+                @foreach ($utility as [$label, $url, $icon, $patterns])
+                    <a href="{{ $url }}" class="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[15px] text-white/75 transition hover:bg-white/5 hover:text-white">
+                        <x-ui-icon :name="$icon" class="h-4 w-4 shrink-0 text-brand-300" /> {{ $label }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
 
         <div class="container-rich mt-auto grid gap-6 pb-10 pt-12 sm:grid-cols-2 sm:items-end">
             <div class="text-sm text-white/60">

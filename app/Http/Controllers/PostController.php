@@ -24,6 +24,12 @@ class PostController extends Controller
         ]);
     }
 
+    /** Events get their own address; the listing itself is shared with news. */
+    public function events(Request $request)
+    {
+        return $this->index($request->merge(['type' => 'event']));
+    }
+
     public function show(Post $post)
     {
         abort_unless($post->published_at && $post->published_at->isPast(), 404);

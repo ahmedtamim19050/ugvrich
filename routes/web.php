@@ -18,6 +18,11 @@ Route::get('/research', [PageController::class, 'research'])->name('research');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/request-consultancy', [PageController::class, 'requestConsultancy'])->name('consultancy.create');
 
+Route::get('/labs', [PageController::class, 'labs'])->name('labs');
+Route::get('/publications', [PageController::class, 'publications'])->name('publications');
+Route::get('/patents', [PageController::class, 'patents'])->name('patents');
+Route::get('/industry-collaboration', [PageController::class, 'industry'])->name('industry');
+
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{serviceCategory}', [ServiceController::class, 'show'])->name('services.show');
 
@@ -36,6 +41,7 @@ Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('pro
 Route::get('/experts', [ExpertController::class, 'index'])->name('experts.index');
 Route::get('/experts/{expert}', [ExpertController::class, 'show'])->name('experts.show');
 
+Route::get('/events', [PostController::class, 'events'])->name('events');
 Route::get('/news', [PostController::class, 'index'])->name('news.index');
 Route::get('/news/{post}', [PostController::class, 'show'])->name('news.show');
 

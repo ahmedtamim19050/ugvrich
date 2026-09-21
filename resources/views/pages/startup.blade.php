@@ -7,7 +7,7 @@
         lead="Students and faculty submit an idea. The Innovation Wing evaluates it, connects mentors and supports it from prototype to market."
         :breadcrumbs="['Startup & Incubation' => null]">
         <a href="{{ route('ideas.create') }}" class="btn-primary">
-            Submit Your Innovation <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
         <a href="#journey" class="btn-ghost">See the journey</a>
     </x-page-hero>
@@ -28,41 +28,51 @@
         ];
     @endphp
 
-    {{-- ---------------- The journey ---------------- --}}
+    {{-- ---------------- The journey ----------------
+         A chain: every stage is a link on one continuous line, four to a row
+         on desktop, folding to a vertical run on narrow screens. --}}
     <section id="journey" class="scroll-mt-28 bg-white py-16 sm:py-20">
         <div class="container-rich">
             <x-section-heading
                 eyebrow="The journey"
-                :title="'<span class=\'text-accent\'>'.count($stages).'</span> stages from idea to market'"
-                lead="Every idea follows the same route. How long each stage takes depends on the idea, not on a timetable." />
+                title='Eight stages, one <span class="text-accent">chain</span>'
+                lead="Every idea follows the same route from submission to market. How long each link takes depends on the idea, not on a timetable." />
 
-            <ol class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ol class="chain mt-14">
                 @foreach ($stages as $key => $label)
-                    @php [$icon, $text] = $detail[$key] ?? ['check', '']; @endphp
-                    <li class="reveal" style="transition-delay: {{ min($loop->index * 60, 420) }}ms">
-                        <div class="group relative flex h-full flex-col rounded-2xl border border-ink-100 bg-white p-6 transition duration-500 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_-32px_rgba(2,34,81,0.45)]">
-                            {{-- The line that joins one stage to the next --}}
-                            @unless ($loop->last)
-                                <span class="pointer-events-none absolute -right-4 top-12 hidden h-px w-4 bg-ink-200 lg:block" aria-hidden="true"></span>
-                            @endunless
+                    @php
+                        [$icon, $text] = $detail[$key] ?? ['check', ''];
+                        $n = $loop->iteration;
+                    @endphp
+                    <li @class(['chain-link reveal', 'has-line' => ! $loop->last])
+                        style="transition-delay: {{ min($loop->index * 60, 420) }}ms">
 
-                            <div class="flex items-center justify-between">
-                                <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition duration-300 group-hover:bg-brand-600 group-hover:text-white">
-                                    <x-ui-icon :name="$icon" class="h-5 w-5" />
-                                </span>
-                                <span class="font-display text-[13px] font-bold tabular-nums text-ink-300 transition-colors group-hover:text-brand-600">
-                                    {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
-                                </span>
-                            </div>
+                        <div class="chain-node">
+                            <span class="chain-dot">
+                                <x-ui-icon :name="$icon" class="h-5 w-5" />
+                            </span>
+                            <span class="chain-number">{{ str_pad($n, 2, '0', STR_PAD_LEFT) }}</span>
+                        </div>
 
-                            <h3 class="mt-5 font-display text-[16px] font-bold leading-snug text-ink-950">{{ $label }}</h3>
+                        <div class="chain-body">
+                            <h3 class="font-display text-[15.5px] font-bold leading-snug text-ink-950">{{ $label }}</h3>
                             @if ($text)
-                                <p class="mt-2 text-[13.5px] leading-relaxed muted">{{ $text }}</p>
+                                <p class="mt-2 text-[13px] leading-relaxed muted">{{ $text }}</p>
                             @endif
                         </div>
                     </li>
                 @endforeach
             </ol>
+
+            <p class="mt-10 flex flex-wrap items-center justify-center gap-3 text-[13px] muted">
+                <span class="inline-flex items-center gap-2">
+                    <span class="h-2.5 w-2.5 rounded-full bg-brand-600"></span> Idea submitted
+                </span>
+                <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 text-ink-300" />
+                <span class="inline-flex items-center gap-2">
+                    <span class="h-2.5 w-2.5 rounded-full bg-navy-700"></span> On the market
+                </span>
+            </p>
         </div>
     </section>
 
@@ -76,7 +86,7 @@
                     lead="Submitting an idea costs nothing and commits you to nothing. If it is taken forward, this is what comes with it." />
 
                 <a href="{{ route('ideas.create') }}" class="btn-primary reveal mt-8">
-                    Submit Your Innovation <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                    Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                 </a>
             </div>
 
@@ -117,7 +127,7 @@
                             Students, faculty, staff and alumni can all submit. Describe the problem and your solution — it does not need to be finished, and it does not need to be perfect.
                         </p>
                         <a href="{{ route('ideas.create') }}" class="btn-invert mt-8">
-                            Submit Your Innovation <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                            Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                         </a>
                     </div>
 

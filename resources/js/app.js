@@ -14,6 +14,7 @@ Alpine.data('siteHeader', () => ({
     solid: false,
     progress: 0,
     ind: { left: 0, width: 0 },
+    side: null,
     closeTimer: null,
 
     init() {
@@ -37,9 +38,11 @@ Alpine.data('siteHeader', () => ({
         this.progress = scrollable > 0 ? Math.min(y / scrollable, 1) : 0;
     },
 
-    // Slide the underline to a link and open (or close) its panel.
-    hover(el, key) {
+    // Slide the highlight to a link and open (or close) its panel. `side` says
+    // which of the two navs the link sits in.
+    hover(el, key, side = null) {
         this.keep();
+        this.side = side;
         this.moveTo(el);
         this.panel = key;
     },
@@ -48,9 +51,13 @@ Alpine.data('siteHeader', () => ({
         this.ind = el ? { left: el.offsetLeft + 2, width: el.offsetWidth - 4 } : { left: 0, width: 0 };
     },
 
-    // Rest the underline on the current page's link while nothing is hovered.
+    // Rest the highlight on the current page's link while nothing is hovered.
     settle() {
-        if (!this.panel) this.moveTo(this.$refs.current ?? null);
+        if (this.panel) return;
+
+        const current = this.$refs.current ?? null;
+        this.side = current?.dataset.side ?? null;
+        this.moveTo(current);
     },
 
     keep() {

@@ -158,7 +158,7 @@ class RichInnovationSeeder extends Seeder
                 'research_summary' => 'Bench testing covers panel output across the day, drive efficiency at typical city speeds and the range gained from solar charging. Findings feed a design paper prepared with the Department of Mechanical Engineering.',
                 'patent_details' => 'A patent application is being prepared around the vehicle\'s solar charging and drive integration. Until it is filed, technical detail is shared under agreement only.',
                 'commercial_potential' => 'Nearest markets are campus and resort shuttles, short-distance delivery and demonstration fleets. The team is in touch with local assemblers about a pilot build.',
-                'image' => 'projects/sun-car.jpg',
+                'image' => 'projects/sun-car-real.jpg',
             ],
             [
                 'title' => 'Smart Agriculture System', 'slug' => 'smart-agriculture-system', 'department' => 'CSE', 'area' => 'CSE',

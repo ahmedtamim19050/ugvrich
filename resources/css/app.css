@@ -63,6 +63,28 @@
     --animate-nav-in: nav-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* The emblem flips left to right on its vertical axis, rests a few seconds,
+   then goes again. The turn takes the first fifth of the cycle; the rest is
+   the pause. Hovering restarts the cycle. */
+@keyframes brand-spin {
+    0% {
+        transform: perspective(800px) rotateY(0deg);
+        animation-timing-function: cubic-bezier(0.55, 0, 0.3, 1);
+    }
+    22% { transform: perspective(800px) rotateY(360deg); }
+    100% { transform: perspective(800px) rotateY(360deg); }
+}
+
+.brand-spin {
+    animation: brand-spin 7s 0.4s infinite both;
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand-spin { animation: none; }
+}
+
 @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -98,6 +120,12 @@
         -webkit-text-size-adjust: 100%;
     }
 
+    /* Nothing on the site is meant to scroll sideways. `clip` rather than
+       `hidden`, so the sticky header keeps working. */
+    html, body {
+        overflow-x: clip;
+    }
+
     body {
         @apply bg-white text-ink-600 antialiased;
     }
@@ -128,6 +156,11 @@
 @layer components {
     .container-rich {
         @apply mx-auto w-full max-w-[1240px] px-5 sm:px-8;
+    }
+
+    /* The header row: wider than the page container, so the whole menu fits. */
+    .header-row {
+        @apply mx-auto flex w-full max-w-[1440px] px-5 sm:px-8;
     }
 
     .eyebrow {
@@ -202,9 +235,11 @@
         @apply text-brand-600;
     }
 
+    /* Ten items have to fit, so the padding and size step up only on wide screens. */
     .nav-item {
-        @apply relative z-10 flex items-center gap-1.5 whitespace-nowrap px-4 text-[14.5px] font-medium
-               text-ink-600 transition-colors duration-200 hover:text-brand-700;
+        @apply relative z-10 flex items-center gap-1 whitespace-nowrap px-2.5 text-[13.5px] font-medium
+               text-ink-600 transition-colors duration-200 hover:text-brand-700
+               2xl:gap-1.5 2xl:px-4 2xl:text-[14.5px];
     }
 
     .nav-item[data-active='true'] {
@@ -686,6 +721,69 @@
 }
 
 /* ------------------------------------------------------------------
+ | The startup journey, drawn as a chain.
+ |
+ | Each link carries its own connector, so the line is unbroken across a
+ | row and simply stops at the end of one. On narrow screens the chain
+ | turns vertical and the connectors run down the left instead.
+ ------------------------------------------------------------------ */
+.chain {
+    @apply grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.chain-link {
+    @apply relative flex gap-4 sm:block;
+}
+
+/* The connector. Horizontal from the node to the next link; vertical on
+   phones, where the chain runs down the page. */
+.chain-link.has-line::after {
+    content: '';
+    @apply absolute left-[27px] top-[62px] w-0.5 bg-gradient-to-b from-brand-200 to-brand-100
+           sm:left-auto sm:top-[27px] sm:h-0.5 sm:w-auto sm:bg-gradient-to-r;
+    bottom: -2rem;
+}
+
+@media (min-width: 640px) {
+    .chain-link.has-line::after {
+        bottom: auto;
+        left: 62px;
+        right: -1rem;
+    }
+}
+
+/* At the end of a row the line would run into nothing. */
+@media (min-width: 1024px) {
+    .chain-link:nth-child(4n)::after { display: none; }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+    .chain-link:nth-child(2n)::after { display: none; }
+}
+
+.chain-node {
+    @apply relative flex h-14 w-14 shrink-0 items-center justify-center;
+}
+
+.chain-dot {
+    @apply flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-600
+           ring-2 ring-brand-100 transition duration-500;
+}
+
+.chain-link:hover .chain-dot {
+    @apply bg-brand-600 text-white ring-brand-600;
+}
+
+.chain-number {
+    @apply absolute -right-1.5 -top-1.5 rounded-full bg-navy-700 px-1.5 py-0.5 font-display
+           text-[10px] font-bold tabular-nums text-white;
+}
+
+.chain-body {
+    @apply min-w-0 pb-2 sm:mt-5;
+}
+
+/* ------------------------------------------------------------------
  | Innovation area tabs.
  |
  | One tab bar, wrapping onto as many rows as it needs — nothing is
@@ -724,8 +822,15 @@
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Info strip above the bar: a quiet navy band. */
-.header-strip { background-color: var(--color-navy-700); color: rgb(255 255 255 / 0.75); }
+/* Info strip above the bar. A soft tint, light enough for the logo to rise
+   into it — the emblem is dark navy and green, so a dark band would swallow it. */
+.header-strip {
+    background: linear-gradient(90deg, var(--color-brand-50), var(--color-ink-50) 55%, var(--color-brand-50));
+    color: var(--color-ink-500);
+    border-bottom: 1px solid var(--color-ink-100);
+}
+
+.header-strip a:hover { color: var(--color-brand-700); }
 
 /* Brand accent line across the very top of the header. */
 .header-accent { background: linear-gradient(90deg, var(--color-navy-700), var(--color-brand-500) 50%, var(--color-navy-700)); }

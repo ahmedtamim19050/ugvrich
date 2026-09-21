@@ -97,6 +97,18 @@ class ProjectsTable
                     'planned' => 'Planned',
                 ]),
 
+                // Used by the dashboard menu to open the list pre-filtered.
+                SelectFilter::make('ip')
+                    ->label('Patent / IP')
+                    ->options(['protected' => 'Has patent or IP status'])
+                    ->query(fn ($query, array $data) => ($data['value'] ?? null) === 'protected'
+                        ? $query->where('patent_status', '!=', 'none')
+                        : $query),
+
+                SelectFilter::make('commercialization_status')
+                    ->label('Commercialization')
+                    ->options(config('rich.commercialization_statuses')),
+
                 TernaryFilter::make('is_featured')->label('Featured on homepage'),
             ])
             ->recordActions([

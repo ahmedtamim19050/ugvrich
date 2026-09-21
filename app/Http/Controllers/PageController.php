@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CoreArea;
 use App\Models\Expert;
+use App\Models\Facility;
 use App\Models\Partner;
 use App\Models\Project;
 use App\Models\Publication;
@@ -16,11 +17,6 @@ class PageController extends Controller
     {
         return view('pages.home', [
             'stats' => Stat::active()->orderBy('sort_order')->get(),
-            'projects' => Project::with('innovationArea')
-                ->featured()
-                ->ofType('innovation')
-                ->orderBy('sort_order')
-                ->get(),
         ]);
     }
 
@@ -61,6 +57,66 @@ class PageController extends Controller
     public function contact()
     {
         return view('pages.contact');
+    }
+
+    public function labs()
+    {
+        return view('pages.labs', [
+            'facilities' => Facility::active()->orderBy('sort_order')->get(),
+        ]);
+    }
+
+    public function publications()
+    {
+        $publications = Publication::active()->orderByDesc('year')->orderBy('sort_order')->get()->groupBy('kind');
+
+        return view('pages.publications', [
+            'journals' => $publications['journal'] ?? collect(),
+            'conferences' => $publications['conference'] ?? collect(),
+            'other' => $publications['publication'] ?? collect(),
+            'funded' => $publications['funded-project'] ?? collect(),
+        ]);
+    }
+
+    public function patents()
+    {
+        $projects = Project::with('innovationArea')
+            ->where(fn ($q) => $q->where('patent_status', '!=', 'none')
+                ->orWhere('commercialization_status', '!=', 'none'))
+            ->orderByDesc('is_featured')
+            ->orderBy('sort_order')
+            ->get();
+
+        // Two shelves: what is being protected, and what is going to market.
+        $groups = [
+            [
+                'key' => 'applications',
+                'label' => 'Patent Applications',
+                'icon' => 'document',
+                'text' => 'Filed with the patent office, or being prepared for filing.',
+                'items' => $projects->whereIn('patent_status', ['planned', 'filed', 'published', 'granted', 'copyright', 'design'])->values(),
+            ],
+            [
+                'key' => 'commercialization',
+                'label' => 'Commercialization',
+                'icon' => 'rocket',
+                'text' => 'Work being taken to market, through licensing, incubation or a formed venture.',
+                'items' => $projects->whereIn('commercialization_status', ['exploring', 'licensing', 'incubating', 'startup', 'market'])->values(),
+            ],
+        ];
+
+        return view('pages.patents', [
+            'projects' => $projects,
+            'groups' => collect($groups),
+        ]);
+    }
+
+    public function industry()
+    {
+        // Partners only: the page is the record of who the hub works with.
+        return view('pages.industry', [
+            'partners' => Partner::active()->orderBy('sort_order')->get(),
+        ]);
     }
 
     public function startup()

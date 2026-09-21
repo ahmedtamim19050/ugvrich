@@ -111,7 +111,7 @@
                     Students and faculty can submit an innovation idea. The Innovation Wing evaluates it, connects mentors and supports it from prototype to market.
                 </p>
                 <div class="mt-8 flex flex-wrap justify-center gap-3">
-                    <a href="{{ route('ideas.create') }}" class="btn-invert">Submit Your Innovation <x-ui-icon name="arrow-up-right" class="h-4 w-4" /></a>
+                    <a href="{{ route('ideas.create') }}" class="btn-invert">Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" /></a>
                     <a href="{{ route('projects.index') }}" class="btn border border-white/30 text-white hover:bg-white/10">All projects</a>
                 </div>
             </div>

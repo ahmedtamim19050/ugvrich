@@ -1,11 +1,11 @@
-<x-layouts.app title="Submit Your Innovation"
+<x-layouts.app title="Submit Your Idea"
                description="Submit an innovation idea to the UGV RICH Innovation Wing. Open to students, faculty, staff and alumni.">
 
     <x-page-hero
-        eyebrow="Submit your innovation"
+        eyebrow="Submit your idea"
         title='Every enterprise starts as an <span class="text-accent">idea</span>.'
         lead="Tell us the problem you have spotted and how you would solve it. The Innovation Wing reviews every submission."
-        :breadcrumbs="['Startup & Incubation' => route('startup'), 'Submit Your Innovation' => null]" />
+        :breadcrumbs="['Startup & Incubation' => route('startup'), 'Submit Your Idea' => null]" />
 
     <section class="bg-white py-14 sm:py-16">
         <div class="container-rich">
@@ -63,7 +63,7 @@
                     <div class="pointer-events-none absolute inset-0 -z-10 text-brand-700 grid-overlay opacity-40 [mask-image:linear-gradient(to_left,black,transparent_70%)]" aria-hidden="true"></div>
 
                     <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h2 class="font-display text-2xl font-bold text-ink-950 sm:text-[28px]">Submit your innovation</h2>
+                        <h2 class="font-display text-2xl font-bold text-ink-950 sm:text-[28px]">Submit your idea</h2>
                         <span class="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-3.5 py-1.5 text-[12.5px] font-medium text-ink-600">
                             <x-ui-icon name="shield" class="h-4 w-4 text-brand-600" /> Reviewed in confidence
                         </span>
