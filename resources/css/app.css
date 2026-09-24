@@ -13,8 +13,8 @@
  ------------------------------------------------------------------ */
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-    --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Inter', 'Hind Siliguri', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-display: 'Space Grotesk', 'Anek Bangla', 'Inter', 'Hind Siliguri', ui-sans-serif, system-ui, sans-serif;
 
     /* Neutrals */
     --color-ink-50: #f6f8fb;
@@ -133,6 +133,16 @@
     h1, h2, h3, h4, h5 {
         font-family: var(--font-display);
         @apply text-ink-950 tracking-tight;
+    }
+
+    /* Bangla carries matras above and below the line, so the tight Latin
+       line-heights crowd it. Only the Bangla site is affected. */
+    html[lang='bn'] body {
+        line-height: 1.8;
+    }
+
+    html[lang='bn'] :is(h1, h2, h3, h4, h5) {
+        line-height: 1.45;
     }
 
     ::selection {

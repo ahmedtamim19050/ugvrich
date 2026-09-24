@@ -22,6 +22,11 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
 
+    {{-- Only the faces this page can use: the Bangla site adds its own two. --}}
+    {{ Vite::fonts(app()->getLocale() === 'bn'
+        ? ['space-grotesk', 'inter', 'hind-siliguri', 'anek-bangla']
+        : ['space-grotesk', 'inter']) }}
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
