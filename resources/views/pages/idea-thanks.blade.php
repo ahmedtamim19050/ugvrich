@@ -1,5 +1,5 @@
-<x-layouts.app title="Idea received"
-               description="Your innovation idea has been received by the UGV RICH Innovation Wing.">
+<x-layouts.app :title="__('site.thanks.idea_title')"
+               :description="__('site.thanks.idea_description')">
 
     @php
         $firstName = \Illuminate\Support\Str::of($submission['name'] ?? '')
@@ -17,19 +17,19 @@
                 </span>
 
                 <h1 class="mt-8 font-display text-4xl font-bold leading-[1.1] tracking-tight text-ink-950 sm:text-5xl">
-                    Thank you{{ $firstName ? ', '.$firstName : '' }}.
+                    {{ __('site.thanks.thank_you', ['name' => $firstName ? ', '.$firstName : '']) }}
                 </h1>
 
                 <p class="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed muted">
-                    Your idea has been received by the Innovation Wing. We review every submission and will be in touch by email.
+                    {{ __('site.thanks.idea_body') }}
                 </p>
 
                 <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
                     <a href="{{ route('startup') }}" class="btn-primary group">
-                        Back to Startup &amp; Incubation <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                        {!! __('site.thanks.back_to_startup') !!} <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </a>
-                    <a href="{{ route('innovation.index') }}" class="btn-ghost">Innovation Wing</a>
-                    <a href="{{ route('projects.index') }}" class="btn-ghost">See our projects</a>
+                    <a href="{{ route('innovation.index') }}" class="btn-ghost">{{ __('site.nav.innovation') }}</a>
+                    <a href="{{ route('projects.index') }}" class="btn-ghost">{{ __('site.thanks.see_projects') }}</a>
                 </div>
             </div>
         </div>

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Services\Schemas;
 
+use App\Filament\Support\Bilingual;
+use App\Models\Service;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -16,38 +18,40 @@ class ServiceForm
     {
         return $schema
             ->components([
-                Section::make('Service')
-                    ->columns(2)
-                    ->schema([
-                        Select::make('service_category_id')
-                            ->label('Area of consultancy')
-                            ->relationship('category', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload()
-                            ->columnSpanFull(),
+                Bilingual::tabs(Service::class, [
+                    Section::make('Service')
+                        ->columns(2)
+                        ->schema([
+                            Select::make('service_category_id')
+                                ->label('Area of consultancy')
+                                ->relationship('category', 'name')
+                                ->required()
+                                ->searchable()
+                                ->preload()
+                                ->columnSpanFull(),
 
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(150)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+                            TextInput::make('name')
+                                ->required()
+                                ->maxLength(150)
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        TextInput::make('slug')->required()->maxLength(150),
+                            TextInput::make('slug')->required()->maxLength(150),
 
-                        Select::make('department')
-                            ->label('Delivered by')
-                            ->native(false)
-                            ->searchable()
-                            ->options(config('rich.departments'))
-                            ->helperText('Groups the service under a department on the consultancy page.'),
+                            Select::make('department')
+                                ->label('Delivered by')
+                                ->native(false)
+                                ->searchable()
+                                ->options(config('rich.departments'))
+                                ->helperText('Groups the service under a department on the consultancy page.'),
 
-                        Textarea::make('description')->rows(3)->columnSpanFull(),
+                            Textarea::make('description')->rows(3)->columnSpanFull(),
 
-                        TextInput::make('sort_order')->numeric()->default(0)->required(),
+                            TextInput::make('sort_order')->numeric()->default(0)->required(),
 
-                        Toggle::make('is_active')->label('Visible on the site')->default(true),
-                    ]),
+                            Toggle::make('is_active')->label('Visible on the site')->default(true),
+                        ]),
+                ]),
             ]);
     }
 }

@@ -2,12 +2,22 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 
 class ServiceCategory extends Model
 {
+    use HasTranslations;
+
+    /** Fields with a `_bn` twin; see the HasTranslations trait. */
+    protected array $translatable = [
+        'name',
+        'tagline',
+        'description',
+    ];
+
     protected $guarded = [];
 
     protected $casts = [

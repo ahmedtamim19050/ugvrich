@@ -14,28 +14,19 @@ use Illuminate\Support\Facades\Cache;
  */
 class Site
 {
-    protected array $values;
-
     protected ?Collection $navCategories = null;
 
     protected ?Collection $innovationAreas = null;
 
-    public function __construct()
-    {
-        $this->values = Setting::all_cached();
-    }
-
     public function get(string $key, mixed $default = null): mixed
     {
-        $value = $this->values[$key] ?? null;
-
-        return ($value === null || $value === '') ? $default : $value;
+        return Setting::get($key, $default);
     }
 
     /** Decode a JSON-valued setting into an array. */
     public function list(string $key): array
     {
-        $raw = $this->values[$key] ?? null;
+        $raw = Setting::get($key);
 
         if (blank($raw)) {
             return [];
@@ -61,7 +52,7 @@ class Site
     {
         return $this->navCategories ??= ServiceCategory::active()
             ->orderBy('sort_order')
-            ->get(['id', 'name', 'slug', 'icon', 'tagline']);
+            ->get(['id', 'name', 'name_bn', 'slug', 'icon', 'tagline', 'tagline_bn']);
     }
 
     /** The Innovation Wing's department areas, for the menu. Memoised per request. */
@@ -69,7 +60,7 @@ class Site
     {
         return $this->innovationAreas ??= InnovationArea::active()
             ->orderBy('sort_order')
-            ->get(['id', 'name', 'slug', 'icon', 'department']);
+            ->get(['id', 'name', 'name_bn', 'slug', 'icon', 'department']);
     }
 
     public function socials(): array

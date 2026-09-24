@@ -38,16 +38,16 @@
 
             <div class="reveal mt-9 flex flex-wrap items-center gap-3" style="transition-delay: 220ms">
                 <a href="{{ route('innovation.index') }}" class="btn-primary group !px-6">
-                    Explore Innovation
+                    {{ __('site.home.explore_innovation') }}
                     <x-ui-icon name="arrow-up-right" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
                 </a>
                 <a href="{{ route('ideas.create') }}"
                    class="btn !px-6 bg-white text-ink-950 hover:-translate-y-0.5 hover:bg-brand-50">
-                    Submit Your Idea
+                    {{ __('site.actions.submit_idea') }}
                 </a>
                 <a href="{{ route('contact') }}"
                    class="btn !px-6 text-white underline-offset-4 hover:underline">
-                    Collaborate With Us
+                    {{ __('site.actions.collaborate_with_us') }}
                 </a>
             </div>
         </div>

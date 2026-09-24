@@ -3,15 +3,15 @@
         <div class="container-rich">
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="Featured projects"
-                    title='Innovation you can <span class="text-accent">see and test</span>'
-                    lead="Flagship projects from UGV's innovation ecosystem. Open one to see the problem, the solution, the team behind it and how far it has travelled." />
+                    :eyebrow="__('site.home.projects_eyebrow')"
+                    :title="__('site.home.projects_title')"
+                    :lead="__('site.home.projects_lead')" />
 
                 <div class="reveal flex shrink-0 flex-wrap gap-3">
                     <a href="{{ route('innovation.index') }}" class="btn-primary">
                         Innovation Wing <x-ui-icon name="arrow-right" class="h-4 w-4" />
                     </a>
-                    <a href="{{ route('projects.index') }}" class="btn-ghost">All projects</a>
+                    <a href="{{ route('projects.index') }}" class="btn-ghost">{{ __('site.actions.all_projects') }}</a>
                 </div>
             </div>
 

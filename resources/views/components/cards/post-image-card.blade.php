@@ -28,7 +28,7 @@
                     'bg-white/90 text-ink-900' => ! $isEvent,
                 ])>
                     <x-ui-icon :name="$isEvent ? 'calendar' : 'document'" class="h-3.5 w-3.5" />
-                    {{ $isEvent ? 'Event' : 'News' }}
+                    {{ $isEvent ? __('site.cards.event') : __('site.cards.news') }}
                 </span>
                 @if ($upcoming)
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-brand-700 backdrop-blur-md">
@@ -89,7 +89,7 @@
                     @elseif ($post->author)
                         By {{ $post->author }}
                     @else
-                        {{ $isEvent ? 'Event details' : 'Read the story' }}
+                        {{ $isEvent ? __('site.cards.event_details') : __('site.cards.read_story') }}
                     @endif
                 </span>
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-950 text-white transition duration-500 {{ $ease }} group-hover:rotate-45 group-hover:bg-brand-600" aria-hidden="true">

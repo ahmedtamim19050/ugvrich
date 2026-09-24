@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Vocabulary;
 use Illuminate\Database\Eloquent\Model;
 
 class IdeaSubmission extends Model
@@ -14,11 +15,11 @@ class IdeaSubmission extends Model
 
     public function getDepartmentNameAttribute(): ?string
     {
-        return config('rich.departments.'.$this->department);
+        return Vocabulary::label('departments', $this->department);
     }
 
     public function getStageLabelAttribute(): ?string
     {
-        return config('rich.startup_stages.'.$this->stage);
+        return Vocabulary::label('startup_stages', $this->stage);
     }
 }

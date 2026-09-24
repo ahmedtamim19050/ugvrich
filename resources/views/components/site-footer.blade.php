@@ -15,29 +15,29 @@
                 <div>
                     <p class="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-700">
                         <span class="h-px w-8 bg-brand-600"></span>
-                        Newsletter
+                        {{ __('site.footer.newsletter') }}
                     </p>
                     <h3 class="mt-5 font-display text-3xl font-bold leading-[1.08] text-ink-950 sm:text-5xl">
-                        Research briefings,<br class="hidden sm:block">
-                        <span class="text-brand-600">straight to your inbox</span>
+                        {{ __('site.footer.newsletter_heading') }}<br class="hidden sm:block">
+                        <span class="text-brand-600">{{ __('site.footer.newsletter_heading_accent') }}</span>
                     </h3>
                     <p class="mt-5 max-w-xl text-[16px] leading-relaxed text-ink-600">
-                        Occasional updates on new consultancy work, published research, workshops and calls for collaboration.
+                        {{ __('site.footer.newsletter_body') }}
                     </p>
                 </div>
 
                 <form action="{{ route('subscribe') }}" method="POST" class="w-full">
                     @csrf
-                    <label for="footer-email" class="block text-[13px] font-semibold text-ink-700">Your email address</label>
+                    <label for="footer-email" class="block text-[13px] font-semibold text-ink-700">{{ __('site.footer.email_label') }}</label>
 
                     <div class="group mt-3 flex items-center gap-3 border-b-2 border-ink-200 pb-3 transition-colors focus-within:border-brand-600">
                         <x-ui-icon name="mail" class="h-5 w-5 shrink-0 text-ink-400 transition-colors group-focus-within:text-brand-600" />
-                        <input id="footer-email" type="email" name="email" required autocomplete="email" placeholder="you@organisation.org"
+                        <input id="footer-email" type="email" name="email" required autocomplete="email" placeholder="{{ __('site.footer.email_placeholder') }}"
                                value="{{ old('email') }}"
                                class="w-full min-w-0 flex-1 bg-transparent py-2 font-display text-lg text-ink-950 placeholder:text-ink-400 focus:outline-none sm:text-xl">
-                        <button type="submit" aria-label="Subscribe"
+                        <button type="submit" aria-label="{{ __('site.actions.subscribe') }}"
                                 class="group/btn inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-brand-600 pl-5 pr-2 text-[14px] font-semibold text-white shadow-[0_10px_26px_-12px_var(--color-brand-600)] transition hover:bg-brand-700">
-                            <span class="hidden sm:inline">Subscribe</span>
+                            <span class="hidden sm:inline">{{ __('site.actions.subscribe') }}</span>
                             <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand-700 transition-transform duration-300 group-hover/btn:rotate-[-45deg]">
                                 <x-ui-icon name="arrow-right" class="h-4 w-4" />
                             </span>
@@ -58,12 +58,12 @@
 
             {{-- Topics strip --}}
             <div class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-brand-100 bg-brand-100 lg:grid-cols-4">
-                @foreach ([['briefcase', 'Consultancy work'], ['document', 'Published research'], ['calendar', 'Workshops & events'], ['handshake', 'Calls for collaboration']] as [$icon, $topic])
+                @foreach ([['briefcase', 'consultancy'], ['document', 'research'], ['calendar', 'events'], ['handshake', 'collaboration']] as [$icon, $topic])
                     <div class="group flex items-center gap-3 bg-white px-5 py-4 transition-colors hover:bg-brand-50/60">
                         <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
                             <x-ui-icon :name="$icon" class="h-4 w-4" />
                         </span>
-                        <span class="text-[13.5px] font-medium text-ink-700">{{ $topic }}</span>
+                        <span class="text-[13.5px] font-medium text-ink-700">{{ __('site.footer.topic_'.$topic) }}</span>
                     </div>
                 @endforeach
             </div>
@@ -94,7 +94,7 @@
             </div>
 
             <div class="lg:col-span-3">
-                <h4 class="text-[12px] font-semibold uppercase tracking-[0.18em] !text-white">Consultancy</h4>
+                <h4 class="text-[12px] font-semibold uppercase tracking-[0.18em] !text-white">{{ __('site.footer.consultancy') }}</h4>
                 <ul class="mt-5 space-y-3 text-[15px]">
                     @foreach ($categories as $category)
                         <li>
@@ -108,20 +108,20 @@
             </div>
 
             <div class="lg:col-span-2">
-                <h4 class="text-[12px] font-semibold uppercase tracking-[0.18em] !text-white">Explore</h4>
+                <h4 class="text-[12px] font-semibold uppercase tracking-[0.18em] !text-white">{{ __('site.footer.explore') }}</h4>
                 <ul class="mt-5 space-y-3 text-[15px]">
                     @foreach ([
-                        ['About RICH', 'about'],
-                        ['Research & Innovation', 'research'],
-                        ['Projects', 'projects.index'],
-                        ['Our Experts', 'experts.index'],
-                        ['News & Events', 'news.index'],
-                        ['Contact', 'contact'],
+                        ['site.nav.about', 'about'],
+                        ['site.footer.research_innovation', 'research'],
+                        ['site.nav.projects', 'projects.index'],
+                        ['site.footer.experts', 'experts.index'],
+                        ['site.nav.news', 'news.index'],
+                        ['site.nav.contact', 'contact'],
                     ] as [$label, $routeName])
                         <li>
                             <a href="{{ route($routeName) }}" class="group inline-flex items-center gap-2 text-white/60 transition hover:text-white">
                                 <span class="h-px w-0 bg-brand-400 transition-all duration-300 group-hover:w-3"></span>
-                                {{ $label }}
+                                {{ __($label) }}
                             </a>
                         </li>
                     @endforeach
@@ -129,7 +129,7 @@
             </div>
 
             <div class="lg:col-span-3">
-                <h4 class="text-[12px] font-semibold uppercase tracking-[0.18em] !text-white">Contact</h4>
+                <h4 class="text-[12px] font-semibold uppercase tracking-[0.18em] !text-white">{{ __('site.footer.contact') }}</h4>
                 <ul class="mt-5 space-y-4 text-[15px] text-white/60">
                     @if ($address = $site->get('contact_address'))
                         <li class="flex gap-3">
@@ -161,7 +161,7 @@
 
         <div class="border-t border-white/10">
             <div class="container-rich flex flex-col items-center justify-between gap-3 py-6 text-sm text-white/45 sm:flex-row">
-                <p>&copy; {{ date('Y') }} {{ $site->name() }} · University of Global Village. All rights reserved.</p>
+                <p>{{ __('site.footer.copyright', ['year' => date('Y'), 'name' => $site->name()]) }}</p>
                 @if ($website = $site->get('contact_website'))
                     <a href="{{ $website }}" target="_blank" rel="noopener noreferrer"
                        class="flex items-center gap-1.5 transition hover:text-white">

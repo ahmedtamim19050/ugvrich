@@ -1,13 +1,13 @@
-<x-layouts.app title="Industry Collaboration"
-               description="The industry, government, NGO, university and development partners UGV RICH works with on research, contract assignments, testing, training and technology transfer.">
+<x-layouts.app :title="__('site.nav.industry')"
+               :description="__('site.industry.meta_description')">
 
     <x-page-hero
-        eyebrow="Industry collaboration"
-        title='The organizations we <span class="text-accent">work with</span>'
-        lead="UGV RICH works alongside industry, government organizations, NGOs, universities and development partners — on funded research, contract assignments, testing, training and technology transfer."
-        :breadcrumbs="['Industry Collaboration' => null]">
+        :eyebrow="__('site.industry.hero_eyebrow')"
+        :title="__('site.industry.hero_title')"
+        :lead="__('site.industry.hero_lead')"
+        :breadcrumbs="[__('site.nav.industry') => null]">
         <a href="{{ route('consultancy.create') }}" class="btn-primary">
-            Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
     </x-page-hero>
 
@@ -23,7 +23,7 @@
          ---------------------------------------------------------------- --}}
     @php
         $sectors = $partners
-            ->groupBy(fn ($partner) => $partner->type ?: 'Other partners')
+            ->groupBy(fn ($partner) => $partner->type ?: __('site.industry.other_partners'))
             ->map->count()
             ->sortDesc();
     @endphp
@@ -32,15 +32,15 @@
         <div class="container-rich">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="Partners"
-                    title='Who we already <span class="text-accent">work with</span>'
-                    lead="Every organization here is a live collaboration: research run together, assignments delivered to an agreed brief, laboratory testing, training and student placements." />
+                    :eyebrow="__('site.industry.partners_eyebrow')"
+                    :title="__('site.industry.partners_title')"
+                    :lead="__('site.industry.partners_lead')" />
 
                 @if ($partners->isNotEmpty())
                     <div class="reveal shrink-0 text-left lg:text-right">
                         <span class="block font-display text-[40px] font-bold leading-none text-ink-950">{{ $partners->count() }}</span>
                         <span class="mt-1 block text-[13px] muted">
-                            partner organizations · {{ $sectors->count() }} {{ \Illuminate\Support\Str::plural('sector', $sectors->count()) }}
+                            {{ trans_choice('site.industry.partners_count', $sectors->count(), ['count' => $sectors->count()]) }}
                         </span>
                     </div>
                 @endif
@@ -48,7 +48,7 @@
 
             @if ($partners->isEmpty())
                 <p class="mt-10 rounded-2xl border border-dashed border-ink-200 bg-ink-50 p-10 text-center text-[14px] muted">
-                    Partner organizations will be listed here shortly.
+                    {{ __('site.industry.empty') }}
                 </p>
             @else
                 <div x-data="{ sector: 'all' }">
@@ -60,7 +60,7 @@
                                 x-bind:class="sector === 'all'
                                     ? 'border-brand-600 bg-brand-600 text-white'
                                     : 'border-ink-200 bg-white text-ink-600 hover:border-brand-300 hover:text-brand-700'">
-                            All <span class="ml-1 opacity-70">{{ $partners->count() }}</span>
+                            {{ __('site.industry.filter_all') }} <span class="ml-1 opacity-70">{{ $partners->count() }}</span>
                         </button>
 
                         @foreach ($sectors as $type => $count)
@@ -77,7 +77,7 @@
                     <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                         @foreach ($partners as $i => $partner)
                             @php
-                                $type = $partner->type ?: 'Other partners';
+                                $type = $partner->type ?: __('site.industry.other_partners');
                                 $href = $partner->website ?: null;
                             @endphp
 
@@ -104,7 +104,7 @@
 
                                 @if ($href)
                                     <span class="mt-3 inline-flex items-center gap-1 text-[12.5px] font-semibold text-brand-600">
-                                        Visit website
+                                        {{ __('site.industry.visit_website') }}
                                         <x-ui-icon name="arrow-up-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                                     </span>
                                 @endif
@@ -121,18 +121,17 @@
         <div class="container-rich">
             <div class="reveal flex flex-col gap-8 rounded-3xl border border-ink-100 bg-white p-8 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
                 <div class="max-w-2xl">
-                    <span class="eyebrow"><span class="h-1.5 w-1.5 rounded-full bg-current"></span> Work with us</span>
+                    <span class="eyebrow"><span class="h-1.5 w-1.5 rounded-full bg-current"></span> {{ __('site.industry.join_eyebrow') }}</span>
                     <h2 class="mt-4 font-display text-[22px] font-bold leading-tight text-ink-950 sm:text-[26px]">
-                        Bring us a problem worth solving
+                        {{ __('site.industry.join_title') }}
                     </h2>
                     <p class="mt-3 text-[14px] leading-relaxed muted">
-                        Tell us what you are trying to solve and we will suggest the route — joint research, a contract
-                        assignment, laboratory testing, training or a student placement.
+                        {{ __('site.industry.join_body') }}
                     </p>
                 </div>
 
                 <a href="{{ route('consultancy.create') }}" class="btn-primary shrink-0">
-                    Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                    {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                 </a>
             </div>
         </div>

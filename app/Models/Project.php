@@ -2,18 +2,42 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
+use App\Support\Vocabulary;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Project extends Model
 {
+    use HasTranslations;
+
+    /** Fields with a `_bn` twin; see the HasTranslations trait. */
+    protected array $translatable = [
+        'title',
+        'summary',
+        'description',
+        'outcome',
+        'client',
+        'duration',
+        'lead_name',
+        'problem',
+        'solution',
+        'research_summary',
+        'patent_details',
+        'commercial_potential',
+        'technologies',
+        'team_members',
+    ];
+
     protected $guarded = [];
 
     protected $casts = [
         'gallery' => 'array',
         'team_members' => 'array',
+        'team_members_bn' => 'array',
         'technologies' => 'array',
+        'technologies_bn' => 'array',
         'is_featured' => 'boolean',
         'budget' => 'decimal:2',
         'start_date' => 'date',
@@ -63,17 +87,17 @@ class Project extends Model
 
     public function getDepartmentNameAttribute(): ?string
     {
-        return config('rich.departments.'.$this->department);
+        return Vocabulary::label('departments', $this->department);
     }
 
     public function getTypeLabelAttribute(): string
     {
-        return config('rich.project_types.'.$this->type, ucfirst((string) $this->type));
+        return Vocabulary::label('project_types', $this->type, ucfirst((string) $this->type));
     }
 
     public function getStageLabelAttribute(): ?string
     {
-        return config('rich.pipeline_stages.'.$this->stage);
+        return Vocabulary::label('pipeline_stages', $this->stage);
     }
 
     /** 1-based position of the current stage in the pipeline, or 0. */
@@ -86,12 +110,12 @@ class Project extends Model
 
     public function getPatentStatusLabelAttribute(): string
     {
-        return config('rich.patent_statuses.'.$this->patent_status, 'Not applicable');
+        return Vocabulary::label('patent_statuses', $this->patent_status, 'Not applicable');
     }
 
     public function getCommercializationStatusLabelAttribute(): string
     {
-        return config('rich.commercialization_statuses.'.$this->commercialization_status, 'Not started');
+        return Vocabulary::label('commercialization_statuses', $this->commercialization_status, 'Not started');
     }
 
     public function getRouteKeyName(): string

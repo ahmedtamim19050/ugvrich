@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ServiceCategories\Schemas;
 
+use App\Filament\Support\Bilingual;
+use App\Models\ServiceCategory;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -47,53 +49,55 @@ class ServiceCategoryForm
     {
         return $schema
             ->components([
-                Section::make('Area')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(150)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+                Bilingual::tabs(ServiceCategory::class, [
+                    Section::make('Area')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('name')
+                                ->required()
+                                ->maxLength(150)
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        TextInput::make('slug')
-                            ->required()
-                            ->maxLength(150)
-                            ->unique(ignoreRecord: true)
-                            ->helperText('Used in the public URL: /services/{slug}'),
+                            TextInput::make('slug')
+                                ->required()
+                                ->maxLength(150)
+                                ->unique(ignoreRecord: true)
+                                ->helperText('Used in the public URL: /services/{slug}'),
 
-                        TextInput::make('tagline')
-                            ->maxLength(150)
-                            ->helperText('Short line shown on cards and in the navigation menu.'),
+                            TextInput::make('tagline')
+                                ->maxLength(150)
+                                ->helperText('Short line shown on cards and in the navigation menu.'),
 
-                        Select::make('icon')
-                            ->options(self::ICONS)
-                            ->native(false)
-                            ->searchable(),
+                            Select::make('icon')
+                                ->options(self::ICONS)
+                                ->native(false)
+                                ->searchable(),
 
-                        Textarea::make('description')
-                            ->rows(4)
-                            ->columnSpanFull(),
-                    ]),
+                            Textarea::make('description')
+                                ->rows(4)
+                                ->columnSpanFull(),
+                        ]),
 
-                Section::make('Display')
-                    ->columns(3)
-                    ->schema([
-                        FileUpload::make('image')
-                            ->image()
-                            ->disk('public')
-                            ->directory('service-categories')
-                            ->imageEditor(),
+                    Section::make('Display')
+                        ->columns(3)
+                        ->schema([
+                            FileUpload::make('image')
+                                ->image()
+                                ->disk('public')
+                                ->directory('service-categories')
+                                ->imageEditor(),
 
-                        TextInput::make('sort_order')
-                            ->numeric()
-                            ->default(0)
-                            ->required(),
+                            TextInput::make('sort_order')
+                                ->numeric()
+                                ->default(0)
+                                ->required(),
 
-                        Toggle::make('is_active')
-                            ->label('Visible on the site')
-                            ->default(true),
-                    ]),
+                            Toggle::make('is_active')
+                                ->label('Visible on the site')
+                                ->default(true),
+                        ]),
+                ]),
             ]);
     }
 }

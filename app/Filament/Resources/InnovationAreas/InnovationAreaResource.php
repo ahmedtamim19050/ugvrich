@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\InnovationAreas;
 
+use App\Filament\Support\Bilingual;
 use App\Filament\Resources\InnovationAreas\Pages\CreateInnovationArea;
 use App\Filament\Resources\InnovationAreas\Pages\EditInnovationArea;
 use App\Filament\Resources\InnovationAreas\Pages\ListInnovationAreas;
@@ -41,45 +42,47 @@ class InnovationAreaResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Innovation Wing area')
-                ->columns(2)
-                ->schema([
-                    TextInput::make('name')
-                        ->required()
-                        ->maxLength(150)
-                        ->live(onBlur: true)
-                        ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+            Bilingual::tabs(InnovationArea::class, [
+                Section::make('Innovation Wing area')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('name')
+                            ->required()
+                            ->maxLength(150)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                    TextInput::make('slug')->required()->maxLength(150)->unique(ignoreRecord: true),
+                        TextInput::make('slug')->required()->maxLength(150)->unique(ignoreRecord: true),
 
-                    Select::make('department')
-                        ->options(config('rich.departments'))
-                        ->native(false)
-                        ->searchable(),
+                        Select::make('department')
+                            ->options(config('rich.departments'))
+                            ->native(false)
+                            ->searchable(),
 
-                    Select::make('icon')
-                        ->options(ServiceCategoryForm::ICONS)
-                        ->native(false)
-                        ->searchable(),
+                        Select::make('icon')
+                            ->options(ServiceCategoryForm::ICONS)
+                            ->native(false)
+                            ->searchable(),
 
-                    Textarea::make('description')->rows(3)->columnSpanFull(),
+                        Textarea::make('description')->rows(3)->columnSpanFull(),
 
-                    TagsInput::make('focus')
-                        ->label('Focus areas')
-                        ->placeholder('Add a focus area and press Enter')
-                        ->columnSpanFull(),
+                        TagsInput::make('focus')
+                            ->label('Focus areas')
+                            ->placeholder('Add a focus area and press Enter')
+                            ->columnSpanFull(),
 
-                    FileUpload::make('image')
-                        ->label('Cover image (optional)')
-                        ->image()
-                        ->disk('public')
-                        ->directory('innovation')
-                        ->imageEditor(),
+                        FileUpload::make('image')
+                            ->label('Cover image (optional)')
+                            ->image()
+                            ->disk('public')
+                            ->directory('innovation')
+                            ->imageEditor(),
 
-                    TextInput::make('sort_order')->numeric()->default(0)->required(),
+                        TextInput::make('sort_order')->numeric()->default(0)->required(),
 
-                    Toggle::make('is_active')->label('Visible on the site')->default(true),
-                ]),
+                        Toggle::make('is_active')->label('Visible on the site')->default(true),
+                    ]),
+            ]),
         ]);
     }
 

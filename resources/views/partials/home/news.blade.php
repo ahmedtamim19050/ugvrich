@@ -3,12 +3,12 @@
         <div class="container-rich">
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="News & events"
-                    title='Latest from the <span class="text-accent">hub</span>'
-                    lead="Workshops, agreements, research presentations and calls for participation from across UGV RICH." />
+                    :eyebrow="__('site.home.news_eyebrow')"
+                    :title="__('site.home.news_title')"
+                    :lead="__('site.home.news_lead')" />
 
                 <a href="{{ route('news.index') }}" class="btn-ghost reveal shrink-0">
-                    All news & events <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                    {{ __('site.home.news_link') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                 </a>
             </div>
 

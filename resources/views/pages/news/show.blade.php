@@ -5,7 +5,7 @@
         :title="$post->title"
         :lead="$post->excerpt"
         :image="$post->image"
-        :breadcrumbs="['News & Events' => route('news.index'), Str::limit($post->title, 40) => null]" />
+        :breadcrumbs="[__('site.nav.news') => route('news.index'), Str::limit($post->title, 40) => null]" />
 
     <section class="py-16 bg-white sm:py-20">
         <div class="container-rich grid gap-12 lg:grid-cols-[1.4fr_0.6fr] lg:gap-16">
@@ -22,7 +22,7 @@
                     @if ($post->published_at)
                         <span class="flex items-center gap-2"><x-ui-icon name="calendar" class="h-4 w-4" />{{ $post->published_at->format('j F Y') }}</span>
                     @endif
-                    <span class="flex items-center gap-2"><x-ui-icon name="clock" class="h-4 w-4" />{{ $post->reading_time }} min read</span>
+                    <span class="flex items-center gap-2"><x-ui-icon name="clock" class="h-4 w-4" />{{ __('site.news.reading_time', ['minutes' => $post->reading_time]) }}</span>
                 </div>
 
                 <div class="prose-rich reveal mt-8 text-[16.5px] muted">
@@ -35,7 +35,7 @@
 
                 <div class="mt-12 flex items-center justify-between gap-4 border-t hairline pt-8">
                     <a href="{{ route('news.index') }}" class="btn-ghost">
-                        <x-ui-icon name="arrow-left" class="h-4 w-4" /> All news & events
+                        <x-ui-icon name="arrow-left" class="h-4 w-4" /> {{ __('site.news.back') }}
                     </a>
                 </div>
             </article>
@@ -44,7 +44,7 @@
                 @if ($post->type === 'event')
                     <div class="reveal relative overflow-hidden rounded-3xl bg-brand-700 p-7 text-white">
                         <div class="pointer-events-none absolute inset-0 text-white grid-overlay opacity-[0.12]"></div>
-                        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">Event details</p>
+                        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">{{ __('site.news.event_details') }}</p>
 
                         @if ($post->event_at)
                             <p class="mt-4 font-display text-2xl font-bold">{{ $post->event_at->format('j F Y') }}</p>
@@ -60,18 +60,18 @@
                         <a href="{{ route('contact') }}"
                            class="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13.5px] font-semibold text-brand-600
                                   transition hover:bg-brand-50 hover:text-white">
-                            Register interest <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                            {{ __('site.news.register_interest') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                         </a>
                     </div>
                 @endif
 
                 <div class="card reveal">
-                    <h3 class="font-display text-lg font-bold">Work with UGV RICH</h3>
+                    <h3 class="font-display text-lg font-bold">{{ __('site.news.cta_title') }}</h3>
                     <p class="mt-3 text-[14.5px] leading-relaxed muted">
-                        Bring us a research question or a consultancy requirement and we will match it to the right expertise.
+                        {{ __('site.news.cta_body') }}
                     </p>
                     <a href="{{ route('contact') }}" class="btn-primary mt-6 w-full">
-                        Submit a request <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                        {{ __('site.news.cta_button') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                     </a>
                 </div>
             </aside>
@@ -81,7 +81,7 @@
     @if ($related->isNotEmpty())
         <section class="border-t hairline py-20 bg-ink-50">
             <div class="container-rich">
-                <x-section-heading eyebrow="Keep reading" title="More from UGV RICH" />
+                <x-section-heading :eyebrow="__('site.news.related_eyebrow')" :title="__('site.news.related_title')" />
                 <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     @foreach ($related as $i => $item)
                         <x-cards.post-card :post="$item" :index="$i" />

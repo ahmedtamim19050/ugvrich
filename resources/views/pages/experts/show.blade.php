@@ -4,7 +4,7 @@
         :eyebrow="$expert->department"
         :title="$expert->name"
         :lead="$expert->designation"
-        :breadcrumbs="['Experts' => route('experts.index'), $expert->name => null]" />
+        :breadcrumbs="[__('site.experts.breadcrumb') => route('experts.index'), $expert->name => null]" />
 
     <section class="py-16 bg-white sm:py-20">
         <div class="container-rich grid gap-12 lg:grid-cols-[0.65fr_1.35fr] lg:gap-16">
@@ -62,7 +62,7 @@
                     </div>
 
                     <a href="{{ route('contact') }}" class="btn-primary mt-6 w-full">
-                        Request a consultancy <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                        {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                     </a>
                 </div>
             </aside>
@@ -71,7 +71,7 @@
             <div class="space-y-10">
                 @if ($expert->expertise)
                     <div class="reveal">
-                        <h3 class="font-display text-xl font-bold">Areas of expertise</h3>
+                        <h3 class="font-display text-xl font-bold">{{ __('site.experts.expertise') }}</h3>
                         <div class="mt-5 flex flex-wrap gap-2.5">
                             @foreach ($expert->expertise as $tag)
                                 <span class="rounded-full border hairline px-4 py-2 text-[13.5px] font-medium muted">{{ $tag }}</span>
@@ -82,24 +82,24 @@
 
                 @if ($expert->research_interests)
                     <div class="reveal" style="transition-delay: 80ms">
-                        <h3 class="font-display text-xl font-bold">Research interests</h3>
+                        <h3 class="font-display text-xl font-bold">{{ __('site.experts.interests') }}</h3>
                         <p class="mt-4 text-[16px] leading-[1.8] muted">{{ $expert->research_interests }}</p>
                     </div>
                 @endif
 
                 @if ($expert->bio)
                     <div class="prose-rich reveal text-[16px] muted" style="transition-delay: 140ms">
-                        <h3 class="text-xl font-display font-bold text-ink-950">Profile</h3>
+                        <h3 class="text-xl font-display font-bold text-ink-950">{{ __('site.experts.profile') }}</h3>
                         <div class="mt-4">{!! nl2br(e($expert->bio)) !!}</div>
                     </div>
                 @endif
 
                 <div class="reveal rounded-3xl border-l-4 border-brand-600 p-7 bg-ink-50">
-                    <h3 class="font-display text-lg font-bold">Available for</h3>
+                    <h3 class="font-display text-lg font-bold">{{ __('site.experts.available_for') }}</h3>
                     <ul class="mt-4 grid gap-2.5 sm:grid-cols-2">
-                        @foreach (['Consultancy assignments', 'Research collaboration', 'Postgraduate supervision', 'Training & workshops', 'Peer review', 'Expert panels'] as $item)
+                        @foreach (['consultancy', 'research', 'supervision', 'training', 'review', 'panels'] as $item)
                             <li class="flex items-start gap-2.5 text-[14px] muted">
-                                <x-ui-icon name="check" class="mt-[3px] h-4 w-4 shrink-0 text-brand-600" stroke="2.4" />{{ $item }}
+                                <x-ui-icon name="check" class="mt-[3px] h-4 w-4 shrink-0 text-brand-600" stroke="2.4" />{{ __('site.experts.available_'.$item) }}
                             </li>
                         @endforeach
                     </ul>
@@ -111,7 +111,7 @@
     @if ($related->isNotEmpty())
         <section class="border-t hairline py-20 bg-ink-50">
             <div class="container-rich">
-                <x-section-heading eyebrow="Related expertise" title="Others in this area" />
+                <x-section-heading :eyebrow="__('site.experts.related_eyebrow')" :title="__('site.experts.related_title')" />
                 <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($related as $i => $item)
                         <x-cards.expert-profile-card :expert="$item" :index="$i" />

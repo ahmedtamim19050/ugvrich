@@ -1,5 +1,5 @@
 @php
-    $words = ['Research', 'Innovation', 'Consultancy', 'Knowledge Exchange'];
+    $words = collect(['research', 'innovation', 'consultancy', 'exchange'])->map(fn ($key) => __('site.home.band_'.$key));
 @endphp
 
 {{-- A slow band of the four things RICH stands for. Purely decorative, so it

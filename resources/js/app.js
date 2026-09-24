@@ -14,14 +14,43 @@ Alpine.data('siteHeader', () => ({
     solid: false,
     progress: 0,
     ind: { left: 0, width: 0 },
+    stripInset: 0,
     side: null,
     closeTimer: null,
 
+    // The link the highlight is currently sitting on, so it can be measured
+    // again after the bar changes size.
+    marked: null,
+
     init() {
         this.onScroll();
-        this.$nextTick(() => this.settle());
-        window.addEventListener('resize', () => this.settle());
-        document.fonts?.ready.then(() => this.settle());
+        this.$nextTick(() => this.remeasure());
+        window.addEventListener('resize', () => this.remeasure());
+        window.addEventListener('load', () => this.remeasure());
+        document.fonts?.ready.then(() => this.remeasure());
+
+        /* The first paint measures a menu that is still settling — webfonts land,
+           the logo sizes itself, the links finish animating in. Watch the menu
+           itself instead of guessing when it has stopped moving. Only the menu is
+           observed: the strip's own padding is what we set, so observing it too
+           would chase its own tail. */
+        if ('ResizeObserver' in window) {
+            const watcher = new ResizeObserver(() => this.alignStrip());
+
+            // The nav box itself is flex-1, so its width never changes — the links
+            // inside it are what move, so watch those and the logo beside them.
+            this.$refs['nav-left']?.querySelectorAll('.nav-item').forEach((link) => watcher.observe(link));
+            const logo = this.$root.querySelector('.brand-spin');
+            if (logo) watcher.observe(logo);
+        }
+
+        /* Shrinking the bar resizes the logo, which shifts every link along
+           with it. Measure once now and once the 320ms transition has run,
+           or the highlight is left behind where the link used to be. */
+        this.$watch('solid', () => {
+            this.remeasure();
+            setTimeout(() => this.remeasure(), 340);
+        });
 
         // Lock the page behind the mobile menu.
         this.$watch('open', (isOpen) => {
@@ -43,6 +72,7 @@ Alpine.data('siteHeader', () => ({
     hover(el, key, side = null) {
         this.keep();
         this.side = side;
+        this.marked = el;
         this.moveTo(el);
         this.panel = key;
     },
@@ -57,7 +87,47 @@ Alpine.data('siteHeader', () => ({
 
         const current = this.$refs.current ?? null;
         this.side = current?.dataset.side ?? null;
+        this.marked = current;
         this.moveTo(current);
+    },
+
+    /* The info strip sits above a menu that is centred on the logo, so its
+       first label is nowhere near the edge of the row. Line the strip's first
+       label up with it by measuring both and closing the gap. */
+    alignStrip() {
+        const first = this.$refs['nav-left']?.querySelector('.nav-item');
+        const label = this.$refs.strip?.querySelector('[data-strip-label]');
+
+        // Below xl the menu is hidden behind the Menu button; nothing to line up with.
+        if (! first || ! label || ! first.offsetParent) {
+            this.stripInset = 0;
+
+            return;
+        }
+
+        const menuLabelLeft = first.getBoundingClientRect().left
+            + parseFloat(getComputedStyle(first).paddingInlineStart || 0);
+
+        // Padding moves the label one-for-one, so one pass lands it exactly.
+        const inset = this.stripInset + (menuLabelLeft - label.getBoundingClientRect().left);
+
+        this.stripInset = Math.max(0, Math.round(inset));
+    },
+
+    // Re-measure wherever the highlight is, without moving it elsewhere.
+    remeasure() {
+        this.alignStrip();
+
+        const el = this.marked ?? this.$refs.current ?? null;
+
+        if (el?.isConnected) {
+            this.side = el.dataset.side ?? this.side;
+            this.moveTo(el);
+
+            return;
+        }
+
+        this.settle();
     },
 
     keep() {

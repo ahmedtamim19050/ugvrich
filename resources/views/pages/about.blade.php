@@ -1,15 +1,15 @@
-<x-layouts.app title="About" :description="$site->get('about_intro')">
+<x-layouts.app :title="__('site.about.meta_title')" :description="$site->get('about_intro')">
 
     <x-page-hero
-        eyebrow="About UGV RICH"
-        title='An institutional platform for research, innovation and <span class="text-accent">professional consultancy</span>'
+        :eyebrow="__('site.home.about_eyebrow')"
+        :title="__('site.about.hero_title')"
         :lead="$site->get('about_intro')"
-        :breadcrumbs="['About' => null]">
+        :breadcrumbs="[__('site.about.meta_title') => null]">
         <a href="{{ route('contact') }}" class="btn-primary">
-            Request a consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
         <a href="{{ route('services.index') }}" class="btn-ghost">
-            View services
+            {{ __('site.about.view_services') }}
         </a>
     </x-page-hero>
 
@@ -23,31 +23,30 @@
         <div class="container-rich grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
             {{-- Copy --}}
             <div class="reveal">
-                <span class="eyebrow"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>Who we are</span>
+                <span class="eyebrow"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>{{ __('site.about.who_eyebrow') }}</span>
 
                 <h2 class="mt-6 font-display text-3xl font-bold leading-[1.12] text-ink-950 sm:text-[42px]">
-                    University expertise, delivered as <span class="text-accent">practical solutions</span>
+                    {!! __('site.about.who_title') !!}
                 </h2>
 
                 <p class="mt-6 text-[17px] leading-[1.75] text-ink-700">{{ $site->get('about_body') }}</p>
 
                 <p class="mt-4 text-[15.5px] leading-[1.75] muted">
-                    Every engagement is staffed from within the university and its professional network, which means the
-                    person who designs your study is the person who understands the discipline behind it.
+                    {{ __('site.about.who_body') }}
                 </p>
 
                 <ul class="mt-8 grid gap-3 sm:grid-cols-3">
                     @foreach ([
-                        ['users', 'University-staffed', 'Faculty and professional network'],
-                        ['calendar', 'Milestone-based', 'Scoped, costed and scheduled'],
-                        ['target', 'Actionable', 'Findings your team can use'],
-                    ] as [$icon, $title, $text])
+                        ['users', 'staffed'],
+                        ['calendar', 'milestone'],
+                        ['target', 'actionable'],
+                    ] as [$icon, $tile])
                         <li class="group rounded-2xl border border-ink-100 bg-ink-50/60 p-4 transition hover:border-brand-200 hover:bg-white">
                             <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-ink-100 transition group-hover:bg-brand-600 group-hover:text-white group-hover:ring-brand-600">
                                 <x-ui-icon :name="$icon" class="h-[18px] w-[18px]" />
                             </span>
-                            <p class="mt-3 font-display text-[15px] font-semibold text-ink-950">{{ $title }}</p>
-                            <p class="mt-0.5 text-[12.5px] leading-snug muted">{{ $text }}</p>
+                            <p class="mt-3 font-display text-[15px] font-semibold text-ink-950">{{ __('site.about.tile_'.$tile) }}</p>
+                            <p class="mt-0.5 text-[12.5px] leading-snug muted">{{ __('site.about.tile_'.$tile.'_note') }}</p>
                         </li>
                     @endforeach
                 </ul>
@@ -57,17 +56,17 @@
             <div class="reveal relative mx-auto w-full max-w-xl lg:max-w-none" style="transition-delay: 120ms">
                 <div class="grid grid-cols-5 gap-4">
                     <div class="col-span-3 row-span-2 overflow-hidden rounded-[2rem]">
-                        <img src="{{ asset('images/heroes/experts.jpg') }}" alt="UGV RICH experts in a project meeting" loading="lazy"
+                        <img src="{{ asset('images/heroes/experts.jpg') }}" alt="{{ __('site.about.alt_meeting') }}" loading="lazy"
                              class="h-full min-h-[22rem] w-full object-cover transition duration-700 hover:scale-105 sm:min-h-[28rem]">
                     </div>
                     <div class="col-span-2 overflow-hidden rounded-[2rem]">
-                        <img src="{{ asset('images/heroes/research.jpg') }}" alt="Research in the laboratory" loading="lazy"
+                        <img src="{{ asset('images/heroes/research.jpg') }}" alt="{{ __('site.about.alt_lab') }}" loading="lazy"
                              class="aspect-[4/5] h-full w-full object-cover transition duration-700 hover:scale-105">
                     </div>
                     <div class="col-span-2 flex flex-col justify-between rounded-[2rem] bg-brand-600 p-5 text-white sm:p-6">
                         <x-ui-icon name="sparkles" class="h-6 w-6 text-brand-200" />
                         <div>
-                            <p class="font-display text-[15px] font-semibold leading-snug !text-white">Research · Innovation · Consultancy · Hub</p>
+                            <p class="font-display text-[15px] font-semibold leading-snug !text-white">{{ __('site.about.collage_caption') }}</p>
                         </div>
                     </div>
                 </div>
@@ -94,8 +93,8 @@
         <div class="container-rich">
             <x-section-heading
                 align="center"
-                eyebrow="Vision & mission"
-                title='What we are building, and <span class="text-accent">how we get there</span>' />
+                :eyebrow="__('site.about.vm_eyebrow')"
+                :title="__('site.about.vm_title')" />
 
             <div class="mt-14 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
                 {{-- Vision --}}
@@ -108,7 +107,7 @@
                         <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-700 shadow-[0_12px_28px_-12px_rgba(0,0,0,0.5)]">
                             <x-ui-icon name="target" class="h-6 w-6" />
                         </span>
-                        <span class="text-[12px] font-semibold uppercase tracking-[0.2em] text-brand-200">Our vision</span>
+                        <span class="text-[12px] font-semibold uppercase tracking-[0.2em] text-brand-200">{{ __('site.home.our_vision') }}</span>
                     </div>
 
                     <x-ui-icon name="quote" class="mt-10 h-10 w-10 text-brand-300/60" />
@@ -118,7 +117,7 @@
 
                     <div class="mt-auto flex items-center gap-3 border-t border-white/15 pt-6 text-[13px] text-white/70">
                         <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 font-display text-[13px] font-bold text-white">R</span>
-                        UGV RICH · University of Global Village
+                        {{ __('site.about.vision_signature') }}
                     </div>
                 </div>
 
@@ -128,7 +127,7 @@
                         <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
                             <x-ui-icon name="compass" class="h-6 w-6" />
                         </span>
-                        <span class="text-[12px] font-semibold uppercase tracking-[0.2em] text-brand-700">Our mission</span>
+                        <span class="text-[12px] font-semibold uppercase tracking-[0.2em] text-brand-700">{{ __('site.home.our_mission') }}</span>
                     </div>
 
                     <p class="mt-8 font-display text-[22px] font-bold text-ink-950">{{ $site->get('mission_intro') }}</p>
@@ -170,9 +169,9 @@
         <div class="container-rich">
             <x-section-heading
                 align="center"
-                eyebrow="Core areas"
-                title="Research, Innovation, Consultancy and the Hub"
-                lead="Four connected functions that take a question from design, through delivery, into the sectors that need the answer." />
+                :eyebrow="__('site.about.core_eyebrow')"
+                :title="__('site.about.core_title')"
+                :lead="__('site.about.core_lead')" />
 
             <div class="mt-14 grid gap-7 md:grid-cols-2">
                 @foreach ($coreAreas as $i => $area)
@@ -190,9 +189,9 @@
         <div class="container-rich relative grid gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
                 <x-section-heading
-                    eyebrow="Who we serve"
-                    title="Support for the organisations that shape public life"
-                    lead="UGV RICH provides research and consultancy support across the public, private, non-governmental and academic sectors." />
+                    :eyebrow="__('site.about.serve_eyebrow')"
+                    :title="__('site.about.serve_title')"
+                    :lead="__('site.about.serve_lead')" />
 
                 <div class="mt-9 flex flex-wrap gap-2.5">
                     @foreach ($site->list('who_we_serve') as $i => $audience)
@@ -207,8 +206,8 @@
 
             <div>
                 <x-section-heading
-                    eyebrow="Partnerships & collaborations"
-                    title="Who we collaborate with" />
+                    :eyebrow="__('site.about.partners_eyebrow')"
+                    :title="__('site.about.partners_title')" />
 
                 <div class="mt-9 grid gap-3 sm:grid-cols-2">
                     @foreach ($site->list('partnership_types') as $i => $type)

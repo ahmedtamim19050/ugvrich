@@ -1,0 +1,686 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Site interface strings — English
+|--------------------------------------------------------------------------
+|
+| Every visible string that is not editable content lives here, so the site
+| reads in one language end to end. Content itself (projects, services, news)
+| carries its own Bangla columns in the database.
+|
+*/
+
+return [
+
+    'nav' => [
+        'home' => 'Home',
+        'projects' => 'Projects',
+        'research' => 'Research',
+        'innovation' => 'Innovation Wing',
+        'consultancy' => 'Consultancy',
+        'team' => 'Team',
+        'about' => 'About RICH',
+        'startup' => 'Startup & Incubation',
+        'news' => 'News & Events',
+        'contact' => 'Contact',
+        'publications' => 'Publications',
+        'patents' => 'Patents & IP',
+        'industry' => 'Industry Collaboration',
+        'labs' => 'Labs & Facilities',
+        'primary' => 'Primary',
+        'secondary' => 'Secondary',
+        'mobile' => 'Mobile',
+        'menu' => 'Menu',
+        'close' => 'Close',
+        'open_menu' => 'Open menu',
+        'close_menu' => 'Close menu',
+        'more' => 'More',
+        'innovation_panel' => 'Innovation areas',
+        'innovation_panel_text' => 'Every department brings its own discipline to the Innovation Wing.',
+        'consultancy_panel_text' => 'Expert services for industry, government and development partners.',
+        'industry_note' => 'Ways to work with us',
+        'home_aria' => ':name home',
+    ],
+
+    'actions' => [
+        'collaborate' => 'Collaborate',
+        'collaborate_with_us' => 'Collaborate with us',
+        'submit_idea' => 'Submit Your Idea',
+        'request_consultancy' => 'Request Consultancy',
+        'have_an_idea' => 'Have an idea? Submit it to RICH',
+        'view_all' => 'View all',
+        'search' => 'Search',
+        'send_message' => 'Send message',
+        'subscribe' => 'Subscribe',
+        'back_to_home' => 'Back to home',
+        'read_more' => 'Read more',
+        'browse_catalogue' => 'Browse the catalogue',
+        'propose_collaboration' => 'Propose a collaboration',
+        'find_researcher' => 'Find a researcher',
+        'all_projects' => 'All projects',
+        'clear_filter' => 'Clear filter',
+    ],
+
+    'language' => [
+        'label' => 'Language',
+        'bn' => 'বাংলা',
+        'en' => 'English',
+        'switch_to' => 'Read this page in :language',
+    ],
+
+    'home' => [
+        'explore_innovation' => 'Explore Innovation',
+        'glance' => 'RICH at a glance',
+        'glance_note' => '· Live numbers from the RICH office',
+        'view_all_projects' => 'View all projects',
+
+        'about_eyebrow' => 'About UGV RICH',
+        'about_title' => 'Research, Innovation &amp; <span class="text-accent">Consultation Hub</span>',
+        'chip_research' => 'Research',
+        'chip_innovation' => 'Innovation',
+        'chip_industry' => 'Industry services',
+        'chip_entrepreneurship' => 'Entrepreneurship',
+        'read_profile' => 'Read the full profile',
+        'our_vision' => 'Our vision',
+        'our_mission' => 'Our mission',
+
+        'band_research' => 'Research',
+        'band_innovation' => 'Innovation',
+        'band_consultancy' => 'Consultancy',
+        'band_exchange' => 'Knowledge Exchange',
+
+        'core_eyebrow' => 'What we do',
+        'core_title' => 'Four pillars, one <span class="text-accent">platform</span>',
+        'core_lead' => 'Research, Innovation, Industry Services and Startup & Commercialization: four connected pillars that take knowledge from the lab to the market.',
+        'core_link' => 'About UGV RICH',
+
+        'experts_eyebrow' => 'Our experts',
+        'experts_title' => 'The people behind the <span class="text-accent">work</span>',
+        'experts_lead' => 'A searchable directory of UGV faculty members and professional associates available for consultancy, collaboration and supervision.',
+        'experts_link' => 'Browse the directory',
+
+        'faq_eyebrow' => 'FAQ',
+        'faq_title' => 'Quick answers to the questions we get <span class="text-accent">most</span>',
+        'faq_team' => 'Our experts<br>are here to help',
+        'faq_still' => 'Still have a question?',
+        'faq_still_body' => 'Talk to our office team and we will connect you with the right expert.',
+        'faq_call' => 'Call us',
+        'faq_email' => 'Email us',
+        'faq_contact' => 'Contact the RICH office',
+
+        'partners_eyebrow' => 'Partnerships',
+        'partners_title' => 'Organisations that trust UGV RICH',
+        'partners_lead' => 'Government agencies, industry bodies, NGOs, universities and development partners commission research and consultancy through the Hub.',
+        'partners_link' => 'Explore partnerships',
+
+        'news_eyebrow' => 'News & events',
+        'news_title' => 'Latest from the <span class="text-accent">hub</span>',
+        'news_lead' => 'Workshops, agreements, research presentations and calls for participation from across UGV RICH.',
+        'news_link' => 'All news & events',
+
+        'process_eyebrow' => 'How we work',
+        'process_title' => 'From enquiry to <span class="text-accent">evidence you can act on</span>',
+        'process_lead' => 'Every engagement follows the same three stages, whatever the discipline. You always know who is doing the work, on what timeline, and what you receive at the end.',
+        'process_link' => 'Start an enquiry',
+        'process_step' => 'Step :number of :total',
+
+        'projects_eyebrow' => 'Featured projects',
+        'projects_title' => 'Innovation you can <span class="text-accent">see and test</span>',
+        'projects_lead' => "Flagship projects from UGV's innovation ecosystem. Open one to see the problem, the solution, the team behind it and how far it has travelled.",
+
+        'services_eyebrow' => 'Consultancy services',
+        'services_title' => 'Expertise you can <span class="text-accent">commission</span>',
+        'services_lead' => 'Five practice areas drawing on the multidisciplinary expertise of UGV faculty and professional associates. Every engagement is scoped, staffed and delivered against agreed milestones.',
+
+        'testimonials_eyebrow' => 'Client feedback',
+        'testimonials_title' => 'Building success with <span class="text-accent">client feedback</span>',
+
+        'why_eyebrow' => 'Why choose UGV RICH',
+        'why_title' => 'Academic rigour, delivered like <span class="text-brand-300">professional practice</span>',
+        'why_lead' => 'Six reasons organisations bring their hardest questions to a university platform rather than a generalist firm.',
+    ],
+
+    'about' => [
+        'meta_title' => 'About',
+        'hero_title' => 'An institutional platform for research, innovation and <span class="text-accent">professional consultancy</span>',
+        'view_services' => 'View services',
+
+        'who_eyebrow' => 'Who we are',
+        'who_title' => 'University expertise, delivered as <span class="text-accent">practical solutions</span>',
+        'who_body' => 'Every engagement is staffed from within the university and its professional network, which means the person who designs your study is the person who understands the discipline behind it.',
+
+        'tile_staffed' => 'University-staffed',
+        'tile_staffed_note' => 'Faculty and professional network',
+        'tile_milestone' => 'Milestone-based',
+        'tile_milestone_note' => 'Scoped, costed and scheduled',
+        'tile_actionable' => 'Actionable',
+        'tile_actionable_note' => 'Findings your team can use',
+
+        'alt_meeting' => 'UGV RICH experts in a project meeting',
+        'alt_lab' => 'Research in the laboratory',
+        'collage_caption' => 'Research · Innovation · Consultancy · Hub',
+        'vision_signature' => 'UGV RICH · University of Global Village',
+
+        'vm_eyebrow' => 'Vision & mission',
+        'vm_title' => 'What we are building, and <span class="text-accent">how we get there</span>',
+
+        'core_eyebrow' => 'Core areas',
+        'core_title' => 'Research, Innovation, Consultancy and the Hub',
+        'core_lead' => 'Four connected functions that take a question from design, through delivery, into the sectors that need the answer.',
+
+        'serve_eyebrow' => 'Who we serve',
+        'serve_title' => 'Support for the organisations that shape public life',
+        'serve_lead' => 'UGV RICH provides research and consultancy support across the public, private, non-governmental and academic sectors.',
+
+        'partners_eyebrow' => 'Partnerships & collaborations',
+        'partners_title' => 'Who we collaborate with',
+    ],
+
+    'labs' => [
+        'meta_description' => 'Laboratories, workshops and studios across UGV departments — available for research, prototyping, testing and industry work.',
+        'hero_eyebrow' => 'Labs & facilities',
+        'hero_title' => 'Where the work actually <span class="text-accent">gets made</span>',
+        'hero_lead' => 'Laboratories, workshops and studios across the departments. They support student and faculty projects, and can be commissioned for industry testing and development work.',
+
+        'count_facilities' => 'Facilities',
+        'count_departments' => 'Departments',
+        'count_instruments' => 'Instruments listed',
+        'count_bookable' => 'Open to external work',
+
+        'list_eyebrow' => 'Facilities',
+        'list_title' => 'Laboratories, workshops and <span class="text-accent">studios</span>',
+        'list_lead' => 'Each is run by its department, and each can be commissioned for outside work.',
+
+        'equipment' => 'Equipment',
+        'available_for' => 'Available for',
+        'open_external' => 'Open to external work',
+        'empty' => 'Facilities added in the admin panel appear here.',
+
+        'commission_eyebrow' => 'Commissioning',
+        'commission_title' => 'Using a facility for <span class="text-accent">your own work</span>',
+        'commission_lead' => 'Industry, government and NGO partners can commission testing, fabrication and analysis in any of these facilities.',
+
+        'step_tell' => 'Tell us what you need',
+        'step_tell_note' => 'Describe the test, the sample or the build, and any standard it must meet.',
+        'step_scope' => 'The department scopes it',
+        'step_scope_note' => 'Faculty confirm the method, the equipment and who will run it.',
+        'step_quote' => 'You get a quote',
+        'step_quote_note' => 'Scope, timeline and cost, before any work starts.',
+        'step_report' => 'Work and report',
+        'step_report_note' => 'The work is carried out and you receive the results in writing.',
+    ],
+
+    'publications' => [
+        'meta_description' => 'Journal articles, conference papers and funded research projects published by UGV RICH researchers.',
+        'hero_title' => 'Work that has been <span class="text-accent">published</span>',
+        'hero_lead' => 'Peer-reviewed journal articles and conference papers by UGV RICH researchers, alongside the grants funding the work behind them.',
+
+        'papers_eyebrow' => 'Papers',
+        'papers_title' => '<span class="text-accent">:count</span> journal articles and conference papers',
+        'papers_lead' => 'Filter by kind, newest first.',
+
+        'filter_all' => 'All',
+        'filter_journal' => 'Journals',
+        'filter_conference' => 'Conference papers',
+        'filter_publication' => 'Other',
+
+        'year' => 'Year',
+        'view_publication' => 'View publication',
+        'empty' => 'Publications will be listed here.',
+
+        'funding_eyebrow' => 'Funding',
+        'funding_title' => 'Funded projects and <span class="text-accent">grants</span>',
+        'funding_lead' => 'Research funded by national bodies, ministries and development partners.',
+        'funder' => 'Funder',
+        'investigators' => 'Investigators',
+    ],
+
+    'patents' => [
+        'meta_title' => 'IP & Technology Transfer',
+        'meta_description' => 'Patent applications, granted patents, copyright, industrial design, technology available for licensing and commercialization at UGV RICH.',
+        'hero_title' => 'IP and <span class="text-accent">technology transfer</span>',
+        'hero_lead' => 'Novel work coming out of the Innovation Wing is protected before it is shown publicly, then licensed or taken to market. This is the register, kept up to date by the Innovation Wing.',
+        'licensing_enquiry' => 'Licensing enquiry',
+
+        'group_applications' => 'Patent Applications',
+        'group_applications_text' => 'Filed with the patent office, or being prepared for filing.',
+        'group_commercialization' => 'Commercialization',
+        'group_commercialization_text' => 'Work being taken to market, through licensing, incubation or a formed venture.',
+
+        'project_count' => '{1} :count project|[2,*] :count projects',
+        'group_empty' => 'Nothing on this shelf yet. Projects appear here as soon as the Innovation Wing records this status against them.',
+        'stage' => 'Stage :index/8',
+
+        'support_eyebrow' => 'Support',
+        'support_title' => 'How the hub handles <span class="text-accent">intellectual property</span>',
+        'support_lead' => 'Researchers keep the credit. The hub handles the process, the paperwork and the cost.',
+
+        'step_novelty' => 'Novelty check',
+        'step_novelty_note' => 'A prior-art search establishes whether the work is new before anything is filed.',
+        'step_disclosure' => 'Disclosure held in confidence',
+        'step_disclosure_note' => 'Technical detail stays inside the hub until protection is in place.',
+        'step_drafting' => 'Drafting and filing',
+        'step_drafting_note' => 'The hub prepares the application and covers the filing with the patent office.',
+        'step_licensing' => 'Licensing and transfer',
+        'step_licensing_note' => 'Once granted, the work can be licensed to industry or taken into a startup.',
+    ],
+
+    'industry' => [
+        'meta_description' => 'The industry, government, NGO, university and development partners UGV RICH works with on research, contract assignments, testing, training and technology transfer.',
+        'hero_eyebrow' => 'Industry collaboration',
+        'hero_title' => 'The organizations we <span class="text-accent">work with</span>',
+        'hero_lead' => 'UGV RICH works alongside industry, government organizations, NGOs, universities and development partners — on funded research, contract assignments, testing, training and technology transfer.',
+
+        'partners_eyebrow' => 'Partners',
+        'partners_title' => 'Who we already <span class="text-accent">work with</span>',
+        'partners_lead' => 'Every organization here is a live collaboration: research run together, assignments delivered to an agreed brief, laboratory testing, training and student placements.',
+        'partners_count' => 'partner organizations · :count {1} sector|[2,*] sectors',
+        'other_partners' => 'Other partners',
+        'empty' => 'Partner organizations will be listed here shortly.',
+        'filter_all' => 'All',
+        'visit_website' => 'Visit website',
+
+        'join_eyebrow' => 'Work with us',
+        'join_title' => 'Bring us a problem worth solving',
+        'join_body' => 'Tell us what you are trying to solve and we will suggest the route — joint research, a contract assignment, laboratory testing, training or a student placement.',
+    ],
+
+    'startup' => [
+        'meta_description' => 'From idea to enterprise: UGV RICH takes student and faculty ideas through evaluation, mentorship, prototyping, a business model, funding support and on to market.',
+        'hero_eyebrow' => 'Startup & incubation',
+        'hero_title' => 'From Idea to <span class="text-accent">Enterprise</span>',
+        'hero_lead' => 'Students and faculty submit an idea. The Innovation Wing evaluates it, connects mentors and supports it from prototype to market.',
+        'see_journey' => 'See the journey',
+
+        'stage_idea' => 'A student, faculty member or team submits the idea through the form.',
+        'stage_evaluation' => 'The Innovation Wing reviews it for originality, feasibility and impact.',
+        'stage_mentorship' => 'A faculty mentor and, where useful, an industry adviser are assigned.',
+        'stage_prototype' => 'The team builds a working model with lab access and technical support.',
+        'stage_business_model' => 'Costing, customers and route to market are worked out.',
+        'stage_funding' => 'Seed support, grant applications and investor introductions.',
+        'stage_startup' => 'The venture is formed, with IP and registration support.',
+        'stage_market' => 'The product reaches its users, and the hub stays in touch.',
+
+        'journey_eyebrow' => 'The journey',
+        'journey_title' => 'Eight stages, one <span class="text-accent">chain</span>',
+        'journey_lead' => 'Every idea follows the same route from submission to market. How long each link takes depends on the idea, not on a timetable.',
+        'journey_start' => 'Idea submitted',
+        'journey_end' => 'On the market',
+
+        'support_eyebrow' => 'Support',
+        'support_title' => 'What you get from the <span class="text-accent">Innovation Wing</span>',
+        'support_lead' => 'Submitting an idea costs nothing and commits you to nothing. If it is taken forward, this is what comes with it.',
+
+        'offer_mentor' => 'A faculty mentor',
+        'offer_mentor_note' => 'Someone from the relevant department who knows the field.',
+        'offer_lab' => 'Lab and workshop access',
+        'offer_lab_note' => 'Department facilities for building and testing.',
+        'offer_ip' => 'IP and patent support',
+        'offer_ip_note' => 'Help protecting novel work before it is shown publicly.',
+        'offer_model' => 'Business model support',
+        'offer_model_note' => 'Costing, customers and the route to market.',
+        'offer_funding' => 'Funding and grants',
+        'offer_funding_note' => 'Seed support and help with grant applications.',
+        'offer_industry' => 'Industry introductions',
+        'offer_industry_note' => 'Partners, pilot customers and investors.',
+
+        'cta_title' => 'Have an idea? Submit it.',
+        'cta_body' => 'Students, faculty, staff and alumni can all submit. Describe the problem and your solution — it does not need to be finished, and it does not need to be perfect.',
+    ],
+
+    'innovation' => [
+        'meta_description' => 'The UGV RICH Innovation Wing transforms ideas into practical solutions through interdisciplinary collaboration, prototyping, testing, IP development and commercialization support.',
+        'hero_eyebrow' => 'UGV RICH Innovation Wing',
+        'hero_title' => 'From ideas to <span class="text-accent">practical solutions</span>',
+        'hero_lead' => 'The Innovation Wing transforms ideas into practical solutions through interdisciplinary collaboration, prototyping, testing, intellectual property development and commercialization support.',
+        'explore_areas' => 'Explore the areas',
+
+        'tablist' => 'Innovation areas',
+        'all_areas' => 'All areas',
+        'empty_title' => 'No projects in this area yet',
+        'empty_body' => 'Have an idea that fits here? Submit it and the Innovation Wing will review it.',
+    ],
+
+    'pipeline' => [
+        'eyebrow' => 'Innovation pipeline',
+        'title' => 'From idea to market',
+        'start' => 'Idea',
+        'end' => 'Market',
+
+        'stage_idea' => 'Students, faculty or industry submit an idea.',
+        'stage_selected' => 'Promising ideas are shortlisted by the Innovation Wing.',
+        'stage_research' => 'Teams study the problem and validate the approach.',
+        'stage_prototype' => 'A working model is designed and built.',
+        'stage_testing' => 'The prototype is tested in real conditions.',
+        'stage_patent' => 'Novel work is protected through patents or IP.',
+        'stage_incubation' => 'Mentorship, business model and funding support.',
+        'stage_commercialization' => 'The solution reaches users as a product or startup.',
+    ],
+
+    'services' => [
+        'meta_title' => 'Consultancy & Industry Services',
+        'meta_description' => 'Research, technical testing, engineering solutions, software development, professional training and consultancy from UGV RICH for industry, government, NGOs and business.',
+        'hero_eyebrow' => 'Consultancy & industry services',
+        'hero_title' => 'From University Expertise to <span class="text-accent">Industry Solutions</span>',
+
+        'offer_eyebrow' => 'What UGV RICH offers',
+        'offer_statement' => 'UGV RICH provides <span class="mark">research</span>, <span class="mark">technical testing</span>, <span class="mark">engineering solutions</span>, <span class="mark">software development</span>, <span class="mark">professional training</span> and <span class="mark">consultancy services</span> to <span class="text-brand-700">industries</span>, <span class="text-brand-700">government organizations</span>, <span class="text-brand-700">NGOs</span> and <span class="text-brand-700">businesses</span>.',
+        'client_industries' => 'Industries',
+        'client_government' => 'Government organizations',
+        'client_ngos' => 'NGOs',
+        'client_businesses' => 'Businesses',
+
+        'catalogue_eyebrow' => 'Service catalogue',
+        'catalogue_title' => '<span class="text-accent">:services</span> services across :areas consultancy areas',
+        'catalogue_lead' => 'Each area draws on its own faculty and professional associates. Assignments often combine several.',
+        'service_count' => '{1} :count service|[2,*] :count services',
+        'area_detail' => 'Area detail',
+
+        'breadcrumb' => 'Services',
+        'request_service' => 'Request this service',
+        'see_included' => 'See what is included',
+        'included_eyebrow' => 'What is included',
+        'included_title' => '<span class="text-brand-600">:count</span> services in this area',
+        'included_lead' => 'Each service can be commissioned on its own or combined into a larger assignment. Scope, team and timeline are agreed before work begins.',
+        'stat_services' => 'Services',
+        'stat_experts' => '{1} Expert|[2,*] Experts',
+        'stat_projects' => '{1} Project|[2,*] Projects',
+
+        'experts_eyebrow' => 'Who delivers it',
+        'experts_title' => 'Experts in this area',
+        'experts_lead' => 'Assignments in this area are led by these faculty members and their departmental teams.',
+        'experts_link' => 'All experts in this area',
+
+        'work_eyebrow' => 'Recent work',
+        'work_title' => 'Projects delivered in this area',
+
+        'others_eyebrow' => 'Other areas',
+        'others_title' => 'Explore the rest of the <span class="text-accent">catalogue</span>',
+        'others_link' => 'All services',
+    ],
+
+    'projects' => [
+        'meta_description' => 'Innovation, research and consultancy projects delivered through UGV RICH, each with its problem, solution, team and current stage.',
+        'hero_title' => 'Projects and <span class="text-accent">achievements</span>',
+        'hero_lead' => 'Every UGV RICH project in one place, each with the problem it tackles, the solution, the team behind it and how far it has travelled.',
+
+        'filter_all' => 'All',
+        'all_areas' => 'All areas',
+        'showing' => 'Showing :shown of :total {1} project|[2,*] Showing :shown of :total projects',
+        'empty_title' => 'No projects here yet',
+        'empty_body' => 'Try another area, or browse all projects.',
+
+        'current_stage' => 'Current stage',
+        'stage_of' => ':label · stage :index of :total',
+
+        'problem' => 'Problem',
+        'solution' => 'Solution',
+        'about' => 'About this project',
+        'team' => 'Team',
+        'team_lead' => 'PI / Team leader',
+        'department' => 'Department',
+        'technology' => 'Technology',
+        'media' => 'Photos & video',
+        'watch_video' => 'Watch the video',
+        'video_title' => ':title video',
+        'photo_alt' => ':title photo :number',
+
+        'research' => 'Research',
+        'patent' => 'Patent / IP',
+        'commercial' => 'Commercial potential',
+        'outcome' => 'Project outcome',
+
+        'project_id' => 'Project ID',
+        'fact_type' => 'Type',
+        'fact_innovation_area' => 'Innovation area',
+        'fact_consultancy_area' => 'Area of consultancy',
+        'fact_client' => 'Client / Partner',
+        'fact_commercialization' => 'Commercialization',
+        'fact_duration' => 'Duration',
+        'fact_year' => 'Year',
+        'fact_status' => 'Status',
+
+        'collaborate_cta' => 'Collaborate on this project',
+        'commission_cta' => 'Commission similar work',
+
+        'more_eyebrow' => 'More work',
+        'more_innovation' => 'More innovation projects',
+        'more_related' => 'Related projects',
+    ],
+
+    'experts' => [
+        'meta_title' => 'Our Experts',
+        'meta_description' => 'A searchable directory of UGV faculty members and professional associates available for consultancy, research collaboration and supervision.',
+        'hero_eyebrow' => 'Our experts',
+        'hero_title' => 'Find the right <span class="text-accent">expertise</span>',
+        'hero_lead' => 'A searchable, filterable directory of UGV faculty members and professional associates. Search by name, department, expertise or research interest.',
+        'breadcrumb' => 'Experts',
+
+        'search_label' => 'Search experts',
+        'search_placeholder' => 'Search by name, department, expertise or research interest…',
+        'clear_search' => 'Clear search',
+        'all_areas' => 'All areas',
+        'found' => '{1} :count expert found|[2,*] :count experts found',
+        'clear_all' => 'Clear all',
+
+        'empty_title' => 'No experts match your search',
+        'empty_body' => 'Try a broader term or a different area, or clear the filters to see the full directory.',
+        'show_all' => 'Show all experts',
+        'ask_us' => 'Ask us to find one',
+
+        'expertise' => 'Areas of expertise',
+        'interests' => 'Research interests',
+        'profile' => 'Profile',
+        'available_for' => 'Available for',
+        'available_consultancy' => 'Consultancy assignments',
+        'available_research' => 'Research collaboration',
+        'available_supervision' => 'Postgraduate supervision',
+        'available_training' => 'Training & workshops',
+        'available_review' => 'Peer review',
+        'available_panels' => 'Expert panels',
+
+        'related_eyebrow' => 'Related expertise',
+        'related_title' => 'Others in this area',
+    ],
+
+    'news' => [
+        'meta_description' => 'Workshops, agreements, research presentations and calls for participation from across UGV RICH.',
+        'hero_eyebrow' => 'News & events',
+        'hero_title' => 'Latest from the <span class="text-accent">hub</span>',
+        'hero_lead' => 'Workshops, consultancy agreements, research presentations and calls for participation from across UGV RICH.',
+
+        'upcoming' => 'Upcoming events',
+        'filter_all' => 'All',
+        'filter_news' => 'News',
+        'filter_events' => 'Events',
+
+        'empty_title' => 'Nothing published here yet',
+        'empty_body' => 'Check back soon, or subscribe below for updates.',
+
+        'reading_time' => ':minutes min read',
+        'back' => 'All news & events',
+        'event_details' => 'Event details',
+        'register_interest' => 'Register interest',
+        'cta_title' => 'Work with UGV RICH',
+        'cta_body' => 'Bring us a research question or a consultancy requirement and we will match it to the right expertise.',
+        'cta_button' => 'Submit a request',
+
+        'related_eyebrow' => 'Keep reading',
+        'related_title' => 'More from UGV RICH',
+    ],
+
+    'forms' => [
+        'full_name' => 'Full name',
+        'email' => 'Email',
+        'phone' => 'Phone',
+        'organization' => 'Organization',
+        'subject' => 'Subject',
+        'website' => 'Website',
+        'errors_title' => 'Please correct the following',
+    ],
+
+    'contact' => [
+        'meta_description' => 'Contact the UGV RICH office, or send a message about research, innovation, collaboration or consultancy.',
+        'hero_eyebrow' => 'Contact UGV RICH',
+        'hero_title' => 'Talk to the <span class="text-accent">RICH office</span>',
+        'hero_lead' => 'Send us a message about research, innovation, collaboration or anything else. For consultancy work, use the consultancy request form so we can assign the right team.',
+
+        'sent_title' => 'Message sent',
+        'sent_body' => 'Thank you. The RICH office will reply to you by email.',
+
+        'form_title' => 'Send a message',
+        'form_note' => 'We reply by email, usually within three working days.',
+        'message_label' => 'Your message',
+        'message_placeholder' => 'Tell us what you need — a question, a collaboration, an invitation or anything else.',
+
+        'office' => 'RICH office',
+        'address' => 'Address',
+        'office_hours' => 'Office hours',
+
+        'consultancy_title' => 'Need consultancy work?',
+        'consultancy_body' => 'The consultancy request form asks for your requirement, the area of expertise and any documents, so we can come back with a team and a timeline.',
+    ],
+
+    'consultancy' => [
+        'meta_title' => 'Request Consultancy',
+        'meta_description' => 'Submit your requirement to UGV RICH and we will match it to the right faculty and professional expertise.',
+        'hero_eyebrow' => 'Request consultancy',
+        'hero_title' => 'Tell us the problem. We will assign the <span class="text-accent">expertise</span>.',
+        'hero_lead' => 'Describe your requirement, attach any documents, and the RICH office will come back with an approach, a team and a timeline.',
+
+        'form_title' => 'Start an engagement',
+        'confidential' => 'Confidential',
+        'step' => 'Step :number',
+        'step_you' => 'About you',
+        'step_requirement' => 'Your requirement',
+        'step_documents' => 'Documents & review',
+
+        'you_note' => 'So we know who to reply to, and on whose behalf.',
+        'designation' => 'Designation',
+
+        'requirement_note' => 'Pick the closest area, then describe the problem in your own words.',
+        'category' => 'Consultancy category',
+        'not_sure' => 'Not sure yet',
+        'which_service' => 'Which service?',
+        'optional' => '(optional)',
+        'advise_me' => 'Not sure — advise me',
+        'requirement_label' => 'Brief description of requirement',
+        'requirement_placeholder' => 'What is the problem, what decision does it support, and what would a successful outcome look like?',
+
+        'documents_title' => 'Documents &amp; review',
+        'documents_note' => 'Attach anything that helps — a brief, drawings, a tender document — then send it.',
+        'document_label' => 'Supporting document',
+        'choose_file' => 'Click to choose a file (optional)',
+        'file_types' => 'PDF, Word, Excel, PowerPoint, ZIP or image · up to 10 MB',
+        'change' => 'Change',
+        'browse' => 'Browse',
+
+        'summary' => 'Your request',
+        'summary_name' => 'Name',
+        'summary_category' => 'Category',
+        'summary_service' => 'Service',
+        'summary_requirement' => 'Requirement',
+        'summary_characters' => 'characters',
+        'summary_attachment' => 'Attachment',
+        'summary_none' => 'None',
+        'edit_details' => 'Edit your details',
+
+        'required_note' => 'Required fields',
+        'step_of' => 'Step :current of :total',
+        'back' => 'Back',
+        'continue' => 'Continue',
+        'submit' => 'Submit request',
+    ],
+
+    'ideas' => [
+        'meta_description' => 'Submit an innovation idea to the UGV RICH Innovation Wing. Open to students, faculty, staff and alumni.',
+        'hero_eyebrow' => 'Submit your idea',
+        'hero_title' => 'Every enterprise starts as an <span class="text-accent">idea</span>.',
+        'hero_lead' => 'Tell us the problem you have spotted and how you would solve it. The Innovation Wing reviews every submission.',
+
+        'form_title' => 'Submit your idea',
+        'confidential' => 'Reviewed in confidence',
+        'step_you' => 'About you',
+        'step_idea' => 'Your idea',
+        'you_note' => 'So we know who to talk to, and which department to involve.',
+
+        'role_label' => 'You are',
+        'department' => 'Department',
+        'select_department' => 'Select your department',
+        'programme' => 'Programme / designation',
+
+        'idea_note' => 'It does not need to be finished. Tell us the problem and how you would solve it.',
+        'title_label' => 'Idea title',
+        'title_placeholder' => 'e.g. Low-cost water testing kit for coastal households',
+
+        'problem_label' => 'What problem does it solve?',
+        'problem_placeholder' => 'Who has this problem today, and what do they do about it now?',
+        'solution_label' => 'What is your solution?',
+        'solution_placeholder' => 'What would you build, and what makes it different from what exists?',
+        'beneficiaries_label' => 'Who benefits?',
+        'beneficiaries_placeholder' => 'Students, farmers, an industry, a community — whoever the users would be.',
+        'resources_needed_label' => 'What support do you need?',
+        'resources_needed_placeholder' => 'Lab access, materials, a mentor, funding — whatever would help you start.',
+
+        'team_size' => 'Team size',
+        'team_size_placeholder' => 'e.g. Just me, or 4 students',
+        'file_label' => 'Supporting file (optional)',
+        'file_hint' => 'Sketch, slides or a short write-up',
+        'file_types' => 'PDF, Word, PowerPoint, ZIP or image · up to 10 MB',
+
+        'submit' => 'Submit idea',
+    ],
+
+    'thanks' => [
+        'consultancy_title' => 'Request received',
+        'consultancy_description' => 'Your consultancy request has been received by UGV RICH.',
+        'consultancy_body' => 'Your consultancy request has been received. Our coordination team will review it and be in touch shortly.',
+        'thank_you' => 'Thank you:name.',
+        'meet_experts' => 'Meet our experts',
+        'see_projects' => 'See our projects',
+        'add_something' => 'Need to add something? Email',
+        'email_subject' => 'Consultancy request',
+
+        'idea_title' => 'Idea received',
+        'idea_description' => 'Your innovation idea has been received by the UGV RICH Innovation Wing.',
+        'idea_body' => 'Your idea has been received by the Innovation Wing. We review every submission and will be in touch by email.',
+        'back_to_startup' => 'Back to Startup &amp; Incubation',
+    ],
+
+    'cards' => [
+        'view_innovation' => 'View innovation',
+        'view_case_study' => 'View case study',
+        'view_profile' => 'View profile',
+        'read_more' => 'Read more',
+        'read_story' => 'Read the story',
+        'event_details' => 'Event details',
+        'event' => 'Event',
+        'news' => 'News',
+        'explore_area' => 'Explore area',
+        'skip_to_content' => 'Skip to content',
+    ],
+
+    'research_meta' => 'RICH Research Wing — Comprehensive Institutional Research Plan, University of Global Village (UGV).',
+
+    'footer' => [
+        'consultancy' => 'Consultancy',
+        'explore' => 'Explore',
+        'contact' => 'Contact',
+        'rights' => 'All rights reserved.',
+        'newsletter' => 'Newsletter',
+        'newsletter_heading' => 'Research briefings,',
+        'newsletter_heading_accent' => 'straight to your inbox',
+        'newsletter_body' => 'Occasional updates on new consultancy work, published research, workshops and calls for collaboration.',
+        'email_label' => 'Your email address',
+        'email_placeholder' => 'you@organisation.org',
+        'topic_consultancy' => 'Consultancy work',
+        'topic_research' => 'Published research',
+        'topic_events' => 'Workshops & events',
+        'topic_collaboration' => 'Calls for collaboration',
+        'research_innovation' => 'Research & Innovation',
+        'experts' => 'Our Experts',
+        'copyright' => '© :year :name · University of Global Village. All rights reserved.',
+    ],
+
+];

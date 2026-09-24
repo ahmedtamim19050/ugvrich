@@ -4,8 +4,8 @@
 
             <div class="lg:sticky lg:top-28 lg:self-start">
                 <x-section-heading
-                    eyebrow="FAQ"
-                    title='Quick answers to the questions we get <span class="text-accent">most</span>' />
+                    :eyebrow="__('site.home.faq_eyebrow')"
+                    :title="__('site.home.faq_title')" />
 
                 @php
                     $phone = $site->get('contact_phone');
@@ -29,7 +29,7 @@
                                              class="h-11 w-11 rounded-full object-cover object-top ring-[3px] ring-brand-700">
                                     @endforeach
                                 </div>
-                                <span class="text-[12.5px] font-medium leading-tight text-brand-100">Our experts<br>are here to help</span>
+                                <span class="text-[12.5px] font-medium leading-tight text-brand-100">{!! __('site.home.faq_team') !!}</span>
                             </div>
                         @else
                             <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-brand-700">
@@ -37,9 +37,9 @@
                             </span>
                         @endif
 
-                        <p class="mt-6 font-display text-[26px] font-bold leading-tight !text-white">Still have a question?</p>
+                        <p class="mt-6 font-display text-[26px] font-bold leading-tight !text-white">{{ __('site.home.faq_still') }}</p>
                         <p class="mt-2 text-[15px] leading-relaxed text-white/75">
-                            Talk to our office team and we will connect you with the right expert.
+                            {{ __('site.home.faq_still_body') }}
                         </p>
                     </div>
 
@@ -52,7 +52,7 @@
                                     <x-ui-icon name="phone" class="h-5 w-5" />
                                 </span>
                                 <span class="min-w-0 flex-1">
-                                    <span class="block text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">Call us</span>
+                                    <span class="block text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">{{ __('site.home.faq_call') }}</span>
                                     <span class="block truncate font-display text-[16px] font-semibold text-ink-950">{{ $phone }}</span>
                                 </span>
                                 <x-ui-icon name="arrow-up-right" class="h-4 w-4 shrink-0 text-ink-300 transition group-hover:rotate-45 group-hover:text-brand-600" />
@@ -65,7 +65,7 @@
                                     <x-ui-icon name="mail" class="h-5 w-5" />
                                 </span>
                                 <span class="min-w-0 flex-1">
-                                    <span class="block text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">Email us</span>
+                                    <span class="block text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400">{{ __('site.home.faq_email') }}</span>
                                     <span class="block truncate font-display text-[16px] font-semibold text-ink-950">{{ $email }}</span>
                                 </span>
                                 <x-ui-icon name="arrow-up-right" class="h-4 w-4 shrink-0 text-ink-300 transition group-hover:rotate-45 group-hover:text-brand-600" />
@@ -74,7 +74,7 @@
 
                         <a href="{{ route('contact') }}"
                            class="group flex items-center justify-center gap-2 rounded-2xl bg-brand-600 px-5 py-3.5 text-[14px] font-semibold !text-white transition hover:bg-brand-700">
-                            Contact the RICH office
+                            {{ __('site.home.faq_contact') }}
                             <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                         </a>
                     </div>

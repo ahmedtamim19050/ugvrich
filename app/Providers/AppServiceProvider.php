@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Routing\LocalizedUrlGenerator;
 use App\Support\Site;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
@@ -12,6 +13,23 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->scoped(Site::class);
+
+        // route() should answer in the language being read, so the generator
+        // is swapped for one that knows about the `en.` route names.
+        $this->app->singleton('url', function ($app) {
+            $url = new LocalizedUrlGenerator(
+                $app['router']->getRoutes(),
+                $app->rebinding('request', fn ($app, $request) => $app['url']->setRequest($request)),
+                $app['config']['app.asset_url'],
+            );
+
+            $url->setSessionResolver(fn () => $app['session'] ?? null);
+            $url->setKeyResolver(fn () => $app->make('config')->get('app.key'));
+
+            $app->rebinding('routes', fn ($app, $routes) => $app['url']->setRoutes($routes));
+
+            return $url;
+        });
     }
 
     public function boot(): void

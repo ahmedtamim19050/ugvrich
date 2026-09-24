@@ -99,7 +99,7 @@
                 </div>
 
                 <span class="inline-flex items-center gap-2 text-[13px] font-semibold text-ink-900 transition-colors group-hover:text-brand-700" aria-hidden="true">
-                    View profile
+                    {{ __('site.cards.view_profile') }}
                     <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink-950 text-white transition duration-500 {{ $ease }} group-hover:rotate-45 group-hover:bg-brand-600">
                         <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                     </span>

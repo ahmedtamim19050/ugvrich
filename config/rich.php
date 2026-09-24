@@ -13,6 +13,20 @@
 
 return [
 
+    // Department names as the research plan's own tables write them.
+    'research_departments' => [
+        'English' => 'English',
+        'BBA' => 'BBA',
+        'CSE' => 'CSE',
+        'Mechanical Engineering' => 'Mechanical Engineering',
+        'Mechanical' => 'Mechanical',
+        'Public Health' => 'Public Health',
+        'Islamic Studies' => 'Islamic Studies',
+        'Civil Engineering' => 'Civil Engineering',
+        'Civil' => 'Civil',
+        'EEE' => 'EEE',
+    ],
+
     // code => name. The code is used in project IDs, e.g. RICH-CSE-2026-001.
     'departments' => [
         'CSE' => 'Computer Science & Engineering',

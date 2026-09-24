@@ -3,12 +3,12 @@
         <div class="container-rich">
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="Our experts"
-                    title='The people behind the <span class="text-accent">work</span>'
-                    lead="A searchable directory of UGV faculty members and professional associates available for consultancy, collaboration and supervision." />
+                    :eyebrow="__('site.home.experts_eyebrow')"
+                    :title="__('site.home.experts_title')"
+                    :lead="__('site.home.experts_lead')" />
 
                 <a href="{{ route('experts.index') }}" class="btn-ghost reveal shrink-0">
-                    Browse the directory <x-ui-icon name="search" class="h-4 w-4" />
+                    {{ __('site.home.experts_link') }} <x-ui-icon name="search" class="h-4 w-4" />
                 </a>
             </div>
 

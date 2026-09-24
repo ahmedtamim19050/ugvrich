@@ -9,38 +9,31 @@
     // The main bar. Anything that does not fit lives in $utility below, in the
     // strip above the bar, so every section is reachable without a dropdown.
     $links = [
-        ['key' => 'home', 'label' => 'Home', 'route' => 'home', 'match' => ['home']],
-        ['key' => 'about', 'label' => 'About RICH', 'route' => 'about', 'match' => ['about']],
-        ['key' => 'research', 'label' => 'Research', 'route' => 'research', 'match' => ['research'], 'panel' => [
-            'title' => 'Research',
-            'text' => 'Research areas, ongoing studies and published work.',
-            'children' => [
-                ['Research', route('research'), 'beaker', 'Research areas and ongoing studies'],
-                ['Publications', route('publications'), 'document', 'Journal articles, conference papers and grants'],
-            ],
-        ]],
-        ['key' => 'innovation', 'label' => 'Innovation Wing', 'route' => 'innovation.index', 'match' => ['innovation.*'], 'panel' => [
-            'title' => 'Innovation areas',
-            'text' => 'Every department brings its own discipline to the Innovation Wing.',
+        ['key' => 'home', 'label' => __('site.nav.home'), 'route' => 'home', 'match' => ['home']],
+        ['key' => 'projects', 'label' => __('site.nav.projects'), 'route' => 'projects.index', 'match' => ['projects.*']],
+        ['key' => 'research', 'label' => __('site.nav.research'), 'route' => 'research', 'match' => ['research']],
+        ['key' => 'innovation', 'label' => __('site.nav.innovation'), 'route' => 'innovation.index', 'match' => ['innovation.*'], 'panel' => [
+            'title' => __('site.nav.innovation_panel'),
+            'text' => __('site.nav.innovation_panel_text'),
             'children' => $areas->map(fn ($area) => [
                 $area->name, route('innovation.index', ['area' => $area->slug]), $area->icon ?? 'lightbulb',
-                $area->department ? config('rich.departments.'.$area->department) : null,
+                \App\Support\Vocabulary::label('departments', $area->department),
             ])->all(),
         ]],
-        ['key' => 'consultancy', 'label' => 'Consultancy', 'route' => 'services.index', 'match' => ['services.*', 'consultancy.*'], 'panel' => [
-            'title' => 'Consultancy',
-            'text' => 'Expert services for industry, government and development partners.',
+        ['key' => 'consultancy', 'label' => __('site.nav.consultancy'), 'route' => 'services.index', 'match' => ['services.*', 'consultancy.*'], 'panel' => [
+            'title' => __('site.nav.consultancy'),
+            'text' => __('site.nav.consultancy_panel_text'),
             'children' => array_merge(
                 $categories->map(fn ($category) => [
                     $category->name, route('services.show', $category), $category->icon ?? 'grid', $category->tagline,
                 ])->all(),
-                [['Industry Collaboration', route('industry'), 'handshake', 'Ways to work with us']],
+                [[__('site.nav.industry'), route('industry'), 'handshake', __('site.nav.industry_note')]],
             ),
         ]],
-        ['key' => 'labs', 'label' => 'Labs & Facilities', 'route' => 'labs', 'match' => ['labs']],
-        ['key' => 'projects', 'label' => 'Projects', 'route' => 'projects.index', 'match' => ['projects.*']],
-        ['key' => 'startup', 'label' => 'Startup & Incubation', 'route' => 'startup', 'match' => ['startup', 'ideas.*']],
-        ['key' => 'news', 'label' => 'News & Events', 'route' => 'news.index', 'match' => ['news.*', 'events']],
+        ['key' => 'team', 'label' => __('site.nav.team'), 'route' => 'experts.index', 'match' => ['experts.*']],
+        ['key' => 'about', 'label' => __('site.nav.about'), 'route' => 'about', 'match' => ['about']],
+        ['key' => 'startup', 'label' => __('site.nav.startup'), 'route' => 'startup', 'match' => ['startup', 'ideas.*']],
+        ['key' => 'news', 'label' => __('site.nav.news'), 'route' => 'news.index', 'match' => ['news.*', 'events']],
     ];
 
     // Either side of the logo.
@@ -49,10 +42,10 @@
 
     // The rest of the sections, in the strip above the bar.
     $utility = [
-        ['Publications', route('publications'), 'document', ['publications']],
-        ['Patents & IP', route('patents'), 'key', ['patents']],
-        ['Industry Collaboration', route('industry'), 'handshake', ['industry']],
-        ['Team', route('experts.index'), 'users', ['experts.*']],
+        // [__('site.nav.publications'), route('publications'), 'document', ['publications']],   // hidden from the strip on request
+        [__('site.nav.patents'), route('patents'), 'key', ['patents']],
+        [__('site.nav.industry'), route('industry'), 'handshake', ['industry']],
+        // [__('site.nav.labs'), route('labs'), 'cpu', ['labs']],   // hidden from the strip on request
     ];
 
     $email = $site->get('contact_email');
@@ -74,30 +67,34 @@
         {{-- Info strip: folds away once the page scrolls --}}
         <div class="header-strip header-ease hidden overflow-hidden lg:block"
              :class="solid ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'">
+            {{-- Same row width as the bar below, so the strip's first and last
+                 items sit above the first and last items of the menu. --}}
             <div class="header-row flex h-9 items-center justify-between gap-6 text-[12.5px]">
-                <nav class="flex items-center gap-5" aria-label="Secondary">
+                {{-- How far the first menu label sits from the edge depends on how
+                     wide the menu is, which changes with the language and the
+                     viewport — so the inset is measured, not guessed. --}}
+                <nav x-ref="strip" class="flex items-center gap-5" aria-label="Secondary"
+                     :style="`padding-inline-start: ${stripInset}px`">
                     @foreach ($utility as [$label, $url, $icon, $patterns])
                         <a href="{{ $url }}"
                            @class(['flex items-center gap-1.5 transition hover:opacity-100', 'font-semibold' => request()->routeIs(...$patterns)])>
-                            <x-ui-icon :name="$icon" class="h-3.5 w-3.5" /> {{ $label }}
+                            <x-ui-icon :name="$icon" class="h-3.5 w-3.5" />
+                            <span data-strip-label>{{ $label }}</span>
                         </a>
                     @endforeach
                 </nav>
 
                 <div class="flex items-center gap-5">
-                    @if ($email)
-                        <a href="mailto:{{ $email }}" class="hidden items-center gap-1.5 transition hover:opacity-100 2xl:flex">
-                            <x-ui-icon name="mail" class="h-3.5 w-3.5" /> {{ $email }}
-                        </a>
-                    @endif
                     <a href="{{ route('ideas.create') }}" class="group hidden items-center gap-1.5 font-medium transition hover:opacity-100 lg:flex">
-                        Have an idea? Submit it to RICH
+                        {{ __('site.actions.have_an_idea') }}
                         <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </a>
 
+                    <x-language-switch class="!py-1" />
+
                     <a href="{{ route('contact') }}"
                        class="group flex items-center gap-1.5 rounded-full bg-brand-600 px-3.5 py-1 font-semibold text-white transition hover:bg-brand-500">
-                        Collaborate
+                        {{ __('site.actions.collaborate') }}
                         <x-ui-icon name="arrow-up-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-45" />
                     </a>
                 </div>
@@ -156,8 +153,8 @@
                     <button type="button" @click="open = true"
                             class="menu-button flex h-10 items-center gap-2 rounded-full border border-ink-200 bg-white pl-4 pr-3
                                    text-[13.5px] font-semibold text-ink-800 transition duration-300 hover:border-brand-300 hover:text-brand-700"
-                            aria-label="Open menu">
-                        Menu
+                            aria-label="{{ __('site.nav.open_menu') }}">
+                        {{ __('site.nav.menu') }}
                         <x-ui-icon name="menu" class="h-4.5 w-4.5" />
                     </button>
                 </div>
@@ -237,8 +234,8 @@
             <x-brand-mark invert class="h-[72px]" />
             <button type="button" @click="open = false"
                     class="flex h-10 items-center gap-2 rounded-full border border-white/20 pl-4 pr-3 text-[13.5px] font-semibold transition hover:bg-white/10"
-                    aria-label="Close menu">
-                Close
+                    aria-label="{{ __('site.nav.close_menu') }}">
+                {{ __('site.nav.close') }}
                 <x-ui-icon name="x" class="h-4.5 w-4.5" />
             </button>
         </div>
@@ -282,7 +279,7 @@
         </nav>
 
         <div class="container-rich mt-8">
-            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">More</p>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">{{ __('site.nav.more') }}</p>
             <div class="mt-3 grid gap-1 sm:grid-cols-2">
                 @foreach ($utility as [$label, $url, $icon, $patterns])
                     <a href="{{ $url }}" class="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[15px] text-white/75 transition hover:bg-white/5 hover:text-white">
@@ -290,6 +287,10 @@
                     </a>
                 @endforeach
             </div>
+        </div>
+
+        <div class="container-rich mt-8">
+            <x-language-switch invert />
         </div>
 
         <div class="container-rich mt-auto grid gap-6 pb-10 pt-12 sm:grid-cols-2 sm:items-end">
@@ -302,7 +303,7 @@
                 @endif
             </div>
             <a href="{{ route('contact') }}" class="btn-primary w-full sm:w-auto sm:justify-self-end">
-                Collaborate with us
+                {{ __('site.actions.collaborate_with_us') }}
                 <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
             </a>
         </div>

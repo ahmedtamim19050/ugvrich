@@ -2,16 +2,28 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
+use App\Support\Vocabulary;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InnovationArea extends Model
 {
+    use HasTranslations;
+
+    /** Fields with a `_bn` twin; see the HasTranslations trait. */
+    protected array $translatable = [
+        'name',
+        'description',
+        'focus',
+    ];
+
     protected $guarded = [];
 
     protected $casts = [
         'focus' => 'array',
+        'focus_bn' => 'array',
         'is_active' => 'boolean',
     ];
 
@@ -27,7 +39,7 @@ class InnovationArea extends Model
 
     public function getDepartmentNameAttribute(): ?string
     {
-        return config('rich.departments.'.$this->department);
+        return Vocabulary::label('departments', $this->department);
     }
 
     public function getRouteKeyName(): string

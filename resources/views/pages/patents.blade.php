@@ -1,13 +1,13 @@
-<x-layouts.app title="IP & Technology Transfer"
-               description="Patent applications, granted patents, copyright, industrial design, technology available for licensing and commercialization at UGV RICH.">
+<x-layouts.app :title="__('site.patents.meta_title')"
+               :description="__('site.patents.meta_description')">
 
     <x-page-hero
-        eyebrow="Patents & IP"
-        title='IP and <span class="text-accent">technology transfer</span>'
-        lead="Novel work coming out of the Innovation Wing is protected before it is shown publicly, then licensed or taken to market. This is the register, kept up to date by the Innovation Wing."
-        :breadcrumbs="['Patents & IP' => null]">
+        :eyebrow="__('site.nav.patents')"
+        :title="__('site.patents.hero_title')"
+        :lead="__('site.patents.hero_lead')"
+        :breadcrumbs="[__('site.nav.patents') => null]">
         <a href="{{ route('consultancy.create') }}" class="btn-primary">
-            Licensing enquiry <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.patents.licensing_enquiry') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
     </x-page-hero>
 
@@ -28,13 +28,13 @@
                     </div>
 
                     <span class="shrink-0 self-start rounded-full border border-ink-200 bg-white px-3.5 py-1.5 text-[13px] font-semibold text-ink-600 sm:self-auto">
-                        {{ $group['items']->count() }} {{ \Illuminate\Support\Str::plural('project', $group['items']->count()) }}
+                        {{ trans_choice('site.patents.project_count', $group['items']->count(), ['count' => $group['items']->count()]) }}
                     </span>
                 </div>
 
                 @if ($group['items']->isEmpty())
                     <p class="mt-7 rounded-2xl border-2 border-dashed border-ink-200 px-6 py-8 text-center text-[14px] muted">
-                        Nothing on this shelf yet. Projects appear here as soon as the Innovation Wing records this status against them.
+                        {{ __('site.patents.group_empty') }}
                     </p>
                 @else
                     <div class="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -85,7 +85,7 @@
                                             </span>
                                         @endif
                                         @if ($project->stage)
-                                            <span class="text-[12px] muted">Stage {{ $project->stage_index }}/8</span>
+                                            <span class="text-[12px] muted">{{ __('site.patents.stage', ['index' => $project->stage_index]) }}</span>
                                         @endif
 
                                         <x-ui-icon name="arrow-right" class="ml-auto h-4 w-4 text-ink-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand-600" />
@@ -104,25 +104,25 @@
         <div class="container-rich grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
                 <x-section-heading
-                    eyebrow="Support"
-                    title='How the hub handles <span class="text-accent">intellectual property</span>'
-                    lead="Researchers keep the credit. The hub handles the process, the paperwork and the cost." />
+                    :eyebrow="__('site.patents.support_eyebrow')"
+                    :title="__('site.patents.support_title')"
+                    :lead="__('site.patents.support_lead')" />
 
                 <div class="reveal mt-8 flex flex-wrap gap-3">
                     <a href="{{ route('ideas.create') }}" class="btn-primary">
-                        Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                        {{ __('site.actions.submit_idea') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                     </a>
-                    <a href="{{ route('consultancy.create') }}" class="btn-ghost">Licensing enquiry</a>
+                    <a href="{{ route('consultancy.create') }}" class="btn-ghost">{{ __('site.patents.licensing_enquiry') }}</a>
                 </div>
             </div>
 
             <ol class="grid gap-3 sm:grid-cols-2">
                 @foreach ([
-                    ['search', 'Novelty check', 'A prior-art search establishes whether the work is new before anything is filed.'],
-                    ['shield', 'Disclosure held in confidence', 'Technical detail stays inside the hub until protection is in place.'],
-                    ['document', 'Drafting and filing', 'The hub prepares the application and covers the filing with the patent office.'],
-                    ['handshake', 'Licensing and transfer', 'Once granted, the work can be licensed to industry or taken into a startup.'],
-                ] as $i => [$icon, $title, $text])
+                    ['search', 'novelty'],
+                    ['shield', 'disclosure'],
+                    ['document', 'drafting'],
+                    ['handshake', 'licensing'],
+                ] as $i => [$icon, $step])
                     <li class="reveal rounded-2xl border border-ink-100 bg-white p-5" style="transition-delay: {{ min($i * 60, 300) }}ms">
                         <div class="flex items-center justify-between">
                             <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
@@ -130,8 +130,8 @@
                             </span>
                             <span class="font-display text-[12px] font-bold tabular-nums text-ink-300">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
                         </div>
-                        <p class="mt-4 font-display text-[15px] font-semibold text-ink-950">{{ $title }}</p>
-                        <p class="mt-1.5 text-[13px] leading-relaxed muted">{{ $text }}</p>
+                        <p class="mt-4 font-display text-[15px] font-semibold text-ink-950">{{ __('site.patents.step_'.$step) }}</p>
+                        <p class="mt-1.5 text-[13px] leading-relaxed muted">{{ __('site.patents.step_'.$step.'_note') }}</p>
                     </li>
                 @endforeach
             </ol>

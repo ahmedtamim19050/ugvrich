@@ -11,11 +11,11 @@
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60"></span>
                             <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-600"></span>
                         </span>
-                        <p class="font-display text-[15px] font-bold text-ink-950">RICH at a glance</p>
-                        <span class="hidden text-[13px] muted sm:inline">· Live numbers from the RICH office</span>
+                        <p class="font-display text-[15px] font-bold text-ink-950">{{ __('site.home.glance') }}</p>
+                        <span class="hidden text-[13px] muted sm:inline">{{ __('site.home.glance_note') }}</span>
                     </div>
                     <a href="{{ route('projects.index') }}" class="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-700">
-                        View all projects
+                        {{ __('site.home.view_all_projects') }}
                         <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                     </a>
                 </div>

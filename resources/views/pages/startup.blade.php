@@ -1,30 +1,31 @@
-<x-layouts.app title="Startup & Incubation"
-               description="From idea to enterprise: UGV RICH takes student and faculty ideas through evaluation, mentorship, prototyping, a business model, funding support and on to market.">
+<x-layouts.app :title="__('site.nav.startup')"
+               :description="__('site.startup.meta_description')">
 
     <x-page-hero
-        eyebrow="Startup & incubation"
-        title='From Idea to <span class="text-accent">Enterprise</span>'
-        lead="Students and faculty submit an idea. The Innovation Wing evaluates it, connects mentors and supports it from prototype to market."
-        :breadcrumbs="['Startup & Incubation' => null]">
+        :eyebrow="__('site.startup.hero_eyebrow')"
+        :title="__('site.startup.hero_title')"
+        :lead="__('site.startup.hero_lead')"
+        :breadcrumbs="[__('site.nav.startup') => null]">
         <a href="{{ route('ideas.create') }}" class="btn-primary">
-            Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.actions.submit_idea') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
-        <a href="#journey" class="btn-ghost">See the journey</a>
+        <a href="#journey" class="btn-ghost">{{ __('site.startup.see_journey') }}</a>
     </x-page-hero>
 
     @php
-        $stages = config('rich.startup_stages');
+        $stages = \App\Support\Vocabulary::all('startup_stages');
 
-        // One icon and one line per stage, in the same order as the config.
-        $detail = [
-            'idea' => ['lightbulb', 'A student, faculty member or team submits the idea through the form.'],
-            'evaluation' => ['check', 'The Innovation Wing reviews it for originality, feasibility and impact.'],
-            'mentorship' => ['users', 'A faculty mentor and, where useful, an industry adviser are assigned.'],
-            'prototype' => ['cog', 'The team builds a working model with lab access and technical support.'],
-            'business_model' => ['chart', 'Costing, customers and route to market are worked out.'],
-            'funding' => ['star', 'Seed support, grant applications and investor introductions.'],
-            'startup' => ['rocket', 'The venture is formed, with IP and registration support.'],
-            'market' => ['briefcase', 'The product reaches its users, and the hub stays in touch.'],
+        // One icon per stage, in the same order as the config; the line beside
+        // it is keyed by the same stage name.
+        $icons = [
+            'idea' => 'lightbulb',
+            'evaluation' => 'check',
+            'mentorship' => 'users',
+            'prototype' => 'cog',
+            'business_model' => 'chart',
+            'funding' => 'star',
+            'startup' => 'rocket',
+            'market' => 'briefcase',
         ];
     @endphp
 
@@ -34,14 +35,15 @@
     <section id="journey" class="scroll-mt-28 bg-white py-16 sm:py-20">
         <div class="container-rich">
             <x-section-heading
-                eyebrow="The journey"
-                title='Eight stages, one <span class="text-accent">chain</span>'
-                lead="Every idea follows the same route from submission to market. How long each link takes depends on the idea, not on a timetable." />
+                :eyebrow="__('site.startup.journey_eyebrow')"
+                :title="__('site.startup.journey_title')"
+                :lead="__('site.startup.journey_lead')" />
 
             <ol class="chain mt-14">
                 @foreach ($stages as $key => $label)
                     @php
-                        [$icon, $text] = $detail[$key] ?? ['check', ''];
+                        $icon = $icons[$key] ?? 'check';
+                        $text = __('site.startup.stage_'.$key);
                         $n = $loop->iteration;
                     @endphp
                     <li @class(['chain-link reveal', 'has-line' => ! $loop->last])
@@ -66,11 +68,11 @@
 
             <p class="mt-10 flex flex-wrap items-center justify-center gap-3 text-[13px] muted">
                 <span class="inline-flex items-center gap-2">
-                    <span class="h-2.5 w-2.5 rounded-full bg-brand-600"></span> Idea submitted
+                    <span class="h-2.5 w-2.5 rounded-full bg-brand-600"></span> {{ __('site.startup.journey_start') }}
                 </span>
                 <x-ui-icon name="arrow-right" class="h-3.5 w-3.5 text-ink-300" />
                 <span class="inline-flex items-center gap-2">
-                    <span class="h-2.5 w-2.5 rounded-full bg-navy-700"></span> On the market
+                    <span class="h-2.5 w-2.5 rounded-full bg-navy-700"></span> {{ __('site.startup.journey_end') }}
                 </span>
             </p>
         </div>
@@ -81,30 +83,30 @@
         <div class="container-rich grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
                 <x-section-heading
-                    eyebrow="Support"
-                    title='What you get from the <span class="text-accent">Innovation Wing</span>'
-                    lead="Submitting an idea costs nothing and commits you to nothing. If it is taken forward, this is what comes with it." />
+                    :eyebrow="__('site.startup.support_eyebrow')"
+                    :title="__('site.startup.support_title')"
+                    :lead="__('site.startup.support_lead')" />
 
                 <a href="{{ route('ideas.create') }}" class="btn-primary reveal mt-8">
-                    Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                    {{ __('site.actions.submit_idea') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                 </a>
             </div>
 
             <div class="grid gap-3 sm:grid-cols-2">
                 @foreach ([
-                    ['academic', 'A faculty mentor', 'Someone from the relevant department who knows the field.'],
-                    ['beaker', 'Lab and workshop access', 'Department facilities for building and testing.'],
-                    ['shield', 'IP and patent support', 'Help protecting novel work before it is shown publicly.'],
-                    ['chart', 'Business model support', 'Costing, customers and the route to market.'],
-                    ['star', 'Funding and grants', 'Seed support and help with grant applications.'],
-                    ['handshake', 'Industry introductions', 'Partners, pilot customers and investors.'],
-                ] as $i => [$icon, $title, $text])
+                    ['academic', 'mentor'],
+                    ['beaker', 'lab'],
+                    ['shield', 'ip'],
+                    ['chart', 'model'],
+                    ['star', 'funding'],
+                    ['handshake', 'industry'],
+                ] as $i => [$icon, $offer])
                     <div class="reveal rounded-2xl border border-ink-100 bg-white p-5" style="transition-delay: {{ min($i * 50, 300) }}ms">
                         <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
                             <x-ui-icon :name="$icon" class="h-4.5 w-4.5" />
                         </span>
-                        <p class="mt-4 font-display text-[15px] font-semibold text-ink-950">{{ $title }}</p>
-                        <p class="mt-1.5 text-[13px] leading-relaxed muted">{{ $text }}</p>
+                        <p class="mt-4 font-display text-[15px] font-semibold text-ink-950">{{ __('site.startup.offer_'.$offer) }}</p>
+                        <p class="mt-1.5 text-[13px] leading-relaxed muted">{{ __('site.startup.offer_'.$offer.'_note') }}</p>
                     </div>
                 @endforeach
             </div>
@@ -121,18 +123,18 @@
                 <div class="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
                     <div>
                         <h2 class="font-display text-[26px] font-bold leading-tight !text-white sm:text-[34px]">
-                            Have an idea? Submit it.
+                            {{ __('site.startup.cta_title') }}
                         </h2>
                         <p class="mt-4 max-w-xl text-[15.5px] leading-relaxed text-white/75">
-                            Students, faculty, staff and alumni can all submit. Describe the problem and your solution — it does not need to be finished, and it does not need to be perfect.
+                            {{ __('site.startup.cta_body') }}
                         </p>
                         <a href="{{ route('ideas.create') }}" class="btn-invert mt-8">
-                            Submit Your Idea <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                            {{ __('site.actions.submit_idea') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                         </a>
                     </div>
 
                     <div class="flex flex-wrap gap-2">
-                        @foreach (config('rich.idea_roles') as $role)
+                        @foreach (\App\Support\Vocabulary::all('idea_roles') as $role)
                             <span class="rounded-full border border-white/15 bg-white/[0.07] px-4 py-2 text-[13.5px] font-medium text-white/85">{{ $role }}</span>
                         @endforeach
                     </div>

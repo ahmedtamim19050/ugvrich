@@ -2,9 +2,9 @@
     <div class="container-rich relative">
         <x-section-heading
             align="center"
-            eyebrow="Consultancy services"
-            title='Expertise you can <span class="text-accent">commission</span>'
-            lead="Five practice areas drawing on the multidisciplinary expertise of UGV faculty and professional associates. Every engagement is scoped, staffed and delivered against agreed milestones." />
+            :eyebrow="__('site.home.services_eyebrow')"
+            :title="__('site.home.services_title')"
+            :lead="__('site.home.services_lead')" />
 
         <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($categories as $i => $category)

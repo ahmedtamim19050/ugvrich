@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Experts\Schemas;
 
+use App\Filament\Support\Bilingual;
+use App\Models\Expert;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
@@ -18,71 +20,73 @@ class ExpertForm
     {
         return $schema
             ->components([
-                Section::make('Identity')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(150)
-                            ->placeholder('Dr. Jane Doe')
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+                Bilingual::tabs(Expert::class, [
+                    Section::make('Identity')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('name')
+                                ->required()
+                                ->maxLength(150)
+                                ->placeholder('Dr. Jane Doe')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn ($state, $set, $context) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        TextInput::make('slug')
-                            ->required()
-                            ->maxLength(150)
-                            ->unique(ignoreRecord: true),
+                            TextInput::make('slug')
+                                ->required()
+                                ->maxLength(150)
+                                ->unique(ignoreRecord: true),
 
-                        TextInput::make('designation')
-                            ->maxLength(150)
-                            ->placeholder('Professor'),
+                            TextInput::make('designation')
+                                ->maxLength(150)
+                                ->placeholder('Professor'),
 
-                        TextInput::make('department')
-                            ->maxLength(150)
-                            ->placeholder('Department of Civil Engineering'),
+                            TextInput::make('department')
+                                ->maxLength(150)
+                                ->placeholder('Department of Civil Engineering'),
 
-                        FileUpload::make('photo')
-                            ->image()
-                            ->avatar()
-                            ->disk('public')
-                            ->directory('experts')
-                            ->imageEditor(),
+                            FileUpload::make('photo')
+                                ->image()
+                                ->avatar()
+                                ->disk('public')
+                                ->directory('experts')
+                                ->imageEditor(),
 
-                        Select::make('service_category_id')
-                            ->label('Primary area of consultancy')
-                            ->relationship('category', 'name')
-                            ->searchable()
-                            ->preload(),
-                    ]),
+                            Select::make('service_category_id')
+                                ->label('Primary area of consultancy')
+                                ->relationship('category', 'name')
+                                ->searchable()
+                                ->preload(),
+                        ]),
 
-                Section::make('Expertise')
-                    ->schema([
-                        TagsInput::make('expertise')
-                            ->placeholder('Add an area and press Enter')
-                            ->helperText('Shown as tags on the profile and used by directory search.')
-                            ->columnSpanFull(),
+                    Section::make('Expertise')
+                        ->schema([
+                            TagsInput::make('expertise')
+                                ->placeholder('Add an area and press Enter')
+                                ->helperText('Shown as tags on the profile and used by directory search.')
+                                ->columnSpanFull(),
 
-                        Textarea::make('research_interests')
-                            ->rows(3)
-                            ->columnSpanFull(),
+                            Textarea::make('research_interests')
+                                ->rows(3)
+                                ->columnSpanFull(),
 
-                        Textarea::make('bio')
-                            ->label('Profile')
-                            ->rows(6)
-                            ->columnSpanFull(),
-                    ]),
+                            Textarea::make('bio')
+                                ->label('Profile')
+                                ->rows(6)
+                                ->columnSpanFull(),
+                        ]),
 
-                Section::make('Contact & visibility')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('email')->email()->maxLength(180),
-                        TextInput::make('phone')->tel()->maxLength(40),
-                        TextInput::make('linkedin')->url()->maxLength(255),
-                        TextInput::make('scholar')->label('Google Scholar')->url()->maxLength(255),
-                        TextInput::make('sort_order')->numeric()->default(0)->required(),
-                        Toggle::make('is_featured')->label('Feature on the homepage'),
-                        Toggle::make('is_active')->label('Visible on the site')->default(true),
-                    ]),
+                    Section::make('Contact & visibility')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('email')->email()->maxLength(180),
+                            TextInput::make('phone')->tel()->maxLength(40),
+                            TextInput::make('linkedin')->url()->maxLength(255),
+                            TextInput::make('scholar')->label('Google Scholar')->url()->maxLength(255),
+                            TextInput::make('sort_order')->numeric()->default(0)->required(),
+                            Toggle::make('is_featured')->label('Feature on the homepage'),
+                            Toggle::make('is_active')->label('Visible on the site')->default(true),
+                        ]),
+                ]),
             ]);
     }
 }

@@ -1,14 +1,14 @@
-<x-layouts.app title="Consultancy & Industry Services"
-               description="Research, technical testing, engineering solutions, software development, professional training and consultancy from UGV RICH for industry, government, NGOs and business.">
+<x-layouts.app :title="__('site.services.meta_title')"
+               :description="__('site.services.meta_description')">
 
     <x-page-hero
-        eyebrow="Consultancy & industry services"
-        title='From University Expertise to <span class="text-accent">Industry Solutions</span>'
-        :breadcrumbs="['Consultancy' => null]">
+        :eyebrow="__('site.services.hero_eyebrow')"
+        :title="__('site.services.hero_title')"
+        :breadcrumbs="[__('site.nav.consultancy') => null]">
         <a href="{{ route('consultancy.create') }}" class="btn-primary">
-            Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
-        <a href="#services" class="btn-ghost">Browse the catalogue</a>
+        <a href="#services" class="btn-ghost">{{ __('site.actions.browse_catalogue') }}</a>
     </x-page-hero>
 
     {{-- The positioning statement. This is the page's revenue pitch, so it is
@@ -18,21 +18,16 @@
 
         <div class="container-rich">
             <div class="reveal relative max-w-4xl border-l-4 border-brand-600 py-2 pl-7 sm:pl-10">
-                <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">What UGV RICH offers</p>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">{{ __('site.services.offer_eyebrow') }}</p>
 
                 <p class="mt-4 font-display text-[21px] font-semibold leading-[1.5] text-ink-950 sm:text-[26px] sm:leading-[1.5]">
-                    UGV RICH provides
-                    <span class="mark">research</span>, <span class="mark">technical testing</span>,
-                    <span class="mark">engineering solutions</span>, <span class="mark">software development</span>,
-                    <span class="mark">professional training</span> and <span class="mark">consultancy services</span>
-                    to <span class="text-brand-700">industries</span>, <span class="text-brand-700">government organizations</span>,
-                    <span class="text-brand-700">NGOs</span> and <span class="text-brand-700">businesses</span>.
+                    {!! __('site.services.offer_statement') !!}
                 </p>
 
                 <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3">
-                    @foreach ([['building', 'Industries'], ['shield', 'Government organizations'], ['heart', 'NGOs'], ['briefcase', 'Businesses']] as [$icon, $label])
+                    @foreach ([['building', 'industries'], ['shield', 'government'], ['heart', 'ngos'], ['briefcase', 'businesses']] as [$icon, $label])
                         <span class="inline-flex items-center gap-2 text-[13.5px] font-medium text-ink-600">
-                            <x-ui-icon :name="$icon" class="h-4 w-4 text-brand-600" /> {{ $label }}
+                            <x-ui-icon :name="$icon" class="h-4 w-4 text-brand-600" /> {{ __('site.services.client_'.$label) }}
                         </span>
                     @endforeach
                 </div>
@@ -45,12 +40,12 @@
         <div class="container-rich">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="Service catalogue"
-                    :title="'<span class=\'text-accent\'>'.$serviceCount.'</span> services across '.$categories->count().' consultancy areas'"
-                    lead="Each area draws on its own faculty and professional associates. Assignments often combine several." />
+                    :eyebrow="__('site.services.catalogue_eyebrow')"
+                    :title="__('site.services.catalogue_title', ['services' => $serviceCount, 'areas' => $categories->count()])"
+                    :lead="__('site.services.catalogue_lead')" />
 
                 <a href="{{ route('consultancy.create') }}" class="btn-primary reveal shrink-0">
-                    Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                    {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                 </a>
             </div>
 
@@ -65,7 +60,7 @@
                                     </span>
                                     <h2 class="font-display text-[22px] font-bold leading-tight text-ink-950 sm:text-[26px]">{{ $category->name }}</h2>
                                     <span class="rounded-full bg-ink-100 px-2.5 py-1 text-[12px] font-bold text-ink-600">
-                                        {{ $category->services->count() }} {{ \Illuminate\Support\Str::plural('service', $category->services->count()) }}
+                                        {{ trans_choice('site.services.service_count', $category->services->count(), ['count' => $category->services->count()]) }}
                                     </span>
                                 </div>
 
@@ -75,7 +70,7 @@
                             </div>
 
                             <a href="{{ route('services.show', $category) }}" class="btn-ghost reveal shrink-0">
-                                Area detail <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                                {{ __('site.services.area_detail') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                             </a>
                         </div>
 

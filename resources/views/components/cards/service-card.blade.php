@@ -44,7 +44,7 @@
     @endif
 
     <span class="relative mt-auto flex items-center gap-2 pt-7 text-[13.5px] font-semibold text-brand-700">
-        Explore area
+        {{ __('site.cards.explore_area') }}
         <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
     </span>
 </a>

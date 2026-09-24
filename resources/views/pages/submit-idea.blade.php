@@ -1,11 +1,11 @@
-<x-layouts.app title="Submit Your Idea"
-               description="Submit an innovation idea to the UGV RICH Innovation Wing. Open to students, faculty, staff and alumni.">
+<x-layouts.app :title="__('site.actions.submit_idea')"
+               :description="__('site.ideas.meta_description')">
 
     <x-page-hero
-        eyebrow="Submit your idea"
-        title='Every enterprise starts as an <span class="text-accent">idea</span>.'
-        lead="Tell us the problem you have spotted and how you would solve it. The Innovation Wing reviews every submission."
-        :breadcrumbs="['Startup & Incubation' => route('startup'), 'Submit Your Idea' => null]" />
+        :eyebrow="__('site.ideas.hero_eyebrow')"
+        :title="__('site.ideas.hero_title')"
+        :lead="__('site.ideas.hero_lead')"
+        :breadcrumbs="[__('site.nav.startup') => route('startup'), __('site.actions.submit_idea') => null]" />
 
     <section class="bg-white py-14 sm:py-16">
         <div class="container-rich">
@@ -16,7 +16,7 @@
                         <x-ui-icon name="x" class="h-5 w-5" stroke="2.5" />
                     </span>
                     <div>
-                        <p class="font-display text-[16px] font-bold text-red-700">Please correct the following</p>
+                        <p class="font-display text-[16px] font-bold text-red-700">{{ __('site.forms.errors_title') }}</p>
                         <ul class="mt-2 space-y-1 text-[14px] text-red-600">
                             @foreach ($errors->all() as $error)
                                 <li>· {{ $error }}</li>
@@ -54,7 +54,7 @@
 
                 {{-- Honeypot --}}
                 <div class="hidden" aria-hidden="true">
-                    <label for="website">Website</label>
+                    <label for="website">{{ __('site.forms.website') }}</label>
                     <input id="website" type="text" name="website" tabindex="-1" autocomplete="off">
                 </div>
 
@@ -63,14 +63,14 @@
                     <div class="pointer-events-none absolute inset-0 -z-10 text-brand-700 grid-overlay opacity-40 [mask-image:linear-gradient(to_left,black,transparent_70%)]" aria-hidden="true"></div>
 
                     <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h2 class="font-display text-2xl font-bold text-ink-950 sm:text-[28px]">Submit your idea</h2>
+                        <h2 class="font-display text-2xl font-bold text-ink-950 sm:text-[28px]">{{ __('site.ideas.form_title') }}</h2>
                         <span class="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-3.5 py-1.5 text-[12.5px] font-medium text-ink-600">
-                            <x-ui-icon name="shield" class="h-4 w-4 text-brand-600" /> Reviewed in confidence
+                            <x-ui-icon name="shield" class="h-4 w-4 text-brand-600" /> {{ __('site.ideas.confidential') }}
                         </span>
                     </div>
 
                     <ol class="mt-7 grid gap-3 sm:grid-cols-2">
-                        @foreach ([[1, 'About you'], [2, 'Your idea']] as [$n, $label])
+                        @foreach ([[1, __('site.ideas.step_you')], [2, __('site.ideas.step_idea')]] as [$n, $label])
                             <li class="flex items-center gap-3 rounded-2xl border bg-white p-3.5 transition duration-300"
                                 :class="step === {{ $n }} ? 'border-brand-600 ring-4 ring-brand-100' : (step > {{ $n }} ? 'border-brand-200' : 'border-ink-200')">
                                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-display text-[13px] font-bold transition-colors duration-300"
@@ -79,7 +79,7 @@
                                     <span x-show="step <= {{ $n }}">{{ $n }}</span>
                                 </span>
                                 <span class="min-w-0">
-                                    <span class="block text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink-400">Step {{ $n }}</span>
+                                    <span class="block text-[10.5px] font-semibold uppercase tracking-[0.14em] text-ink-400">{{ __('site.consultancy.step', ['number' => $n]) }}</span>
                                     <span class="block truncate font-display text-[14.5px] font-semibold text-ink-950">{{ $label }}</span>
                                 </span>
                             </li>
@@ -91,58 +91,62 @@
 
                     {{-- Step 1 — About you --}}
                     <fieldset x-ref="step1" x-show="step === 1" x-transition.opacity>
-                        <legend class="sr-only">About you</legend>
-                        <p class="font-display text-[19px] font-bold text-ink-950">About you</p>
-                        <p class="mt-1.5 text-[14px] muted">So we know who to talk to, and which department to involve.</p>
+                        <legend class="sr-only">{{ __('site.ideas.step_you') }}</legend>
+                        <p class="font-display text-[19px] font-bold text-ink-950">{{ __('site.ideas.step_you') }}</p>
+                        <p class="mt-1.5 text-[14px] muted">{{ __('site.ideas.you_note') }}</p>
 
                         <div class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                            <x-form.field name="name" label="Full name" icon="users" required autocomplete="name" />
-                            <x-form.field name="phone" label="Phone" type="tel" icon="phone" autocomplete="tel" />
-                            <x-form.field name="email" label="Email" type="email" icon="mail" required autocomplete="email" />
+                            <x-form.field name="name" :label="__('site.forms.full_name')" icon="users" required autocomplete="name" />
+                            <x-form.field name="phone" :label="__('site.forms.phone')" type="tel" icon="phone" autocomplete="tel" />
+                            <x-form.field name="email" :label="__('site.forms.email')" type="email" icon="mail" required autocomplete="email" />
 
                             <div>
                                 <label for="role" class="mb-2 block text-[13px] font-semibold text-ink-700">
-                                    You are <span class="text-brand-600">*</span>
+                                    {{ __('site.ideas.role_label') }} <span class="text-brand-600">*</span>
                                 </label>
                                 <select id="role" name="role" required
                                         class="w-full rounded-2xl border border-ink-200 bg-ink-50/60 px-4 py-3.5 text-[15px] text-ink-900 transition hover:border-ink-300 focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-100">
-                                    @foreach (config('rich.idea_roles') as $value => $label)
+                                    @foreach (\App\Support\Vocabulary::all('idea_roles') as $value => $label)
                                         <option value="{{ $value }}" @selected(old('role', 'student') === $value)>{{ $label }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div>
-                                <label for="department" class="mb-2 block text-[13px] font-semibold text-ink-700">Department</label>
+                                <label for="department" class="mb-2 block text-[13px] font-semibold text-ink-700">{{ __('site.ideas.department') }}</label>
                                 <select id="department" name="department"
                                         class="w-full rounded-2xl border border-ink-200 bg-ink-50/60 px-4 py-3.5 text-[15px] text-ink-900 transition hover:border-ink-300 focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-100">
-                                    <option value="">Select your department</option>
-                                    @foreach (config('rich.departments') as $code => $label)
+                                    <option value="">{{ __('site.ideas.select_department') }}</option>
+                                    @foreach (\App\Support\Vocabulary::all('departments') as $code => $label)
                                         <option value="{{ $code }}" @selected(old('department') === $code)>{{ $label }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <x-form.field name="programme" label="Programme / designation" icon="academic" />
+                            <x-form.field name="programme" :label="__('site.ideas.programme')" icon="academic" />
                         </div>
                     </fieldset>
 
                     {{-- Step 2 — The idea --}}
                     <fieldset x-ref="step2" x-show="step === 2" x-cloak x-transition.opacity>
-                        <legend class="sr-only">Your idea</legend>
-                        <p class="font-display text-[19px] font-bold text-ink-950">Your idea</p>
-                        <p class="mt-1.5 text-[14px] muted">It does not need to be finished. Tell us the problem and how you would solve it.</p>
+                        <legend class="sr-only">{{ __('site.ideas.step_idea') }}</legend>
+                        <p class="font-display text-[19px] font-bold text-ink-950">{{ __('site.ideas.step_idea') }}</p>
+                        <p class="mt-1.5 text-[14px] muted">{{ __('site.ideas.idea_note') }}</p>
 
                         <div class="mt-7 space-y-6">
-                            <x-form.field name="title" label="Idea title" icon="lightbulb" required
-                                          placeholder="e.g. Low-cost water testing kit for coastal households" />
+                            <x-form.field name="title" :label="__('site.ideas.title_label')" icon="lightbulb" required
+                                          :placeholder="__('site.ideas.title_placeholder')" />
 
                             @foreach ([
-                                ['problem', 'What problem does it solve?', 'Who has this problem today, and what do they do about it now?', true],
-                                ['solution', 'What is your solution?', 'What would you build, and what makes it different from what exists?', true],
-                                ['beneficiaries', 'Who benefits?', 'Students, farmers, a industry, a community — whoever the users would be.', false],
-                                ['resources_needed', 'What support do you need?', 'Lab access, materials, a mentor, funding — whatever would help you start.', false],
-                            ] as [$field, $label, $placeholder, $required])
+                                ['problem', true],
+                                ['solution', true],
+                                ['beneficiaries', false],
+                                ['resources_needed', false],
+                            ] as [$field, $required])
+                                @php
+                                    $label = __('site.ideas.'.$field.'_label');
+                                    $placeholder = __('site.ideas.'.$field.'_placeholder');
+                                @endphp
                                 <div>
                                     <label for="{{ $field }}" class="mb-2 block text-[13px] font-semibold text-ink-700">
                                         {{ $label }} @if ($required)<span class="text-brand-600">*</span>@endif
@@ -163,10 +167,10 @@
                             @endforeach
 
                             <div class="grid gap-6 lg:grid-cols-2">
-                                <x-form.field name="team_size" label="Team size" icon="users" placeholder="e.g. Just me, or 4 students" />
+                                <x-form.field name="team_size" :label="__('site.ideas.team_size')" icon="users" :placeholder="__('site.ideas.team_size_placeholder')" />
 
                                 <div>
-                                    <label for="document" class="mb-2 block text-[13px] font-semibold text-ink-700">Supporting file (optional)</label>
+                                    <label for="document" class="mb-2 block text-[13px] font-semibold text-ink-700">{{ __('site.ideas.file_label') }}</label>
                                     <label for="document"
                                            class="group flex cursor-pointer items-center gap-4 rounded-2xl border-2 border-dashed px-5 py-4 transition"
                                            :class="file ? 'border-brand-300 bg-brand-50/60' : 'border-ink-200 hover:border-brand-300 hover:bg-ink-50/60'">
@@ -176,8 +180,8 @@
                                             <x-ui-icon name="document" class="h-5 w-5" x-show="file" x-cloak />
                                         </span>
                                         <span class="min-w-0 flex-1">
-                                            <span class="block truncate text-[14px] font-medium text-ink-950" x-text="file ?? 'Sketch, slides or a short write-up'">Sketch, slides or a short write-up</span>
-                                            <span class="mt-0.5 block text-[12px] muted">PDF, Word, PowerPoint, ZIP or image · up to 10 MB</span>
+                                            <span class="block truncate text-[14px] font-medium text-ink-950" x-text="file ?? @js(__('site.ideas.file_hint'))">{{ __('site.ideas.file_hint') }}</span>
+                                            <span class="mt-0.5 block text-[12px] muted">{{ __('site.ideas.file_types') }}</span>
                                         </span>
                                     </label>
                                     <input id="document" type="file" name="document" class="sr-only"
@@ -195,22 +199,22 @@
                 {{-- Navigation --}}
                 <div class="flex flex-col gap-4 border-t border-ink-100 bg-ink-50/70 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-10">
                     <p class="text-[13px] muted">
-                        <span class="font-semibold text-brand-600">*</span> Required fields ·
-                        Step <span x-text="step">1</span> of 2
+                        <span class="font-semibold text-brand-600">*</span> {{ __('site.consultancy.required_note') }} ·
+                        {!! __('site.consultancy.step_of', ['current' => '<span x-text="step">1</span>', 'total' => 2]) !!}
                     </p>
 
                     <div class="flex flex-wrap gap-3">
                         <button type="button" x-show="step > 1" x-cloak @click="back()" class="btn-ghost">
-                            <x-ui-icon name="arrow-left" class="h-4 w-4" /> Back
+                            <x-ui-icon name="arrow-left" class="h-4 w-4" /> {{ __('site.consultancy.back') }}
                         </button>
 
                         <button type="button" x-show="step < last" @click="advance()" class="btn-primary group justify-center">
-                            Continue
+                            {{ __('site.consultancy.continue') }}
                             <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                         </button>
 
                         <button type="submit" x-show="step === last" x-cloak class="btn-primary group justify-center">
-                            Submit idea
+                            {{ __('site.ideas.submit') }}
                             <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                         </button>
                     </div>

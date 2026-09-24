@@ -45,9 +45,16 @@ class SettingForm
                             ]),
 
                         Textarea::make('value')
+                            ->label('Value (English)')
                             ->rows(10)
                             ->columnSpanFull()
                             ->helperText('JSON-typed settings must contain valid JSON.'),
+
+                        Textarea::make('value_bn')
+                            ->label('Value (বাংলা)')
+                            ->rows(10)
+                            ->columnSpanFull()
+                            ->helperText('Leave empty to show the English value.'),
                     ]),
             ]);
     }

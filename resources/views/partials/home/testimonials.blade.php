@@ -4,8 +4,8 @@
         <div class="container-rich">
             <x-section-heading
                 align="center"
-                eyebrow="Client feedback"
-                title='Building success with <span class="text-accent">client feedback</span>' />
+                :eyebrow="__('site.home.testimonials_eyebrow')"
+                :title="__('site.home.testimonials_title')" />
 
             <div class="reveal relative mx-auto mt-14 max-w-3xl">
                 <div class="relative isolate overflow-hidden rounded-[2rem] border border-ink-100 bg-white px-6 py-10 text-center sm:px-20 sm:py-14">

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Faqs\Schemas;
 
+use App\Filament\Support\Bilingual;
+use App\Models\Faq;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -14,14 +16,16 @@ class FaqForm
     {
         return $schema
             ->components([
-                Section::make('Question')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('question')->required()->maxLength(255)->columnSpanFull(),
-                        Textarea::make('answer')->required()->rows(5)->columnSpanFull(),
-                        TextInput::make('sort_order')->numeric()->default(0)->required(),
-                        Toggle::make('is_active')->label('Visible on the site')->default(true),
-                    ]),
+                Bilingual::tabs(Faq::class, [
+                    Section::make('Question')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('question')->required()->maxLength(255)->columnSpanFull(),
+                            Textarea::make('answer')->required()->rows(5)->columnSpanFull(),
+                            TextInput::make('sort_order')->numeric()->default(0)->required(),
+                            Toggle::make('is_active')->label('Visible on the site')->default(true),
+                        ]),
+                ]),
             ]);
     }
 }

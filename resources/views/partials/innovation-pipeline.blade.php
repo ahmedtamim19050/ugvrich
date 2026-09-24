@@ -3,17 +3,17 @@
     per stage, following an idea from submission to market.
 --}}
 @php
-    $stages = config('rich.pipeline_stages');
+    $stages = \App\Support\Vocabulary::all('pipeline_stages');
 
-    $details = [
-        'idea' => ['lightbulb', 'Students, faculty or industry submit an idea.'],
-        'selected' => ['check', 'Promising ideas are shortlisted by the Innovation Wing.'],
-        'research' => ['beaker', 'Teams study the problem and validate the approach.'],
-        'prototype' => ['cog', 'A working model is designed and built.'],
-        'testing' => ['target', 'The prototype is tested in real conditions.'],
-        'patent' => ['shield', 'Novel work is protected through patents or IP.'],
-        'incubation' => ['rocket', 'Mentorship, business model and funding support.'],
-        'commercialization' => ['briefcase', 'The solution reaches users as a product or startup.'],
+    $icons = [
+        'idea' => 'lightbulb',
+        'selected' => 'check',
+        'research' => 'beaker',
+        'prototype' => 'cog',
+        'testing' => 'target',
+        'patent' => 'shield',
+        'incubation' => 'rocket',
+        'commercialization' => 'briefcase',
     ];
 
     // One soft, friendly colour per stage: pastel block, bright icon tile. Listed in full so Tailwind keeps every class.
@@ -39,13 +39,13 @@
     {{-- Header --}}
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
-            <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700">Innovation pipeline</p>
-            <h3 class="mt-1.5 font-display text-2xl font-bold text-ink-950 sm:text-[28px]">From idea to market</h3>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700">{{ __('site.pipeline.eyebrow') }}</p>
+            <h3 class="mt-1.5 font-display text-2xl font-bold text-ink-950 sm:text-[28px]">{{ __('site.pipeline.title') }}</h3>
         </div>
         <p class="flex items-center gap-2 text-[13px] font-medium text-ink-500">
-            <span class="h-2 w-2 rounded-full bg-sky-500"></span> Idea
+            <span class="h-2 w-2 rounded-full bg-sky-500"></span> {{ __('site.pipeline.start') }}
             <x-ui-icon name="arrow-right" class="h-3.5 w-3.5" />
-            <span class="h-2 w-2 rounded-full bg-blue-600"></span> Market
+            <span class="h-2 w-2 rounded-full bg-blue-600"></span> {{ __('site.pipeline.end') }}
         </p>
     </div>
 
@@ -54,7 +54,8 @@
         @foreach ($stages as $key => $label)
             @php
                 $i = $loop->index;
-                [$icon, $text] = $details[$key] ?? ['check', ''];
+                $icon = $icons[$key] ?? 'check';
+                $text = __('site.pipeline.stage_'.$key);
             @endphp
             <li class="group relative">
                 <div @class([

@@ -5,12 +5,12 @@
         <div class="container-rich">
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="How we work"
-                    title='From enquiry to <span class="text-accent">evidence you can act on</span>'
-                    lead="Every engagement follows the same three stages, whatever the discipline. You always know who is doing the work, on what timeline, and what you receive at the end." />
+                    :eyebrow="__('site.home.process_eyebrow')"
+                    :title="__('site.home.process_title')"
+                    :lead="__('site.home.process_lead')" />
 
                 <a href="{{ route('contact') }}" class="btn-primary reveal shrink-0">
-                    Start an enquiry <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                    {{ __('site.home.process_link') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                 </a>
             </div>
 
@@ -33,7 +33,7 @@
                             </div>
 
                             <p class="relative mt-8 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">
-                                Step {{ $i + 1 }} of {{ count($steps) }}
+                                {{ __('site.home.process_step', ['number' => $i + 1, 'total' => count($steps)]) }}
                             </p>
                             <h3 class="relative mt-2 font-display text-xl font-bold sm:text-2xl">{{ $step['title'] }}</h3>
                             <p class="relative mt-3 text-[15px] leading-relaxed muted">{{ $step['description'] }}</p>

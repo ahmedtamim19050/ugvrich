@@ -1,11 +1,11 @@
-<x-layouts.app title="Publications"
-               description="Journal articles, conference papers and funded research projects published by UGV RICH researchers.">
+<x-layouts.app :title="__('site.nav.publications')"
+               :description="__('site.publications.meta_description')">
 
     <x-page-hero
-        eyebrow="Publications"
-        title='Work that has been <span class="text-accent">published</span>'
-        lead="Peer-reviewed journal articles and conference papers by UGV RICH researchers, alongside the grants funding the work behind them."
-        :breadcrumbs="['Publications' => null]" />
+        :eyebrow="__('site.nav.publications')"
+        :title="__('site.publications.hero_title')"
+        :lead="__('site.publications.hero_lead')"
+        :breadcrumbs="[__('site.nav.publications') => null]" />
 
     @php
         $papers = $journals->concat($conferences)->concat($other);
@@ -17,16 +17,16 @@
         <div class="container-rich">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <x-section-heading
-                    eyebrow="Papers"
-                    :title="'<span class=\'text-accent\'>'.$papers->count().'</span> journal articles and conference papers'"
-                    lead="Filter by kind, newest first." />
+                    :eyebrow="__('site.publications.papers_eyebrow')"
+                    :title="__('site.publications.papers_title', ['count' => $papers->count()])"
+                    :lead="__('site.publications.papers_lead')" />
 
                 <div class="reveal flex flex-wrap gap-1.5 rounded-2xl border border-ink-200 bg-ink-50 p-1.5">
-                    @foreach ([['all', 'All', $papers->count()], ['journal', 'Journals', $journals->count()], ['conference', 'Conference papers', $conferences->count()], ['publication', 'Other', $other->count()]] as [$key, $label, $count])
+                    @foreach ([['all', $papers->count()], ['journal', $journals->count()], ['conference', $conferences->count()], ['publication', $other->count()]] as [$key, $count])
                         @if ($count || $key === 'all')
                             <button type="button" @click="kind = '{{ $key }}'"
                                     class="area-tab !py-2 !text-[13px]" :class="kind === '{{ $key }}' && 'is-on'">
-                                {{ $label }}
+                                {{ __('site.publications.filter_'.$key) }}
                                 <span class="area-tab-count">{{ $count }}</span>
                             </button>
                         @endif
@@ -40,7 +40,7 @@
                              x-show="kind === 'all' || kind === '{{ $item->kind }}'" x-transition.opacity>
                         <div class="group relative flex h-full gap-5 overflow-hidden rounded-[1.5rem] border border-ink-100 bg-white p-5 transition duration-500 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-[0_22px_48px_-30px_rgba(2,34,81,0.45)] sm:p-6">
                             <div class="flex w-16 shrink-0 flex-col items-center self-start overflow-hidden rounded-2xl border border-ink-100 text-center transition-colors group-hover:border-brand-200">
-                                <span class="w-full bg-navy-700 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white transition-colors group-hover:bg-brand-600">Year</span>
+                                <span class="w-full bg-navy-700 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white transition-colors group-hover:bg-brand-600">{{ __('site.publications.year') }}</span>
                                 <span class="py-2 font-display text-[17px] font-bold tabular-nums text-ink-950">{{ $item->year ?: '—' }}</span>
                             </div>
 
@@ -48,7 +48,7 @@
                                 <div class="flex flex-wrap items-center gap-1.5">
                                     <span class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[11.5px] font-semibold text-brand-700">
                                         <x-ui-icon :name="$item->kind === 'conference' ? 'users' : 'document'" class="h-3.5 w-3.5 shrink-0" />
-                                        {{ config('rich.publication_kinds.'.$item->kind, 'Publication') }}
+                                        {{ \App\Support\Vocabulary::label('publication_kinds', $item->kind, 'Publication') }}
                                     </span>
                                     @if ($item->venue)
                                         <span class="truncate text-[12.5px] muted">{{ $item->venue }}</span>
@@ -70,14 +70,14 @@
                                 @if ($item->url)
                                     <a href="{{ $item->url }}" target="_blank" rel="noopener noreferrer"
                                        class="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 after:absolute after:inset-0">
-                                        View publication <x-ui-icon name="external" class="h-3.5 w-3.5" />
+                                        {{ __('site.publications.view_publication') }} <x-ui-icon name="external" class="h-3.5 w-3.5" />
                                     </a>
                                 @endif
                             </div>
                         </div>
                     </article>
                 @empty
-                    <p class="rounded-2xl border-2 border-dashed border-ink-200 p-8 text-center text-[14.5px] muted md:col-span-2">Publications will be listed here.</p>
+                    <p class="rounded-2xl border-2 border-dashed border-ink-200 p-8 text-center text-[14.5px] muted md:col-span-2">{{ __('site.publications.empty') }}</p>
                 @endforelse
             </div>
         </div>
@@ -88,9 +88,9 @@
         <section class="border-t border-ink-100 bg-ink-50 py-16 sm:py-20">
             <div class="container-rich">
                 <x-section-heading
-                    eyebrow="Funding"
-                    title='Funded projects and <span class="text-accent">grants</span>'
-                    lead="Research funded by national bodies, ministries and development partners." />
+                    :eyebrow="__('site.publications.funding_eyebrow')"
+                    :title="__('site.publications.funding_title')"
+                    :lead="__('site.publications.funding_lead')" />
 
                 <div class="mt-10 grid gap-4 md:grid-cols-2">
                     @foreach ($funded as $i => $item)
@@ -108,14 +108,14 @@
                             <dl class="mt-4 space-y-2 text-[13.5px]">
                                 @if ($item->venue)
                                     <div class="flex items-center gap-2 text-white/85">
-                                        <dt class="sr-only">Funder</dt>
+                                        <dt class="sr-only">{{ __('site.publications.funder') }}</dt>
                                         <x-ui-icon name="building" class="h-4 w-4 shrink-0 text-brand-300" />
                                         <dd>{{ $item->venue }}</dd>
                                     </div>
                                 @endif
                                 @if ($item->authors)
                                     <div class="flex items-center gap-2 text-white/70">
-                                        <dt class="sr-only">Investigators</dt>
+                                        <dt class="sr-only">{{ __('site.publications.investigators') }}</dt>
                                         <x-ui-icon name="users" class="h-4 w-4 shrink-0 text-brand-300" />
                                         <dd>{{ $item->authors }}</dd>
                                     </div>

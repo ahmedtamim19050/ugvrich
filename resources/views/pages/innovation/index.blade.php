@@ -1,16 +1,16 @@
-<x-layouts.app title="Innovation Wing"
-               description="The UGV RICH Innovation Wing transforms ideas into practical solutions through interdisciplinary collaboration, prototyping, testing, IP development and commercialization support.">
+<x-layouts.app :title="__('site.nav.innovation')"
+               :description="__('site.innovation.meta_description')">
 
     <x-page-hero
-        eyebrow="UGV RICH Innovation Wing"
-        title='From ideas to <span class="text-accent">practical solutions</span>'
-        lead="The Innovation Wing transforms ideas into practical solutions through interdisciplinary collaboration, prototyping, testing, intellectual property development and commercialization support."
+        :eyebrow="__('site.innovation.hero_eyebrow')"
+        :title="__('site.innovation.hero_title')"
+        :lead="__('site.innovation.hero_lead')"
         image="projects/sun-car.jpg"
-        :breadcrumbs="['Innovation Wing' => null]">
+        :breadcrumbs="[__('site.nav.innovation') => null]">
         <a href="{{ route('ideas.create') }}" class="btn-primary group">
-            <x-ui-icon name="lightbulb" class="h-4 w-4" /> Submit Your Idea
+            <x-ui-icon name="lightbulb" class="h-4 w-4" /> {{ __('site.actions.submit_idea') }}
         </a>
-        <a href="#areas" class="btn-ghost">Explore the areas</a>
+        <a href="#areas" class="btn-ghost">{{ __('site.innovation.explore_areas') }}</a>
     </x-page-hero>
 
     {{-- Areas as tabs, with the selected area's projects below --}}
@@ -19,13 +19,13 @@
             {{-- Tab bar. Every tab is a link, and they wrap into rows rather
                  than scrolling sideways, so the whole set is always in view. --}}
             <div class="reveal flex flex-wrap gap-1.5 rounded-[1.25rem] border border-ink-200 bg-ink-50 p-1.5"
-                 role="tablist" aria-label="Innovation areas">
+                 role="tablist" aria-label="{{ __('site.innovation.tablist') }}">
 
                 <a href="{{ route('innovation.index') }}#areas" role="tab"
                    aria-selected="{{ $activeArea ? 'false' : 'true' }}"
                    @class(['area-tab', 'is-on' => ! $activeArea])>
                     <x-ui-icon name="grid" class="h-4 w-4 shrink-0" />
-                    All areas
+                    {{ __('site.innovation.all_areas') }}
                     <span class="area-tab-count">{{ $areas->sum('projects_count') }}</span>
                 </a>
 
@@ -82,9 +82,9 @@
                     <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
                         <x-ui-icon name="lightbulb" class="h-6 w-6" />
                     </span>
-                    <p class="mt-5 font-display text-lg font-bold text-ink-950">No projects in this area yet</p>
-                    <p class="mx-auto mt-2 max-w-md text-[14.5px] muted">Have an idea that fits here? Submit it and the Innovation Wing will review it.</p>
-                    <a href="{{ route('ideas.create') }}" class="btn-primary mt-6">Submit Your Idea</a>
+                    <p class="mt-5 font-display text-lg font-bold text-ink-950">{{ __('site.innovation.empty_title') }}</p>
+                    <p class="mx-auto mt-2 max-w-md text-[14.5px] muted">{{ __('site.innovation.empty_body') }}</p>
+                    <a href="{{ route('ideas.create') }}" class="btn-primary mt-6">{{ __('site.actions.submit_idea') }}</a>
                 </div>
             @else
                 <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

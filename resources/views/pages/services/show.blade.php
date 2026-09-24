@@ -4,12 +4,12 @@
         :eyebrow="$category->tagline"
         :title="$category->name"
         :lead="$category->description"
-        :breadcrumbs="['Services' => route('services.index'), $category->name => null]">
+        :breadcrumbs="[__('site.services.breadcrumb') => route('services.index'), $category->name => null]">
         <a href="{{ route('contact') }}?area={{ $category->slug }}" class="btn-primary">
-            Request this service <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.services.request_service') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
         <a href="#services" class="btn-ghost">
-            See what is included
+            {{ __('site.services.see_included') }}
         </a>
     </x-page-hero>
 
@@ -20,9 +20,9 @@
             {{-- Summary --}}
             <div class="lg:sticky lg:top-32 lg:self-start">
                 <x-section-heading
-                    eyebrow="What is included"
-                    :title="'<span class=\'text-brand-600\'>'.$category->services->count().'</span> services in this area'"
-                    lead="Each service can be commissioned on its own or combined into a larger assignment. Scope, team and timeline are agreed before work begins." />
+                    :eyebrow="__('site.services.included_eyebrow')"
+                    :title="__('site.services.included_title', ['count' => $category->services->count()])"
+                    :lead="__('site.services.included_lead')" />
 
                 <div class="reveal relative isolate mt-8 overflow-hidden rounded-[2rem] bg-brand-700 p-7 text-white">
                     <div class="pointer-events-none absolute inset-0 -z-10 text-ink-950 grid-overlay opacity-60" aria-hidden="true"></div>
@@ -37,9 +37,9 @@
 
                     <ul class="mt-6 grid grid-cols-3 gap-2 border-t border-white/15 pt-6 text-center">
                         @foreach ([
-                            [$category->services->count(), 'Services'],
-                            [$expertCount, \Illuminate\Support\Str::plural('Expert', $expertCount)],
-                            [$projectCount, \Illuminate\Support\Str::plural('Project', $projectCount)],
+                            [$category->services->count(), __('site.services.stat_services')],
+                            [$expertCount, trans_choice('site.services.stat_experts', $expertCount)],
+                            [$projectCount, trans_choice('site.services.stat_projects', $projectCount)],
                         ] as [$num, $label])
                             <li class="rounded-xl bg-white/[0.07] px-2 py-3">
                                 <span class="block font-display text-2xl font-bold tabular-nums !text-white">{{ $num }}</span>
@@ -50,7 +50,7 @@
 
                     <a href="{{ route('contact') }}?area={{ $category->slug }}"
                        class="group mt-6 flex items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-semibold text-brand-700 transition hover:bg-brand-50">
-                        Request this service
+                        {{ __('site.services.request_service') }}
                         <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </a>
                 </div>
@@ -87,11 +87,11 @@
             <div class="container-rich">
                 <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                     <x-section-heading
-                        eyebrow="Who delivers it"
-                        title="Experts in this area"
-                        lead="Assignments in this area are led by these faculty members and their departmental teams." />
+                        :eyebrow="__('site.services.experts_eyebrow')"
+                        :title="__('site.services.experts_title')"
+                        :lead="__('site.services.experts_lead')" />
                     <a href="{{ route('experts.index') }}?area={{ $category->slug }}" class="btn-ghost reveal shrink-0">
-                        All experts in this area <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                        {{ __('site.services.experts_link') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                     </a>
                 </div>
 
@@ -110,10 +110,10 @@
             <div class="container-rich">
                 <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                     <x-section-heading
-                        eyebrow="Recent work"
-                        title="Projects delivered in this area" />
+                        :eyebrow="__('site.services.work_eyebrow')"
+                        :title="__('site.services.work_title')" />
                     <a href="{{ route('projects.index') }}?area={{ $category->slug }}" class="btn-ghost reveal shrink-0">
-                        All projects <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                        {{ __('site.actions.all_projects') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                     </a>
                 </div>
 
@@ -132,10 +132,10 @@
             <div class="container-rich">
                 <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                     <x-section-heading
-                        eyebrow="Other areas"
-                        title='Explore the rest of the <span class="text-accent">catalogue</span>' />
+                        :eyebrow="__('site.services.others_eyebrow')"
+                        :title="__('site.services.others_title')" />
                     <a href="{{ route('services.index') }}" class="btn-ghost reveal shrink-0">
-                        All services <x-ui-icon name="arrow-right" class="h-4 w-4" />
+                        {{ __('site.services.others_link') }} <x-ui-icon name="arrow-right" class="h-4 w-4" />
                     </a>
                 </div>
 

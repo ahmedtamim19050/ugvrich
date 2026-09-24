@@ -1,11 +1,11 @@
-<x-layouts.app title="News & Events"
-               description="Workshops, agreements, research presentations and calls for participation from across UGV RICH.">
+<x-layouts.app :title="__('site.nav.news')"
+               :description="__('site.news.meta_description')">
 
     <x-page-hero
-        eyebrow="News & events"
-        title='Latest from the <span class="text-accent">hub</span>'
-        lead="Workshops, consultancy agreements, research presentations and calls for participation from across UGV RICH."
-        :breadcrumbs="['News & Events' => null]" />
+        :eyebrow="__('site.news.hero_eyebrow')"
+        :title="__('site.news.hero_title')"
+        :lead="__('site.news.hero_lead')"
+        :breadcrumbs="[__('site.nav.news') => null]" />
 
     {{-- Upcoming strip --}}
     @if ($upcoming->isNotEmpty())
@@ -15,7 +15,7 @@
                     <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
                         <x-ui-icon name="calendar" class="h-4.5 w-4.5" />
                     </span>
-                    <h2 class="font-display text-lg font-bold">Upcoming events</h2>
+                    <h2 class="font-display text-lg font-bold">{{ __('site.news.upcoming') }}</h2>
                 </div>
 
                 <div class="mt-6 grid gap-4 md:grid-cols-3">
@@ -49,7 +49,7 @@
         <div class="container-rich">
             {{-- Type filter --}}
             <div class="reveal flex flex-wrap items-center gap-2.5">
-                @foreach ([['', 'All'], ['news', 'News'], ['event', 'Events']] as [$value, $label])
+                @foreach ([['', __('site.news.filter_all')], ['news', __('site.news.filter_news')], ['event', __('site.news.filter_events')]] as [$value, $label])
                     <a href="{{ $value ? route('news.index', ['type' => $value]) : route('news.index') }}"
                        @class([
                            'rounded-full border px-5 py-2 text-[13.5px] font-medium transition',
@@ -64,8 +64,8 @@
             @if ($posts->isEmpty())
                 <div class="mt-10 rounded-3xl border border-dashed hairline p-14 text-center">
                     <x-ui-icon name="document" class="mx-auto h-9 w-9 muted" stroke="1.3" />
-                    <p class="mt-4 font-display text-lg font-semibold">Nothing published here yet</p>
-                    <p class="mt-2 text-[14.5px] muted">Check back soon, or subscribe below for updates.</p>
+                    <p class="mt-4 font-display text-lg font-semibold">{{ __('site.news.empty_title') }}</p>
+                    <p class="mt-2 text-[14.5px] muted">{{ __('site.news.empty_body') }}</p>
                 </div>
             @else
                 <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -1,11 +1,11 @@
-<x-layouts.app title="Our Experts"
-               description="A searchable directory of UGV faculty members and professional associates available for consultancy, research collaboration and supervision.">
+<x-layouts.app :title="__('site.experts.meta_title')"
+               :description="__('site.experts.meta_description')">
 
     <x-page-hero
-        eyebrow="Our experts"
-        title='Find the right <span class="text-accent">expertise</span>'
-        lead="A searchable, filterable directory of UGV faculty members and professional associates. Search by name, department, expertise or research interest."
-        :breadcrumbs="['Experts' => null]" />
+        :eyebrow="__('site.experts.hero_eyebrow')"
+        :title="__('site.experts.hero_title')"
+        :lead="__('site.experts.hero_lead')"
+        :breadcrumbs="[__('site.experts.breadcrumb') => null]" />
 
     <section class="py-16 bg-white sm:py-20">
         <div class="container-rich">
@@ -28,16 +28,16 @@
                         <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 transition group-focus-within:bg-brand-600 group-focus-within:text-white">
                             <x-ui-icon name="search" class="h-[18px] w-[18px]" />
                         </span>
-                        <label for="expert-search" class="sr-only">Search experts</label>
+                        <label for="expert-search" class="sr-only">{{ __('site.experts.search_label') }}</label>
                         <input id="expert-search" type="search" name="q" x-model="q" value="{{ $search }}" autocomplete="off"
-                               placeholder="Search by name, department, expertise or research interest…"
+                               placeholder="{{ __('site.experts.search_placeholder') }}"
                                class="min-w-0 flex-1 bg-transparent px-1 py-3 text-[15.5px] text-ink-900 placeholder:text-ink-400 focus:outline-none [&::-webkit-search-cancel-button]:hidden">
                         <button type="button" x-show="q.length" x-cloak @click="q = ''; $nextTick(() => $el.closest('form').querySelector('input[name=q]').focus())"
-                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink-400 transition hover:bg-ink-100 hover:text-ink-700" aria-label="Clear search">
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink-400 transition hover:bg-ink-100 hover:text-ink-700" aria-label="{{ __('site.experts.clear_search') }}">
                             <x-ui-icon name="x" class="h-4 w-4" />
                         </button>
                         <button type="submit" class="btn-primary shrink-0 !px-5 sm:!px-6">
-                            <span class="hidden sm:inline">Search</span>
+                            <span class="hidden sm:inline">{{ __('site.actions.search') }}</span>
                             <x-ui-icon name="arrow-right" class="h-4 w-4" />
                         </button>
                     </div>
@@ -52,7 +52,7 @@
                            'border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:text-ink-950' => $area,
                        ])>
                         <x-ui-icon name="grid" class="h-4 w-4" />
-                        All areas
+                        {{ __('site.experts.all_areas') }}
                         <span @class(['rounded-full px-1.5 text-[11.5px] font-semibold tabular-nums', 'bg-white/15' => ! $area, 'bg-ink-100 text-ink-500' => $area])>{{ $totalExperts }}</span>
                     </a>
                     @foreach ($categories as $category)
@@ -74,8 +74,7 @@
             {{-- Results bar --}}
             <div class="mt-8 flex flex-wrap items-center justify-between gap-3">
                 <p class="text-[15px] text-ink-700">
-                    <span class="font-display text-xl font-bold tabular-nums text-ink-950">{{ $experts->total() }}</span>
-                    {{ Str::plural('expert', $experts->total()) }} found
+                    {!! trans_choice('site.experts.found', $experts->total(), ['count' => '<span class="font-display text-xl font-bold tabular-nums text-ink-950">'.$experts->total().'</span>']) !!}
                 </p>
 
                 @if ($search || $area)
@@ -98,7 +97,7 @@
                                 </span>
                             </a>
                         @endif
-                        <a href="{{ route('experts.index') }}" class="px-2 text-[13px] font-semibold text-ink-500 transition hover:text-brand-700">Clear all</a>
+                        <a href="{{ route('experts.index') }}" class="px-2 text-[13px] font-semibold text-ink-500 transition hover:text-brand-700">{{ __('site.experts.clear_all') }}</a>
                     </div>
                 @endif
             </div>
@@ -108,11 +107,11 @@
                     <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-brand-600 shadow-[0_12px_30px_-20px_rgba(11,15,24,0.4)]">
                         <x-ui-icon name="search" class="h-7 w-7" />
                     </span>
-                    <p class="mt-6 font-display text-xl font-bold text-ink-950">No experts match your search</p>
-                    <p class="mx-auto mt-2 max-w-md text-[14.5px] muted">Try a broader term or a different area, or clear the filters to see the full directory.</p>
+                    <p class="mt-6 font-display text-xl font-bold text-ink-950">{{ __('site.experts.empty_title') }}</p>
+                    <p class="mx-auto mt-2 max-w-md text-[14.5px] muted">{{ __('site.experts.empty_body') }}</p>
                     <div class="mt-7 flex flex-wrap justify-center gap-3">
-                        <a href="{{ route('experts.index') }}" class="btn-primary">Show all experts</a>
-                        <a href="{{ route('contact') }}" class="btn-ghost">Ask us to find one</a>
+                        <a href="{{ route('experts.index') }}" class="btn-primary">{{ __('site.experts.show_all') }}</a>
+                        <a href="{{ route('contact') }}" class="btn-ghost">{{ __('site.experts.ask_us') }}</a>
                     </div>
                 </div>
             @else

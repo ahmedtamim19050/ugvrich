@@ -2,16 +2,30 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Expert extends Model
 {
+    use HasTranslations;
+
+    /** Fields with a `_bn` twin; see the HasTranslations trait. */
+    protected array $translatable = [
+        'name',
+        'designation',
+        'department',
+        'expertise',
+        'research_interests',
+        'bio',
+    ];
+
     protected $guarded = [];
 
     protected $casts = [
         'expertise' => 'array',
+        'expertise_bn' => 'array',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
     ];

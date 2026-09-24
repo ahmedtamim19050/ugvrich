@@ -91,16 +91,16 @@ class PageController extends Controller
         $groups = [
             [
                 'key' => 'applications',
-                'label' => 'Patent Applications',
+                'label' => __('site.patents.group_applications'),
                 'icon' => 'document',
-                'text' => 'Filed with the patent office, or being prepared for filing.',
+                'text' => __('site.patents.group_applications_text'),
                 'items' => $projects->whereIn('patent_status', ['planned', 'filed', 'published', 'granted', 'copyright', 'design'])->values(),
             ],
             [
                 'key' => 'commercialization',
-                'label' => 'Commercialization',
+                'label' => __('site.patents.group_commercialization'),
                 'icon' => 'rocket',
-                'text' => 'Work being taken to market, through licensing, incubation or a formed venture.',
+                'text' => __('site.patents.group_commercialization_text'),
                 'items' => $projects->whereIn('commercialization_status', ['exploring', 'licensing', 'incubating', 'startup', 'market'])->values(),
             ],
         ];

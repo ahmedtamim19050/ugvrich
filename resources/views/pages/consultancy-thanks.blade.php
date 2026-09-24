@@ -1,5 +1,5 @@
-<x-layouts.app title="Request received"
-               description="Your consultancy request has been received by UGV RICH.">
+<x-layouts.app :title="__('site.thanks.consultancy_title')"
+               :description="__('site.thanks.consultancy_description')">
 
     @php
         $firstName = \Illuminate\Support\Str::of($submission['name'] ?? '')
@@ -26,30 +26,30 @@
                     </span>
 
                     <span class="eyebrow mt-8">
-                        <span class="h-1.5 w-1.5 rounded-full bg-current"></span>Request received
+                        <span class="h-1.5 w-1.5 rounded-full bg-current"></span>{{ __('site.thanks.consultancy_title') }}
                     </span>
 
                     <h1 class="mt-5 font-display text-4xl font-bold leading-[1.1] tracking-tight text-ink-950 sm:text-5xl">
-                        Thank you{{ $firstName ? ', '.$firstName : '' }}.
+                        {{ __('site.thanks.thank_you', ['name' => $firstName ? ', '.$firstName : '']) }}
                     </h1>
                     <p class="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed muted">
-                        Your consultancy request has been received. Our coordination team will review it and be in touch shortly.
+                        {{ __('site.thanks.consultancy_body') }}
                     </p>
                 </div>
 
                 {{-- Actions --}}
                 <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
                     <a href="{{ route('home') }}" class="btn-primary group">
-                        Back to home <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                        {{ __('site.actions.back_to_home') }} <x-ui-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </a>
-                    <a href="{{ route('experts.index') }}" class="btn-ghost">Meet our experts</a>
-                    <a href="{{ route('projects.index') }}" class="btn-ghost">See our projects</a>
+                    <a href="{{ route('experts.index') }}" class="btn-ghost">{{ __('site.thanks.meet_experts') }}</a>
+                    <a href="{{ route('projects.index') }}" class="btn-ghost">{{ __('site.thanks.see_projects') }}</a>
                 </div>
 
                 @if ($email)
                     <p class="mt-8 text-center text-[14px] muted">
-                        Need to add something? Email
-                        <a href="mailto:{{ $email }}?subject={{ rawurlencode('Consultancy request') }}" class="font-semibold text-brand-700 hover:underline">{{ $email }}</a>.
+                        {{ __('site.thanks.add_something') }}
+                        <a href="mailto:{{ $email }}?subject={{ rawurlencode(__('site.thanks.email_subject')) }}" class="font-semibold text-brand-700 hover:underline">{{ $email }}</a>.
                     </p>
                 @endif
             </div>

@@ -57,7 +57,7 @@
         @endif
 
         <div class="mt-5 flex items-center justify-between gap-4 border-t border-white/15 pt-5">
-            <span class="text-[13px] font-semibold text-white">{{ $project->type === 'innovation' ? 'View innovation' : 'View case study' }}</span>
+            <span class="text-[13px] font-semibold text-white">{{ $project->type === 'innovation' ? __('site.cards.view_innovation') : __('site.cards.view_case_study') }}</span>
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-ink-900 transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-45 group-hover:bg-brand-600 group-hover:text-white">
                 <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
             </span>

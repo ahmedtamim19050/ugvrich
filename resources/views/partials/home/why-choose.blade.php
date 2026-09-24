@@ -11,9 +11,9 @@
         <x-section-heading
             align="center"
             invert
-            eyebrow="Why choose UGV RICH"
-            title='Academic rigour, delivered like <span class="text-brand-300">professional practice</span>'
-            lead="Six reasons organisations bring their hardest questions to a university platform rather than a generalist firm." />
+            :eyebrow="__('site.home.why_eyebrow')"
+            :title="__('site.home.why_title')"
+            :lead="__('site.home.why_lead')" />
 
         {{-- Hairlines between rows rather than boxes around them. --}}
         <div class="mx-auto mt-14 max-w-5xl divide-y divide-white/10 border-y border-white/10">

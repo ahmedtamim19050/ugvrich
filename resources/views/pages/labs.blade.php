@@ -1,13 +1,13 @@
-<x-layouts.app title="Labs & Facilities"
-               description="Laboratories, workshops and studios across UGV departments — available for research, prototyping, testing and industry work.">
+<x-layouts.app :title="__('site.nav.labs')"
+               :description="__('site.labs.meta_description')">
 
     <x-page-hero
-        eyebrow="Labs & facilities"
-        title='Where the work actually <span class="text-accent">gets made</span>'
-        lead="Laboratories, workshops and studios across the departments. They support student and faculty projects, and can be commissioned for industry testing and development work."
-        :breadcrumbs="['Labs & Facilities' => null]">
+        :eyebrow="__('site.labs.hero_eyebrow')"
+        :title="__('site.labs.hero_title')"
+        :lead="__('site.labs.hero_lead')"
+        :breadcrumbs="[__('site.nav.labs') => null]">
         <a href="{{ route('consultancy.create') }}" class="btn-primary">
-            Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
     </x-page-hero>
 
@@ -21,10 +21,10 @@
     <section class="border-b border-ink-100 bg-white py-10">
         <div class="container-rich grid gap-px overflow-hidden rounded-2xl border border-ink-100 bg-ink-100 sm:grid-cols-2 lg:grid-cols-4">
             @foreach ([
-                [$facilities->count(), 'Facilities', 'beaker'],
-                [$departments->count(), 'Departments', 'building'],
-                [$equipmentCount, 'Instruments listed', 'cog'],
-                [$bookable, 'Open to external work', 'handshake'],
+                [$facilities->count(), 'facilities', 'beaker'],
+                [$departments->count(), 'departments', 'building'],
+                [$equipmentCount, 'instruments', 'cog'],
+                [$bookable, 'bookable', 'handshake'],
             ] as [$value, $label, $icon])
                 <div class="flex items-center gap-4 bg-white px-6 py-5">
                     <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
@@ -32,7 +32,7 @@
                     </span>
                     <div>
                         <p class="font-display text-[26px] font-bold leading-none tabular-nums text-ink-950">{{ $value }}</p>
-                        <p class="mt-1.5 text-[12.5px] leading-snug muted">{{ $label }}</p>
+                        <p class="mt-1.5 text-[12.5px] leading-snug muted">{{ __('site.labs.count_'.$label) }}</p>
                     </div>
                 </div>
             @endforeach
@@ -43,9 +43,9 @@
     <section class="bg-white py-16 sm:py-20">
         <div class="container-rich">
             <x-section-heading
-                eyebrow="Facilities"
-                title='Laboratories, workshops and <span class="text-accent">studios</span>'
-                lead="Each is run by its department, and each can be commissioned for outside work." />
+                :eyebrow="__('site.labs.list_eyebrow')"
+                :title="__('site.labs.list_title')"
+                :lead="__('site.labs.list_lead')" />
 
             <div class="mt-12 grid gap-6 lg:grid-cols-2">
                 @foreach ($facilities as $i => $facility)
@@ -91,10 +91,10 @@
 
                             {{-- Equipment and services, divided --}}
                             <div class="mt-6 grid flex-1 divide-y divide-ink-100 border-t border-ink-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-                                @foreach ([['Equipment', $facility->equipment, 'cog'], ['Available for', $facility->services, 'check']] as [$label, $items, $icon])
+                                @foreach ([['equipment', $facility->equipment, 'cog'], ['available_for', $facility->services, 'check']] as [$label, $items, $icon])
                                     <div class="px-6 py-5">
                                         <p class="flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink-400">
-                                            <x-ui-icon :name="$icon" class="h-3.5 w-3.5 text-brand-600" /> {{ $label }}
+                                            <x-ui-icon :name="$icon" class="h-3.5 w-3.5 text-brand-600" /> {{ __('site.labs.'.$label) }}
                                         </p>
 
                                         @if ($items)
@@ -121,7 +121,7 @@
                                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60"></span>
                                             <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-600"></span>
                                         </span>
-                                        Open to external work
+                                        {{ __('site.labs.open_external') }}
                                     </span>
                                 @endif
                                 @if ($facility->location)
@@ -137,7 +137,7 @@
 
             @if ($facilities->isEmpty())
                 <p class="mt-8 rounded-2xl border-2 border-dashed border-ink-200 p-8 text-center text-[14.5px] muted">
-                    Facilities added in the admin panel appear here.
+                    {{ __('site.labs.empty') }}
                 </p>
             @endif
         </div>
@@ -148,22 +148,22 @@
         <div class="container-rich grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
             <div>
                 <x-section-heading
-                    eyebrow="Commissioning"
-                    title='Using a facility for <span class="text-accent">your own work</span>'
-                    lead="Industry, government and NGO partners can commission testing, fabrication and analysis in any of these facilities." />
+                    :eyebrow="__('site.labs.commission_eyebrow')"
+                    :title="__('site.labs.commission_title')"
+                    :lead="__('site.labs.commission_lead')" />
 
                 <a href="{{ route('consultancy.create') }}" class="btn-primary reveal mt-8">
-                    Request Consultancy <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
+                    {{ __('site.actions.request_consultancy') }} <x-ui-icon name="arrow-up-right" class="h-4 w-4" />
                 </a>
             </div>
 
             <ol class="grid gap-3 sm:grid-cols-2">
                 @foreach ([
-                    ['document', 'Tell us what you need', 'Describe the test, the sample or the build, and any standard it must meet.'],
-                    ['users', 'The department scopes it', 'Faculty confirm the method, the equipment and who will run it.'],
-                    ['target', 'You get a quote', 'Scope, timeline and cost, before any work starts.'],
-                    ['check', 'Work and report', 'The work is carried out and you receive the results in writing.'],
-                ] as $i => [$icon, $title, $text])
+                    ['document', 'tell'],
+                    ['users', 'scope'],
+                    ['target', 'quote'],
+                    ['check', 'report'],
+                ] as $i => [$icon, $step])
                     <li class="reveal rounded-2xl border border-ink-100 bg-white p-5" style="transition-delay: {{ min($i * 60, 300) }}ms">
                         <div class="flex items-center justify-between">
                             <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
@@ -171,8 +171,8 @@
                             </span>
                             <span class="font-display text-[12px] font-bold tabular-nums text-ink-300">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
                         </div>
-                        <p class="mt-4 font-display text-[15px] font-semibold text-ink-950">{{ $title }}</p>
-                        <p class="mt-1.5 text-[13px] leading-relaxed muted">{{ $text }}</p>
+                        <p class="mt-4 font-display text-[15px] font-semibold text-ink-950">{{ __('site.labs.step_'.$step) }}</p>
+                        <p class="mt-1.5 text-[13px] leading-relaxed muted">{{ __('site.labs.step_'.$step.'_note') }}</p>
                     </li>
                 @endforeach
             </ol>

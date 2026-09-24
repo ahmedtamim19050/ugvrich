@@ -4,7 +4,7 @@
         ? route('contact').'?intent=collaborate'
         : route('contact').($project->category ? '?area='.$project->category->slug : '');
 
-    $stages = config('rich.pipeline_stages');
+    $stages = \App\Support\Vocabulary::all('pipeline_stages');
     $stageIcons = [
         'idea' => 'lightbulb', 'selected' => 'check', 'research' => 'beaker', 'prototype' => 'cog',
         'testing' => 'target', 'patent' => 'key', 'incubation' => 'rocket', 'commercialization' => 'briefcase',
@@ -23,8 +23,8 @@
 
     // The story, in the order the Innovation Wing presents it. Empty sections are skipped.
     $story = collect([
-        ['problem', 'Problem', 'target', $project->problem],
-        ['solution', 'Solution', 'lightbulb', $project->solution],
+        ['problem', __('site.projects.problem'), 'target', $project->problem],
+        ['solution', __('site.projects.solution'), 'lightbulb', $project->solution],
     ])->filter(fn ($s) => filled($s[3]));
 @endphp
 
@@ -35,17 +35,17 @@
         :title="$project->title"
         :lead="$project->summary"
         :image="$project->image"
-        :breadcrumbs="[($isInnovation ? 'Innovation Wing' : 'Projects') => ($isInnovation ? route('innovation.index') : route('projects.index')), Str::limit($project->title, 40) => null]" />
+        :breadcrumbs="[($isInnovation ? __('site.nav.innovation') : __('site.nav.projects')) => ($isInnovation ? route('innovation.index') : route('projects.index')), Str::limit($project->title, 40) => null]" />
 
     {{-- Stage tracker --}}
     @if ($project->stage)
         <section class="border-b border-ink-100 bg-ink-50 py-8">
             <div class="container-rich">
                 <div class="flex flex-wrap items-center justify-between gap-3">
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700">Current stage</p>
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700">{{ __('site.projects.current_stage') }}</p>
                     <p class="inline-flex items-center gap-2 rounded-full bg-brand-600 px-3.5 py-1.5 text-[13px] font-semibold text-white">
                         <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-white"></span>
-                        {{ $project->stage_label }} · stage {{ $project->stage_index }} of {{ count($stages) }}
+                        {{ __('site.projects.stage_of', ['label' => $project->stage_label, 'index' => $project->stage_index, 'total' => count($stages)]) }}
                     </p>
                 </div>
 
@@ -106,7 +106,7 @@
                 {{-- Description (consultancy + extra detail) --}}
                 @if ($project->description)
                     <div class="reveal rounded-[1.75rem] border border-ink-100 p-7">
-                        <h2 class="font-display text-xl font-bold text-ink-950">About this project</h2>
+                        <h2 class="font-display text-xl font-bold text-ink-950">{{ __('site.projects.about') }}</h2>
                         <p class="mt-4 text-[15.5px] leading-relaxed muted">{{ $project->description }}</p>
                     </div>
                 @endif
@@ -116,18 +116,18 @@
                     <div class="reveal rounded-[1.75rem] border border-ink-100 p-7">
                         <div class="flex items-center gap-3">
                             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><x-ui-icon name="users" class="h-5 w-5" /></span>
-                            <h2 class="font-display text-xl font-bold text-ink-950">Team</h2>
+                            <h2 class="font-display text-xl font-bold text-ink-950">{{ __('site.projects.team') }}</h2>
                         </div>
                         <div class="mt-5 grid gap-3 sm:grid-cols-2">
                             @if ($project->lead_name)
                                 <div class="rounded-2xl bg-ink-50 p-4">
-                                    <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-400">PI / Team leader</p>
+                                    <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-400">{{ __('site.projects.team_lead') }}</p>
                                     <p class="mt-1 font-semibold text-ink-950">{{ $project->lead_name }}</p>
                                 </div>
                             @endif
                             @if ($project->department)
                                 <div class="rounded-2xl bg-ink-50 p-4">
-                                    <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-400">Department</p>
+                                    <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-400">{{ __('site.projects.department') }}</p>
                                     <p class="mt-1 font-semibold text-ink-950">{{ $project->department_name }}</p>
                                 </div>
                             @endif
@@ -150,7 +150,7 @@
                     <div class="reveal rounded-[1.75rem] border border-ink-100 p-7">
                         <div class="flex items-center gap-3">
                             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><x-ui-icon name="cpu" class="h-5 w-5" /></span>
-                            <h2 class="font-display text-xl font-bold text-ink-950">Technology</h2>
+                            <h2 class="font-display text-xl font-bold text-ink-950">{{ __('site.projects.technology') }}</h2>
                         </div>
                         <div class="mt-5 flex flex-wrap gap-2">
                             @foreach ($project->technologies as $tech)
@@ -165,17 +165,17 @@
                     <div class="reveal rounded-[1.75rem] border border-ink-100 p-7">
                         <div class="flex items-center gap-3">
                             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><x-ui-icon name="play" class="h-5 w-5" /></span>
-                            <h2 class="font-display text-xl font-bold text-ink-950">Photos & video</h2>
+                            <h2 class="font-display text-xl font-bold text-ink-950">{{ __('site.projects.media') }}</h2>
                         </div>
 
                         @if ($embed)
                             <div class="mt-5 aspect-video overflow-hidden rounded-2xl bg-ink-950">
-                                <iframe src="{{ $embed }}" title="{{ $project->title }} video" class="h-full w-full" loading="lazy"
+                                <iframe src="{{ $embed }}" title="{{ __('site.projects.video_title', ['title' => $project->title]) }}" class="h-full w-full" loading="lazy"
                                         allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
                         @elseif ($project->video_url)
                             <a href="{{ $project->video_url }}" target="_blank" rel="noopener noreferrer" class="btn-ghost mt-5">
-                                <x-ui-icon name="play" class="h-4 w-4" /> Watch the video
+                                <x-ui-icon name="play" class="h-4 w-4" /> {{ __('site.projects.watch_video') }}
                             </a>
                         @endif
 
@@ -183,7 +183,7 @@
                             <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
                                 @foreach ($photos as $photo)
                                     <a href="{{ Storage::url($photo) }}" target="_blank" rel="noopener" class="group block overflow-hidden rounded-2xl">
-                                        <img src="{{ Storage::url($photo) }}" alt="{{ $project->title }} photo {{ $loop->iteration }}" loading="lazy"
+                                        <img src="{{ Storage::url($photo) }}" alt="{{ __('site.projects.photo_alt', ['title' => $project->title, 'number' => $loop->iteration]) }}" loading="lazy"
                                              class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                                     </a>
                                 @endforeach
@@ -194,10 +194,10 @@
 
                 {{-- Research → Patent/IP → Commercial potential --}}
                 @foreach ([
-                    ['Research', 'beaker', $project->research_summary],
-                    ['Patent / IP', 'key', $project->patent_details],
-                    ['Commercial potential', 'rocket', $project->commercial_potential],
-                    ['Project outcome', 'target', $project->outcome],
+                    [__('site.projects.research'), 'beaker', $project->research_summary],
+                    [__('site.projects.patent'), 'key', $project->patent_details],
+                    [__('site.projects.commercial'), 'rocket', $project->commercial_potential],
+                    [__('site.projects.outcome'), 'target', $project->outcome],
                 ] as [$title, $icon, $text])
                     @if (filled($text))
                         <div class="reveal rounded-[1.75rem] border border-ink-100 p-7">
@@ -216,24 +216,24 @@
                 <div class="reveal overflow-hidden rounded-[2rem] border border-ink-100 bg-white">
                     @if ($project->code)
                         <div class="bg-ink-950 px-6 py-5 text-white">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/60">Project ID</p>
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/60">{{ __('site.projects.project_id') }}</p>
                             <p class="mt-1 font-mono text-lg font-bold tracking-wide">{{ $project->code }}</p>
                         </div>
                     @endif
 
                     <dl class="space-y-4 p-6">
                         @foreach ([
-                            ['Type', $project->type_label, 'grid'],
-                            ['Department', $project->department_name, 'building'],
-                            ['Innovation area', $project->innovationArea?->name, 'lightbulb'],
-                            ['Area of consultancy', $project->category?->name, 'briefcase'],
-                            ['Client / Partner', $project->client, 'handshake'],
-                            ['Current stage', $project->stage_label, 'target'],
-                            ['Patent / IP', $project->patent_status !== 'none' ? $project->patent_status_label : null, 'key'],
-                            ['Commercialization', $project->commercialization_status !== 'none' ? $project->commercialization_status_label : null, 'rocket'],
-                            ['Duration', $project->duration, 'clock'],
-                            ['Year', $project->year, 'calendar'],
-                            ['Status', Str::title($project->status), 'check'],
+                            [__('site.projects.fact_type'), $project->type_label, 'grid'],
+                            [__('site.projects.department'), $project->department_name, 'building'],
+                            [__('site.projects.fact_innovation_area'), $project->innovationArea?->name, 'lightbulb'],
+                            [__('site.projects.fact_consultancy_area'), $project->category?->name, 'briefcase'],
+                            [__('site.projects.fact_client'), $project->client, 'handshake'],
+                            [__('site.projects.current_stage'), $project->stage_label, 'target'],
+                            [__('site.projects.patent'), $project->patent_status !== 'none' ? $project->patent_status_label : null, 'key'],
+                            [__('site.projects.fact_commercialization'), $project->commercialization_status !== 'none' ? $project->commercialization_status_label : null, 'rocket'],
+                            [__('site.projects.fact_duration'), $project->duration, 'clock'],
+                            [__('site.projects.fact_year'), $project->year, 'calendar'],
+                            [__('site.projects.fact_status'), Str::title($project->status), 'check'],
                         ] as [$label, $value, $icon])
                             @if (filled($value))
                                 <div class="flex gap-3.5">
@@ -251,7 +251,7 @@
 
                     <div class="border-t border-ink-100 p-6">
                         <a href="{{ $commissionUrl }}" class="btn-primary w-full">
-                            {{ $isInnovation ? 'Collaborate on this project' : 'Commission similar work' }}
+                            {{ $isInnovation ? __('site.projects.collaborate_cta') : __('site.projects.commission_cta') }}
                             <x-ui-icon name="arrow-right" class="h-4 w-4" />
                         </a>
                     </div>
@@ -263,7 +263,7 @@
     @if ($related->isNotEmpty())
         <section class="border-t border-ink-100 bg-ink-50 py-20">
             <div class="container-rich">
-                <x-section-heading eyebrow="More work" :title="$isInnovation ? 'More innovation projects' : 'Related projects'" />
+                <x-section-heading :eyebrow="__('site.projects.more_eyebrow')" :title="$isInnovation ? __('site.projects.more_innovation') : __('site.projects.more_related')" />
                 <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     @foreach ($related as $i => $item)
                         <x-cards.project-image-card :project="$item" :index="$i" class="min-h-[24rem]" />
